@@ -1,8 +1,8 @@
 {
-  "name": "my-module",
-  "version": "1.0.0",
-  "description": "My new Nuxt module",
-  "repository": "your-org/my-module",
+  "name": "nugget",
+  "version": "0.0.1",
+  "description": "Custom UI for shiny animations ✨",
+  "repository": "@fried-chicken/nugget",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -28,7 +28,8 @@
     "test:watch": "vitest watch"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.7.2"
+    "@nuxt/kit": "^3.7.2",
+    "nuxt-split-type": "^0.1.1"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
@@ -37,10 +38,11 @@
     "@nuxt/schema": "^3.7.2",
     "@nuxt/test-utils": "^3.7.3",
     "@types/node": "^18.17.15",
-    "@unocss/eslint-config": "^0.55.7",
-    "@unocss/nuxt": "^0.55.7",
+    "@vueuse/core": "^10.5.0",
+    "@vueuse/nuxt": "^10.5.0",
     "changelogen": "^0.5.5",
     "eslint": "^8.49.0",
+    "locomotive-scroll": "beta",
     "nuxt": "^3.7.3",
     "typescript": "^5.2.2",
     "vitest": "^0.33.0"
