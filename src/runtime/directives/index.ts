@@ -1,0 +1,1 @@
+export { vWordSplit } from "./vWordSplit";

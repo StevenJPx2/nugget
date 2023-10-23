@@ -29,9 +29,10 @@
   },
   "dependencies": {
     "@nuxt/kit": "^3.7.2",
-    "nuxt-split-type": "^0.1.1"
+    "nuxt-split-type": "latest"
   },
   "devDependencies": {
+    "@hypernym/nuxt-gsap": "^2.4.2",
     "@nuxt/devtools": "latest",
     "@nuxt/eslint-config": "^0.2.0",
     "@nuxt/module-builder": "^0.5.1",
@@ -43,7 +44,7 @@
     "changelogen": "^0.5.5",
     "eslint": "^8.49.0",
     "locomotive-scroll": "beta",
-    "nuxt": "^3.7.3",
+    "nuxt": "^3.8.0",
     "typescript": "^5.2.2",
     "vitest": "^0.33.0"
   }

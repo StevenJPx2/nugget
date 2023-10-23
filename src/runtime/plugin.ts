@@ -1,5 +1,7 @@
-import { defineNuxtPlugin } from '#app'
+import { defineNuxtPlugin } from "#app";
+import { vWordSplit } from "./directives";
+export { vWordSplit };
 
-export default defineNuxtPlugin((nuxtApp) => {
-  console.log('Plugin injected by my-module!')
-})
+export default defineNuxtPlugin((nuxt) => {
+  nuxt.vueApp.directive("word-split", vWordSplit);
+});

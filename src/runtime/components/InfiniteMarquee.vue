@@ -15,10 +15,22 @@ const loopContainer = ref<HTMLElement | null>(null);
 
 const props = withDefaults(
   defineProps<{
-    speed: number;
-    gap: string;
-    direction: "left" | "right";
-    target: number;
+    /** The speed of the marquee
+     * @default 0.05
+     */
+    speed?: number;
+    /** The gap between the repeated elements
+     * @default "0rem"
+     */
+    gap?: string;
+    /** The direction of the marquee
+     * @default "right"
+     */
+    direction?: "left" | "right";
+    /** The target distance before resetting the marquee
+     * @default 100
+     */
+    target?: number;
   }>(),
   { speed: 0.05, gap: "0rem", direction: "right", target: 100 },
 );
