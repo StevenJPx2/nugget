@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@nuxt/kit": "^3.7.2",
+    "defu": "^6.1.2",
     "nuxt-split-type": "latest"
   },
   "devDependencies": {

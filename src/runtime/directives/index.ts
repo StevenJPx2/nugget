@@ -1,1 +1,1 @@
-export { vWordSplit } from "./vWordSplit";
+export { vSplitAnimate } from "./vSplitAnimate";

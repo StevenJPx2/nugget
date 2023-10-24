@@ -1,7 +1,7 @@
 import { defineNuxtPlugin } from "#app";
-import { vWordSplit } from "./directives";
-export { vWordSplit };
+import { vSplitAnimate } from "./directives";
+export { vSplitAnimate };
 
 export default defineNuxtPlugin((nuxt) => {
-  nuxt.vueApp.directive("word-split", vWordSplit);
+  nuxt.vueApp.directive("split-animate", vSplitAnimate);
 });
