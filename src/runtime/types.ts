@@ -1,3 +1,5 @@
+import type { MaybeRefOrGetter } from "@vueuse/core";
+
 export type Direction = "bottom" | "top" | "left" | "right";
 type EaseFunction =
   | "power1"
@@ -24,3 +26,13 @@ export type Ease =
   | `${EaseFunction}.${EaseType}`
   | EaseFunction
   | ExpressiveEaseFunctions;
+
+export type ElementOrElementList =
+  | HTMLElement
+  | HTMLElement[]
+  | SVGElement
+  | SVGElement[];
+
+export type MaybeElementOrElementListRefOrGetter = MaybeRefOrGetter<
+  ElementOrElementList | null | undefined
+>;

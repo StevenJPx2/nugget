@@ -1,25 +1,44 @@
 <template>
-  <div :style="{ height: '100vh', display: 'grid', alignItems: 'center' }">
+  <div
+    :style="{
+      height: '70vh',
+      display: 'grid',
+      alignItems: 'center',
+      fontFamily: 'sans-serif',
+    }"
+  />
+  <div
+    :style="{
+      height: '100vh',
+      display: 'grid',
+      alignItems: 'center',
+      fontFamily: 'sans-serif',
+    }"
+  >
     <h1
       v-split-animate="{
-        splitBy: 'words',
-        options: {
-          blur: true,
-          translate: 'top',
-          rotate: true,
-          opacity: true,
-          skew: true,
-        },
-        ease: 'power4.inOut',
-        duration: 1.5,
+        splitBy: 'lines',
+        animationOptions: { translate: true },
       }"
-      :style="{ fontSize: '30vw' }"
+      :style="{
+        fontSize: '25vw',
+        textAlign: 'left',
+        lineHeight: 0.9,
+        overflow: 'hidden',
+      }"
     >
       Nuxt is so cool
     </h1>
   </div>
-  <div :style="{ height: '200vh', display: 'grid', alignItems: 'center' }">
-    <infinite-marquee gap="2rem" :speed="0.1">
+  <div
+    :style="{
+      height: '200vh',
+      display: 'grid',
+      alignItems: 'center',
+      fontFamily: 'sans-serif',
+    }"
+  >
+    <infinite-marquee gap="2rem">
       <div :style="{ display: 'inline-flex', gap: '2rem' }">
         <p v-for="_ in 20">Nuxt module playground!</p>
       </div>

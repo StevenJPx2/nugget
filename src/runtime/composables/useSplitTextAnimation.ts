@@ -1,184 +1,92 @@
 import type { MaybeComputedElementRef } from "@vueuse/core";
-import { useNuxtApp, useSplitText, watchOnce } from "#imports";
-import type { Direction, Ease } from "../types";
+import { useSplitText } from "#imports";
+import type { Ease } from "../types";
+import type { UseAnimateOnScrollOptions } from "./useAnimateOnScroll";
+import useAnimateOnScroll from "./useAnimateOnScroll";
 
-type AnimationOptions = {
-  /** Animation opacity
-   * @remarks
-   * - `in` means opacity from 0 to 1
-   * - `out` means opacity from 1 to 0
-   * - `true` is the same as `in`
+/** Completely optional options for the `useSplitTextAnimation` composable */
+export type UseSplitTextAnimationOptions = Omit<
+  UseAnimateOnScrollOptions,
+  "tweenValues"
+> & {
+  /** Defines how the text should be split
+   * @default "lines"
    * */
-  opacity?: "in" | "out" | true;
-  /** Animation translate
-   * @remarks
-   * - `bottom` means translate from bottom to top
-   * - `top` means translate from top to bottom
-   * - `left` means translate from left to right
-   * - `right` means translate from right to left
-   * - `true` is the same as `bottom`
+  splitBy?: "chars" | "words" | "lines";
+  /** Animation duration in seconds
+   * @default 2s
    * */
-  translate?: Direction | true;
-  /** Animation skew
-   * @remarks
-   * - `bottom` means skew from bottom to top
-   * - `top` means skew from top to bottom
-   * - `left` means skew from left to right
-   * - `right` means skew from right to left
-   * - `true` is the same as `bottom`
-   * */
-  skew?: Direction | true;
-  /** Animation scale
-   * @remarks
-   * - `in` means scale from 0.5 to 1
-   * - `out` means scale from 1.5 to 1
-   * - `true` is the same as `in`
-   * */
-  scale?: "out" | "in" | true;
-  /** Animation rotate
-   * @remarks
-   * - `left` means rotate from -15deg to 0deg
-   * - `right` means rotate from 15deg to 0deg
-   * - `true` is the same as `left`
-   * */
-  rotate?: "left" | "right" | true;
-  /** Animation blur
-   * @remarks
-   * - `in` means blur from 10px to 0px
-   * - `out` means blur from 0px to 10px
-   * - `true` is the same as `in`
-   * */
-  blur?: "in" | "out" | true;
-};
-
-export type UseSplitTextAnimationOptions = {
-  /** Defines how the text should be split */
-  splitBy: "chars" | "words" | "lines";
-  /** Options for the animation */
-  options?: AnimationOptions;
-  /** Animation duration in seconds */
   duration?: number;
-  /** Animation stagger in seconds */
+  /** Animation stagger in seconds
+   * @remarks
+   * - If left undefined, stagger is defined by how the text is split
+   * - `lines` has a default of `0.2s`
+   * - `words` has a default of `0.1s`
+   * - `chars` has a default of `0.05s`
+   * */
   stagger?: number;
-  /** Ease function */
+  /** Ease function
+   * @default "expo.inOut"
+   * */
   ease?: Ease;
-  /** Animation delay in seconds */
+  /** Animation delay in seconds
+   * @default 0s
+   * */
   delay?: number;
 };
 
-function generateAnimationTweens(animationOptions: AnimationOptions) {
-  const { opacity, translate, skew, scale, rotate, blur } = animationOptions;
-  const tweens: {
-    from: gsap.TweenVars;
-    to: gsap.TweenVars;
-  } = { from: {}, to: {} };
-
-  if (opacity) {
-    if (opacity === "in" || opacity === true) {
-      tweens.from.autoAlpha = 0;
-      tweens.to.autoAlpha = 1;
-    } else if (opacity === "out") {
-      tweens.from.autoAlpha = 1;
-      tweens.to.autoAlpha = 0;
-    }
-  }
-
-  if (translate) {
-    if (translate === "bottom" || translate === true) {
-      tweens.from.y = 50;
-      tweens.to.y = 0;
-    } else if (translate === "top") {
-      tweens.from.y = -50;
-      tweens.to.y = 0;
-    }
-    if (translate === "left") {
-      tweens.from.x = -50;
-      tweens.to.x = 0;
-    } else if (translate === "right") {
-      tweens.from.x = 50;
-      tweens.to.x = 0;
-    }
-  }
-
-  if (skew) {
-    if (skew === "bottom" || skew === true) {
-      tweens.from.skewY = 10;
-      tweens.to.skewY = 0;
-    } else if (skew === "top") {
-      tweens.from.skewY = -10;
-      tweens.to.skewY = 0;
-    }
-    if (skew === "left") {
-      tweens.from.skewX = -10;
-      tweens.to.skewX = 0;
-    } else if (skew === "right") {
-      tweens.from.skewX = 10;
-      tweens.to.skewX = 0;
-    }
-  }
-
-  if (scale) {
-    if (scale === "in" || scale === true) {
-      tweens.from.scale = 0.5;
-      tweens.to.scale = 1;
-    } else if (scale === "out") {
-      tweens.from.scale = 1.5;
-      tweens.to.scale = 1;
-    }
-  }
-
-  if (rotate) {
-    if (rotate === "left" || rotate === true) {
-      tweens.from.rotation = -15;
-      tweens.to.rotation = 0;
-    } else if (rotate === "right") {
-      tweens.from.rotation = 15;
-      tweens.to.rotation = 0;
-    }
-  }
-
-  if (blur) {
-    if (blur === "in" || blur === true) {
-      tweens.from.filter = "blur(10px)";
-      tweens.to.filter = "blur(0px)";
-    } else if (blur === "out") {
-      tweens.from.filter = "blur(0px)";
-      tweens.to.filter = "blur(10px)";
-    }
-  }
-
-  return tweens;
-}
-
+/**
+ * Animates a text split by chars, words or lines
+ * @param el - The element or ref to animate
+ * @param options - The animation options
+ * @remarks
+ * - Made so that it works with a basic but nice effect out of the box
+ * - Uses the `useSplitText` composable to split the text
+ * - Uses the `useBakedAnimation` composable for the animation
+ * @example
+ * ```ts
+ * const refEl = ref<HTMLElement>();
+ * const options = {
+ *  splitBy: "chars",
+ *  duration: 0.5,
+ *  stagger: 0.2,
+ *  ease: "none",
+ *  delay: 0,
+ * };
+ * useSplitTextAnimation(refEl, options);
+ * ```
+ */
 export default function (
-  refEl: MaybeComputedElementRef,
-  options: UseSplitTextAnimationOptions,
+  el: MaybeComputedElementRef,
+  options: UseSplitTextAnimationOptions = {},
 ) {
-  const {
-    splitBy,
-    duration = 0.5,
-    stagger = 0.2,
-    ease = "none",
+  let {
+    splitBy = "lines",
+    duration = 2,
+    stagger,
+    ease = "expo.inOut",
     delay = 0,
-    options: animationOptions = {},
+    scrollAnimationOptions = true,
+    animationOptions = { opacity: true, blur: true },
   } = options;
-  const { $gsap } = useNuxtApp();
-  const { words } = useSplitText(refEl, { splitBy });
+  const splitEl = useSplitText(el, { splitBy });
 
-  const { from, to } = generateAnimationTweens(animationOptions);
+  if (splitBy === "lines") {
+    stagger ??= 0.2;
+  } else if (splitBy === "words") {
+    stagger ??= 0.1;
+  } else if (splitBy === "chars") {
+    stagger ??= 0.05;
+  }
 
-  watchOnce(
-    words,
-    () => {
-      if (!words.value) return;
-      $gsap.fromTo(words.value, from, {
-        ...to,
-        duration,
-        stagger,
-        ease,
-        delay,
-      });
+  useAnimateOnScroll(splitEl[splitBy], {
+    animationOptions,
+    tweenValues: {
+      duration,
+      stagger,
+      ease,
+      delay,
     },
-    { immediate: true },
-  );
+    scrollAnimationOptions,
+  });
 }

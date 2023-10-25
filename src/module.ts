@@ -4,6 +4,7 @@ import {
   createResolver,
   installModule,
   addComponentsDir,
+  addImportsDir,
 } from "@nuxt/kit";
 import { name, version } from "../package.json";
 
@@ -25,9 +26,12 @@ export default defineNuxtModule<ModuleOptions>({
     addPlugin(resolver.resolve("./runtime/plugin"));
 
     addComponentsDir({ path: resolver.resolve("./runtime/components") });
+    addImportsDir(resolver.resolve("./runtime/composables"));
 
     await installModule("nuxt-split-type", {});
     await installModule("@vueuse/nuxt", {});
-    await installModule("@hypernym/nuxt-gsap", {});
+    await installModule("@hypernym/nuxt-gsap", {
+      extraPlugins: { scrollTrigger: true },
+    });
   },
 });
