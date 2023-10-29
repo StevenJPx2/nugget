@@ -1,41 +1,40 @@
-import {
-  tryOnMounted,
-  tryOnScopeDispose,
-  onMounted,
-  ref,
-  nextTick,
-  watch,
-  toValue,
-  toRef,
-} from "#imports";
-import { defaultWindow, type MaybeComputedElementRef } from "@vueuse/core";
-import LocomotiveScroll from "locomotive-scroll";
+import { ref, tryOnMounted, tryOnScopeDispose } from "#imports";
+import { defaultWindow } from "@vueuse/core";
+import type LocomotiveScroll from "locomotive-scroll";
 import type { ILocomotiveScrollOptions } from "locomotive-scroll/dist/types/types";
 
+/** Internal Composable to use `LocomotiveScroll`
+ * @param options - The options to pass to `LocomotiveScroll`
+ * @remarks
+ * - This is a composable that makes `LocomotiveScroll` SSR friendly
+ * - This is used in the `SmoothScroll` component
+ * - It is not recommended to use this composable directly because the component injects necessary CSS.
+ */
 export default function (options: ILocomotiveScrollOptions = {}) {
-  const ls = ref<LocomotiveScroll>();
+  const window = defaultWindow;
 
-  tryOnMounted(() => {
-    nextTick(() => {
-      if (!defaultWindow) return;
-      ls.value = new LocomotiveScroll(options);
+  if (!window) return ref(undefined);
+
+  let ls = ref<LocomotiveScroll>();
+
+  const update = async () => {
+    if (!window) return;
+    const LocomotiveScroll = await import("locomotive-scroll");
+    ls.value = new LocomotiveScroll.default({
+      ...options,
+      lenisOptions: { wrapper: window, ...options.lenisOptions },
     });
+  };
+
+  tryOnMounted(update);
+
+  tryOnScopeDispose(() => {
+    try {
+      ls.value?.destroy();
+    } catch (e) {
+      console.error("Failed to destroy LocomotiveScroll", e);
+    }
   });
-
-  watch(
-    toRef(defaultWindow),
-    (val) => {
-      if (!val) return;
-      ls.value = new LocomotiveScroll(options);
-    },
-    { flush: "post", immediate: true },
-  );
-
-  watch(ls, (val) => {
-    console.log(val);
-  });
-
-  tryOnScopeDispose(() => ls.value?.destroy());
 
   return ls;
 }

@@ -1,12 +1,15 @@
 <script lang="ts" setup>
+import { ref } from "#imports";
 import useLocomotive from "../composables/useLocomotive";
 
-useLocomotive();
+const slotRef = ref<HTMLElement>();
+
+useLocomotive({ lenisOptions: { content: slotRef.value } });
 </script>
 
 <template>
   <div>
-    <slot />
+    <slot ref="slotRef" />
   </div>
 </template>
 

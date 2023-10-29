@@ -1,8 +1,8 @@
 import {
   type MaybeRefOrGetter,
-  tryOnMounted,
   watchPostEffect,
   toValue,
+  tryOnScopeDispose,
 } from "#imports";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/dist/ScrollTrigger";
@@ -29,11 +29,13 @@ export type StrongTimelineVars = gsap.TimelineVars & EaseOption;
  * */
 const activationFn = (
   el: MaybeRefOrGetter<gsap.TweenTarget | undefined>,
+  tween: gsap.core.Tween | undefined,
   updateFactory: (el: gsap.TweenTarget | undefined) => void,
 ) => {
   const updateFn = () => updateFactory(toValue(el));
-  tryOnMounted(updateFn);
   watchPostEffect(updateFn);
+
+  tryOnScopeDispose(() => tween?.kill());
 };
 
 /** Composable to use gsap
@@ -55,7 +57,7 @@ export default function (plugins: object[] = [ScrollTrigger]) {
       vars: StrongTweenVars,
     ) => {
       let tween: gsap.core.Tween | undefined;
-      activationFn(target, (el) => {
+      activationFn(target, tween, (el) => {
         if (!el) return;
         tween = gsap.set(el, vars);
       });
@@ -67,7 +69,7 @@ export default function (plugins: object[] = [ScrollTrigger]) {
       options: { from: StrongTweenVars; to: StrongTweenVars },
     ) => {
       let tween: gsap.core.Tween | undefined;
-      activationFn(target, (el) => {
+      activationFn(target, tween, (el) => {
         if (!el) return;
         tween = gsap.fromTo(el, options.from, options.to);
       });
@@ -76,7 +78,7 @@ export default function (plugins: object[] = [ScrollTrigger]) {
 
     to: (target: MaybeRefOrGetter<gsap.TweenTarget>, vars: StrongTweenVars) => {
       let tween: gsap.core.Tween | undefined;
-      activationFn(target, (el) => {
+      activationFn(target, tween, (el) => {
         if (!el) return;
         tween = gsap.to(el, vars);
       });
@@ -88,7 +90,7 @@ export default function (plugins: object[] = [ScrollTrigger]) {
       vars: StrongTweenVars,
     ) => {
       let tween: gsap.core.Tween | undefined;
-      activationFn(target, (el) => {
+      activationFn(target, tween, (el) => {
         if (!el) return;
         tween = gsap.from(el, vars);
       });
