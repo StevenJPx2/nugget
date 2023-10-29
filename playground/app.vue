@@ -1,10 +1,15 @@
+<script setup lang="ts">
+import InfiniteMarquee from "../src/runtime/components/InfiniteMarquee.vue";
+import useLocomotive from "../src/runtime/composables/useLocomotive";
+import { vSplitAnimate } from "../src/runtime/directives";
+
+useLocomotive();
+</script>
+
 <template>
   <div
     :style="{
       height: '70vh',
-      display: 'grid',
-      alignItems: 'center',
-      fontFamily: 'sans-serif',
     }"
   />
   <div
@@ -17,8 +22,8 @@
   >
     <h1
       v-split-animate="{
-        splitBy: 'lines',
-        animationOptions: { translate: true },
+        splitBy: 'chars',
+        animationOptions: { translate: true, rotate: true },
       }"
       :style="{
         fontSize: '25vw',
@@ -45,8 +50,3 @@
     </infinite-marquee>
   </div>
 </template>
-
-<script setup lang="ts">
-import InfiniteMarquee from "../src/runtime/components/InfiniteMarquee.vue";
-import { vSplitAnimate } from "../src/runtime/directives";
-</script>

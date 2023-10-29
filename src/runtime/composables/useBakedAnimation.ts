@@ -1,10 +1,6 @@
-import { useTimeoutFn } from "@vueuse/core";
-import type {
-  Direction,
-  Ease,
-  MaybeElementOrElementListRefOrGetter,
-} from "../types";
-import useGsapFromTo from "./useGsapFromTo";
+import type { Direction } from "../types";
+import { type MaybeRefOrGetter, useGsap } from "#imports";
+import type { StrongTweenVars } from "./useGsap";
 
 export type AnimationOptions = {
   /** Animation opacity
@@ -61,13 +57,13 @@ export type AnimationOptions = {
  * This is **NOT** unopinionated
  * */
 function generateAnimationTweens(animationOptions: AnimationOptions): {
-  from: gsap.TweenVars;
-  to: gsap.TweenVars;
+  from: StrongTweenVars;
+  to: StrongTweenVars;
 } {
   const { opacity, translate, skew, scale, rotate, blur } = animationOptions;
   const tweens: {
-    from: gsap.TweenVars;
-    to: gsap.TweenVars;
+    from: StrongTweenVars;
+    to: StrongTweenVars;
   } = { from: {}, to: {} };
 
   if (opacity) {
@@ -160,7 +156,7 @@ export type UseBakedAnimationOptions = {
   /** Tween values for `gsap.to()`
    * @remarks `ease` is strongly typed
    * */
-  tweenValues?: gsap.TweenVars & { ease?: Ease };
+  tweenValues?: StrongTweenVars;
 };
 
 /**
@@ -196,11 +192,22 @@ export type UseBakedAnimationOptions = {
  * @see {@link https://greensock.com/docs/v3/GSAP/gsap.fromTo()}
  */
 export default function (
-  el: MaybeElementOrElementListRefOrGetter,
+  el: MaybeRefOrGetter<gsap.TweenTarget | undefined>,
   options: UseBakedAnimationOptions,
 ) {
   const { animationOptions, tweenValues } = options;
   const { from, to } = generateAnimationTweens(animationOptions);
 
-  const tween = useGsapFromTo(el, { from, to: { ...to, ...tweenValues } });
+  const { fromTo } = useGsap();
+
+  fromTo(el, {
+    from,
+    to: {
+      ...to,
+      ...tweenValues,
+      onUpdate() {
+        console.log("updated");
+      },
+    },
+  });
 }

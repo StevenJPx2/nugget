@@ -30,10 +30,10 @@
   "dependencies": {
     "@nuxt/kit": "^3.7.2",
     "defu": "^6.1.2",
+    "gsap": "^3.12.2",
     "nuxt-split-type": "latest"
   },
   "devDependencies": {
-    "@hypernym/nuxt-gsap": "^2.4.2",
     "@nuxt/devtools": "latest",
     "@nuxt/eslint-config": "^0.2.0",
     "@nuxt/module-builder": "^0.5.1",

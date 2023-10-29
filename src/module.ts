@@ -30,8 +30,5 @@ export default defineNuxtModule<ModuleOptions>({
 
     await installModule("nuxt-split-type", {});
     await installModule("@vueuse/nuxt", {});
-    await installModule("@hypernym/nuxt-gsap", {
-      extraPlugins: { scrollTrigger: true },
-    });
   },
 });

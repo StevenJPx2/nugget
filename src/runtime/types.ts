@@ -36,3 +36,5 @@ export type ElementOrElementList =
 export type MaybeElementOrElementListRefOrGetter = MaybeRefOrGetter<
   ElementOrElementList | null | undefined
 >;
+
+export type Simplify<T> = { [K in keyof T]: T[K] } & {};

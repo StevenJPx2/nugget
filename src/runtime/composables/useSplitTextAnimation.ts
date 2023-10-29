@@ -1,39 +1,38 @@
 import type { MaybeComputedElementRef } from "@vueuse/core";
 import { useSplitText } from "#imports";
-import type { Ease } from "../types";
+import type { Ease, Simplify } from "../types";
 import type { UseAnimateOnScrollOptions } from "./useAnimateOnScroll";
 import useAnimateOnScroll from "./useAnimateOnScroll";
 
 /** Completely optional options for the `useSplitTextAnimation` composable */
-export type UseSplitTextAnimationOptions = Omit<
-  UseAnimateOnScrollOptions,
-  "tweenValues"
-> & {
-  /** Defines how the text should be split
-   * @default "lines"
-   * */
-  splitBy?: "chars" | "words" | "lines";
-  /** Animation duration in seconds
-   * @default 2s
-   * */
-  duration?: number;
-  /** Animation stagger in seconds
-   * @remarks
-   * - If left undefined, stagger is defined by how the text is split
-   * - `lines` has a default of `0.2s`
-   * - `words` has a default of `0.1s`
-   * - `chars` has a default of `0.05s`
-   * */
-  stagger?: number;
-  /** Ease function
-   * @default "expo.inOut"
-   * */
-  ease?: Ease;
-  /** Animation delay in seconds
-   * @default 0s
-   * */
-  delay?: number;
-};
+export type UseSplitTextAnimationOptions = Simplify<
+  Omit<UseAnimateOnScrollOptions, "tweenValues"> & {
+    /** Defines how the text should be split
+     * @default "lines"
+     * */
+    splitBy?: "chars" | "words" | "lines";
+    /** Animation duration in seconds
+     * @default 2s
+     * */
+    duration?: number;
+    /** Animation stagger in seconds
+     * @remarks
+     * - If left undefined, stagger is defined by how the text is split
+     * - `lines` has a default of `0.2s`
+     * - `words` has a default of `0.1s`
+     * - `chars` has a default of `0.05s`
+     * */
+    stagger?: number;
+    /** Ease function
+     * @default "expo.inOut"
+     * */
+    ease?: Ease;
+    /** Animation delay in seconds
+     * @default 0s
+     * */
+    delay?: number;
+  }
+>;
 
 /**
  * Animates a text split by chars, words or lines
