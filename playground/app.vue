@@ -2,7 +2,6 @@
 import InfiniteMarquee from "../src/runtime/components/InfiniteMarquee.vue";
 import { vSplitAnimate } from "../src/runtime/directives";
 </script>
-
 <template>
   <smooth-scroll>
     <div
@@ -20,8 +19,12 @@ import { vSplitAnimate } from "../src/runtime/directives";
     >
       <h1
         v-split-animate="{
-          splitBy: 'chars',
+          splitBy: 'lines',
           animationOptions: { translate: true, rotate: true },
+          wrapping: {
+            select: 'lines',
+            wrapClass: 'inline-block overflow-hidden',
+          },
         }"
         :style="{
           fontSize: '25vw',
@@ -49,3 +52,21 @@ import { vSplitAnimate } from "../src/runtime/directives";
     </div>
   </smooth-scroll>
 </template>
+
+<style>
+.inline-block {
+  display: inline-block;
+}
+
+.block {
+  display: block;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.h-fit {
+  height: fit-content;
+}
+</style>

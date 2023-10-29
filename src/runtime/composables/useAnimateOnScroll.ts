@@ -27,7 +27,6 @@ export default function (
     scrollAnimationOptions = {
       trigger: unrefEl,
       start: "top bottom",
-      markers: true,
     };
     if (options.scrollAnimationOptions instanceof Object) {
       scrollAnimationOptions = {

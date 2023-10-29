@@ -80,8 +80,18 @@ function generateAnimationTweens(animationOptions: AnimationOptions): {
     if (translate === "bottom" || translate === true) {
       tweens.from.y = "200%";
       tweens.to.y = 0;
+      tweens.to.scrollTrigger = {
+        start: "top-=250% center",
+        end: "bottom center",
+        markers: false,
+      };
     } else if (translate === "top") {
       tweens.from.y = "-200%";
+      tweens.to.scrollTrigger = {
+        start: "top+=50% center",
+        end: "bottom center",
+        markers: false,
+      };
       tweens.to.y = 0;
     }
     if (translate === "left") {
@@ -205,6 +215,12 @@ export default function (
     to: {
       ...to,
       ...tweenValues,
+
+      scrollTrigger: {
+        ...(tweenValues?.scrollTrigger ?? {}),
+        ...(to.scrollTrigger ?? {}),
+      },
+
       onUpdate() {
         console.log("updated");
       },

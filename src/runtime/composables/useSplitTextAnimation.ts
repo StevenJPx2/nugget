@@ -31,7 +31,7 @@ export type UseSplitTextAnimationOptions = Simplify<
      * @default 0s
      * */
     delay?: number;
-  }
+  } & Omit<Partial<Parameters<typeof useSplitText>[1]>, "splitBy">
 >;
 
 /**
@@ -61,6 +61,9 @@ export default function (
 ) {
   let {
     splitBy = "lines",
+    wrapping,
+    onComplete,
+    splitOptions,
     duration = 2,
     stagger,
     ease = "expo.inOut",
@@ -68,7 +71,12 @@ export default function (
     scrollAnimationOptions = true,
     animationOptions = { opacity: true, blur: true },
   } = options;
-  const splitEl = useSplitText(el, { splitBy });
+  const splitEl = useSplitText(el, {
+    splitBy,
+    wrapping,
+    onComplete,
+    splitOptions,
+  });
 
   if (splitBy === "lines") {
     stagger ??= 0.2;

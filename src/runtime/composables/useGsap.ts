@@ -3,6 +3,7 @@ import {
   watchPostEffect,
   toValue,
   tryOnScopeDispose,
+  ref,
 } from "#imports";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/dist/ScrollTrigger";
@@ -50,7 +51,7 @@ export default function (plugins: object[] = [ScrollTrigger]) {
   return {
     gsap,
 
-    timeline: (vars?: StrongTimelineVars) => gsap.timeline(vars),
+    timeline: (vars?: StrongTimelineVars) => ref(gsap.timeline(vars)),
 
     set: (
       target: MaybeRefOrGetter<gsap.TweenTarget>,
