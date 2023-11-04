@@ -1,11 +1,13 @@
 import { directiveHooks } from "@vueuse/core";
 import type { ObjectDirective } from "nuxt/dist/app/compat/capi";
-import useSplitTextAnimation from "../composables/useSplitTextAnimation";
-import type { UseSplitTextAnimationOptions } from "../composables/useSplitTextAnimation";
+import {
+  default as useSplitTextAnimation,
+  type UseBakedSplitTextAnimationOptions,
+} from "../composables/baked/split-text";
 
 export const vSplitAnimate: ObjectDirective<
   HTMLElement,
-  UseSplitTextAnimationOptions
+  UseBakedSplitTextAnimationOptions
 > = {
   [directiveHooks.mounted]: (el, binding) => {
     useSplitTextAnimation(el, binding.value);

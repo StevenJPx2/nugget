@@ -1,37 +1,21 @@
 import type { MaybeComputedElementRef } from "@vueuse/core";
 import { useSplitText } from "#imports";
-import type { Ease, Simplify } from "../types";
+import type { Simplify } from "../types";
 import type { UseAnimateOnScrollOptions } from "./useAnimateOnScroll";
 import useAnimateOnScroll from "./useAnimateOnScroll";
 
+export type PartialSplitTextAnimationOptions = {
+  /** Defines how the text should be split
+   * @default "lines"
+   * */
+  splitBy?: "chars" | "words" | "lines";
+  /** Additional options for the `useSplitText` composable */
+  splitOptions?: Omit<Partial<Parameters<typeof useSplitText>[1]>, "splitBy">;
+};
+
 /** Completely optional options for the `useSplitTextAnimation` composable */
 export type UseSplitTextAnimationOptions = Simplify<
-  Omit<UseAnimateOnScrollOptions, "tweenValues"> & {
-    /** Defines how the text should be split
-     * @default "lines"
-     * */
-    splitBy?: "chars" | "words" | "lines";
-    /** Animation duration in seconds
-     * @default 2s
-     * */
-    duration?: number;
-    /** Animation stagger in seconds
-     * @remarks
-     * - If left undefined, stagger is defined by how the text is split
-     * - `lines` has a default of `0.2s`
-     * - `words` has a default of `0.1s`
-     * - `chars` has a default of `0.05s`
-     * */
-    stagger?: number;
-    /** Ease function
-     * @default "expo.inOut"
-     * */
-    ease?: Ease;
-    /** Animation delay in seconds
-     * @default 0s
-     * */
-    delay?: number;
-  } & Omit<Partial<Parameters<typeof useSplitText>[1]>, "splitBy">
+  UseAnimateOnScrollOptions & PartialSplitTextAnimationOptions
 >;
 
 /**
@@ -57,43 +41,13 @@ export type UseSplitTextAnimationOptions = Simplify<
  */
 export default function (
   el: MaybeComputedElementRef,
-  options: UseSplitTextAnimationOptions = {},
+  options: UseSplitTextAnimationOptions,
 ) {
-  let {
-    splitBy = "lines",
-    wrapping,
-    onComplete,
-    splitOptions,
-    duration = 2,
-    stagger,
-    ease = "expo.inOut",
-    delay = 0,
-    scrollAnimationOptions = true,
-    animationOptions = { opacity: true, blur: true },
-  } = options;
+  let { splitBy = "lines", splitOptions, ...animateOnScrollOptions } = options;
   const splitEl = useSplitText(el, {
     splitBy,
-    wrapping,
-    onComplete,
-    splitOptions,
+    ...splitOptions,
   });
 
-  if (splitBy === "lines") {
-    stagger ??= 0.2;
-  } else if (splitBy === "words") {
-    stagger ??= 0.1;
-  } else if (splitBy === "chars") {
-    stagger ??= 0.05;
-  }
-
-  useAnimateOnScroll(splitEl[splitBy], {
-    animationOptions,
-    tweenValues: {
-      duration,
-      stagger,
-      ease,
-      delay,
-    },
-    scrollAnimationOptions,
-  });
+  useAnimateOnScroll(splitEl[splitBy], animateOnScrollOptions);
 }

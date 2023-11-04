@@ -46,7 +46,7 @@ const activationFn = (
  * - It also allows the LSP to infer the correct types for `gsap`
  * - It registers `ScrollTrigger` by default
  * */
-export default function (plugins: object[] = [ScrollTrigger]) {
+function useGsap(plugins: object[] = [ScrollTrigger]) {
   gsap.registerPlugin(...plugins);
   return {
     gsap,
@@ -99,3 +99,7 @@ export default function (plugins: object[] = [ScrollTrigger]) {
     },
   };
 }
+
+export default useGsap;
+
+export type UseGsapReturn = ReturnType<typeof useGsap>;
