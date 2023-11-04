@@ -1,7 +1,6 @@
 import { directiveHooks } from "@vueuse/core";
 import type { ObjectDirective } from "nuxt/dist/app/compat/capi";
-import {
-  default as useSplitTextAnimation,
+import useSplitTextAnimation, {
   type UseBakedSplitTextAnimationOptions,
 } from "../composables/baked/split-text";
 

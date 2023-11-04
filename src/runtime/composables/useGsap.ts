@@ -4,6 +4,8 @@ import {
   toValue,
   tryOnScopeDispose,
   ref,
+  createEventHook,
+  tryOnMounted,
 } from "#imports";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/dist/ScrollTrigger";
@@ -51,7 +53,17 @@ function useGsap(plugins: object[] = [ScrollTrigger]) {
   return {
     gsap,
 
-    timeline: (vars?: StrongTimelineVars) => ref(gsap.timeline(vars)),
+    timeline: (vars?: StrongTimelineVars) => {
+      let tl = gsap.timeline(vars);
+
+      const onMount = createEventHook<gsap.core.Timeline>();
+
+      tryOnMounted(() => onMount.trigger(tl));
+
+      onMount.off((tl) => tl.kill());
+
+      return onMount.on;
+    },
 
     set: (
       target: MaybeRefOrGetter<gsap.TweenTarget>,

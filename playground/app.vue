@@ -1,14 +1,40 @@
 <script setup lang="ts">
 import InfiniteMarquee from "../src/runtime/components/InfiniteMarquee.vue";
 import { vSplitAnimate } from "../src/runtime/directives";
+import { ref, useGsap } from "#imports";
+
+const boxRef = ref<HTMLElement | null>(null);
+
+const { timeline } = useGsap();
+
+const tlFn = timeline({
+  paused: true,
+  defaults: { duration: 1 },
+});
+
+tlFn((tl) => {
+  tl.to(boxRef.value, { x: 100, y: 100 })
+    .to(boxRef.value, { x: 0, y: 0 })
+    .to(boxRef.value, { x: 100, y: 0 })
+    .to(boxRef.value, { x: 0, y: 100 });
+
+  tl.play();
+});
 </script>
 <template>
   <smooth-scroll>
     <div
       :style="{
-        height: '70vh',
+        display: 'grid',
+        height: '100vh',
+        placeItems: 'center',
       }"
-    />
+    >
+      <div
+        ref="boxRef"
+        :style="{ height: '2rem', width: '2rem', backgroundColor: 'black' }"
+      />
+    </div>
     <div
       :style="{
         height: '100vh',
