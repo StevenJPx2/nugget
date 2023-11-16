@@ -22,7 +22,7 @@ export default function (
 
   let scrollAnimationOptions: gsap.AnimationVars["scrollTrigger"] = undefined;
 
-  if (!!options.scrollAnimationOptions) {
+  if (options.scrollAnimationOptions) {
     scrollAnimationOptions = {
       trigger: unrefEl,
       start: "top bottom",

@@ -2,7 +2,7 @@
   "name": "nugget",
   "version": "0.0.1",
   "description": "Custom UI for shiny animations ✨",
-  "repository": "@fried-chicken/nugget",
+  "repository": "@fdcn/nugget",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -23,6 +23,7 @@
     "dev:build": "nuxi build playground",
     "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
     "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
+    "prerelease": "npm run lint && npm run test && npm run prepack && changelogen --prerelease --push && npm publish && git push --follow-tags",
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest watch"

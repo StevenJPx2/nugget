@@ -16,7 +16,7 @@ export function generateAnimationTweens(animationOptions: AnimationOptions): {
   } = { from: {}, to: {} };
 
   Object.entries(animationOptions)
-    .filter(([_, val]) => !!val)
+    .filter(([, val]) => !!val)
     .map(([key, value]) => {
       const tween = presetTweens[key as keyof typeof presetTweens];
       let tweenKey: string;

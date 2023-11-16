@@ -58,11 +58,11 @@ export default function (
   el: MaybeComputedElementRef,
   options: UseBakedSplitTextAnimationOptions = {},
 ) {
-  let {
+  let { stagger } = options;
+  const {
     splitBy = "lines",
     splitOptions,
-    duration = 2,
-    stagger,
+    duration = 1,
     ease = "expo.inOut",
     delay = 0,
     scrollAnimationOptions = true,

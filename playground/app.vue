@@ -1,38 +1,20 @@
 <script setup lang="ts">
 import InfiniteMarquee from "../src/runtime/components/InfiniteMarquee.vue";
+import TransitionBendyWendy from "../src/runtime/components/transition/BendyWendy.vue";
 import { vSplitAnimate } from "../src/runtime/directives";
-import { ref, useGsap } from "#imports";
+import { ref } from "#imports";
 
-const boxRef = ref<HTMLElement | null>(null);
-
-const { timeline } = useGsap();
-
-const tlFn = timeline({
-  paused: true,
-  defaults: { duration: 1 },
-});
-
-tlFn((tl) => {
-  tl.to(boxRef.value, { x: 100, y: 100 })
-    .to(boxRef.value, { x: 0, y: 0 })
-    .to(boxRef.value, { x: 100, y: 0 })
-    .to(boxRef.value, { x: 0, y: 100 });
-
-  tl.play();
-});
+const runBendyWendy = ref(false);
 </script>
 <template>
   <smooth-scroll>
-    <div
-      :style="{
-        display: 'grid',
-        height: '100vh',
-        placeItems: 'center',
-      }"
-    >
-      <div
-        ref="boxRef"
-        :style="{ height: '2rem', width: '2rem', backgroundColor: 'black' }"
+    <div :style="{ position: 'relative', width: '100%', height: '400px' }">
+      <button @mouseover="runBendyWendy = true">
+        {{ runBendyWendy ? "Stop" : "Run" }} Bendy Wendy
+      </button>
+      <transition-bendy-wendy
+        :run="runBendyWendy"
+        @complete="runBendyWendy = false"
       />
     </div>
     <div
@@ -46,10 +28,12 @@ tlFn((tl) => {
       <h1
         v-split-animate="{
           splitBy: 'lines',
-          animationOptions: { translate: true, rotate: true },
-          wrapping: {
-            select: 'lines',
-            wrapClass: 'inline-block overflow-hidden',
+          animationOptions: { translate: 'left' },
+          splitOptions: {
+            wrapping: {
+              select: 'lines',
+              wrapClass: 'inline-block overflow-hidden',
+            },
           },
         }"
         :style="{
@@ -72,7 +56,7 @@ tlFn((tl) => {
     >
       <infinite-marquee gap="2rem">
         <div :style="{ display: 'inline-flex', gap: '2rem' }">
-          <p v-for="_ in 20">Nuxt module playground!</p>
+          <p v-for="i in 20" :key="i">Nuxt module playground!</p>
         </div>
       </infinite-marquee>
     </div>

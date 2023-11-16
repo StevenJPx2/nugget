@@ -15,7 +15,7 @@ export default function (options: ILocomotiveScrollOptions = {}) {
 
   if (!window) return ref(undefined);
 
-  let ls = ref<LocomotiveScroll>();
+  const ls = ref<LocomotiveScroll>();
 
   const update = async () => {
     if (!window) return;

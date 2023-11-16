@@ -3,7 +3,7 @@ Get your module up and running quickly.
 
 Find and replace all on all files (CMD+SHIFT+F):
 - Name: Nugget UI
-- Package name: @fried-chicken/nugget
+- Package name: @fdcn/nugget
 - Description: My new Nuxt module
 -->
 
@@ -14,10 +14,10 @@ Find and replace all on all files (CMD+SHIFT+F):
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
 
-My new Nuxt module for doing amazing things.
+Democratize **premium** animations using nugget.
 
 - [✨ &nbsp;Release Notes](/CHANGELOG.md)
-<!-- - [🏀 Online playground](https://stackblitz.com/github/your-org/@fried-chicken/nugget?file=playground%2Fapp.vue) -->
+<!-- - [🏀 Online playground](https://stackblitz.com/github/your-org/@fdcn/nugget?file=playground%2Fapp.vue) -->
 <!-- - [📖 &nbsp;Documentation](https://example.com) -->
 
 ## Features
@@ -29,25 +29,25 @@ My new Nuxt module for doing amazing things.
 
 ## Quick Setup
 
-1. Add `@fried-chicken/nugget` dependency to your project
+1. Add `@fdcn/nugget` dependency to your project
 
 ```bash
 # Using pnpm
-pnpm add -D @fried-chicken/nugget
+pnpm add -D @fdcn/nugget
 
 # Using yarn
-yarn add --dev @fried-chicken/nugget
+yarn add --dev @fdcn/nugget
 
 # Using npm
-npm install --save-dev @fried-chicken/nugget
+npm install --save-dev @fdcn/nugget
 ```
 
-2. Add `@fried-chicken/nugget` to the `modules` section of `nuxt.config.ts`
+2. Add `@fdcn/nugget` to the `modules` section of `nuxt.config.ts`
 
 ```js
 export default defineNuxtConfig({
   modules: [
-    '@fried-chicken/nugget'
+    '@fdcn/nugget'
   ]
 })
 ```
@@ -81,14 +81,14 @@ npm run release
 ```
 
 <!-- Badges -->
-[npm-version-src]: https://img.shields.io/npm/v/@fried-chicken/nugget/latest.svg?style=flat&colorA=18181B&colorB=28CF8D
-[npm-version-href]: https://npmjs.com/package/@fried-chicken/nugget
+[npm-version-src]: https://img.shields.io/npm/v/@fdcn/nugget/latest.svg?style=flat&colorA=18181B&colorB=28CF8D
+[npm-version-href]: https://npmjs.com/package/@fdcn/nugget
 
-[npm-downloads-src]: https://img.shields.io/npm/dm/@fried-chicken/nugget.svg?style=flat&colorA=18181B&colorB=28CF8D
-[npm-downloads-href]: https://npmjs.com/package/@fried-chicken/nugget
+[npm-downloads-src]: https://img.shields.io/npm/dm/@fdcn/nugget.svg?style=flat&colorA=18181B&colorB=28CF8D
+[npm-downloads-href]: https://npmjs.com/package/@fdcn/nugget
 
-[license-src]: https://img.shields.io/npm/l/@fried-chicken/nugget.svg?style=flat&colorA=18181B&colorB=28CF8D
-[license-href]: https://npmjs.com/package/@fried-chicken/nugget
+[license-src]: https://img.shields.io/npm/l/@fdcn/nugget.svg?style=flat&colorA=18181B&colorB=28CF8D
+[license-href]: https://npmjs.com/package/@fdcn/nugget
 
 [nuxt-src]: https://img.shields.io/badge/Nuxt-18181B?logo=nuxt.js
 [nuxt-href]: https://nuxt.com

@@ -44,7 +44,11 @@ export default function (
   el: MaybeComputedElementRef,
   options: UseSplitTextAnimationOptions,
 ) {
-  let { splitBy = "lines", splitOptions, ...animateOnScrollOptions } = options;
+  const {
+    splitBy = "lines",
+    splitOptions,
+    ...animateOnScrollOptions
+  } = options;
   const splitEl = useSplitText(el, {
     splitBy,
     ...splitOptions,

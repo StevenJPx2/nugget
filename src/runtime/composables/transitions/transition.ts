@@ -1,0 +1,121 @@
+import useGsap from "../useGsap";
+import { readonly, ref, watch } from "#imports";
+
+export type UseConstructTransitionOptions = {
+  /** Callback when the enter animation is about to start */
+  onBeforeEnter?: () => void;
+  /** Callback when the enter animation starts */
+  onEnter?: () => void;
+  /** Callback when the enter animation is complete */
+  onAfterEnter?: () => void;
+  /** Callback when the leave animation is about to start */
+  onBeforeLeave?: () => void;
+  /** Callback when the leave animation starts */
+  onLeave?: () => void;
+  /** Callback when the leave animation is complete */
+  onAfterLeave?: () => void;
+};
+
+export default function useConstructTransition(
+  options: UseConstructTransitionOptions,
+) {
+  const { timeline } = useGsap();
+  const playState = ref<
+    | "beforeEnter"
+    | "enter"
+    | "afterEnter"
+    | "beforeLeave"
+    | "leave"
+    | "afterLeave"
+  >("beforeEnter");
+
+  const { tl: enterTl, isActive: isEnterActive } = timeline({
+    paused: true,
+    onStart: () => {
+      playState.value = "enter";
+    },
+    onComplete: () => {
+      playState.value = "afterEnter";
+    },
+  });
+  const { tl: leaveTl, isActive: isLeaveActive } = timeline({
+    paused: true,
+    onStart: () => {
+      playState.value = "leave";
+    },
+    onComplete: () => {
+      playState.value = "afterLeave";
+    },
+  });
+
+  const isActive = () =>
+    isEnterActive() ? "enter" : isLeaveActive() ? "leave" : "none";
+
+  const isAnimating = () => isActive() !== "none";
+
+  const play = () => {
+    if (isAnimating()) return;
+
+    if (playState.value === "beforeEnter" || playState.value === "afterLeave") {
+      playState.value = "beforeEnter";
+      enterTl.restart();
+    } else if (playState.value === "afterEnter") {
+      playState.value = "beforeLeave";
+      leaveTl.restart();
+    }
+  };
+
+  const stop = () => {
+    if (playState.value === "enter") {
+      enterTl.pause().progress(1);
+      playState.value = "afterEnter";
+    } else if (playState.value === "leave") {
+      leaveTl.pause().progress(1);
+      playState.value = "afterLeave";
+    }
+  };
+
+  watch(playState, (value) => {
+    switch (value) {
+      case "beforeEnter": {
+        options.onBeforeEnter?.();
+        break;
+      }
+      case "beforeLeave": {
+        options.onBeforeLeave?.();
+        break;
+      }
+      case "afterEnter": {
+        options.onAfterEnter?.();
+        break;
+      }
+      case "afterLeave": {
+        options.onAfterLeave?.();
+        break;
+      }
+      case "enter": {
+        options.onEnter?.();
+        break;
+      }
+      case "leave": {
+        options.onLeave?.();
+        break;
+      }
+      default: {
+        // compile-time check to ensure all cases are handled
+        const _: never = value;
+        _;
+      }
+    }
+  });
+
+  return {
+    enterTl,
+    leaveTl,
+    state: readonly(playState),
+    isActive,
+    isAnimating,
+    play,
+    stop,
+  };
+}

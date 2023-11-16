@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import {
+  computed,
   ref,
   tryOnMounted,
+  useElementSize,
   useElementVisibility,
   useRafFn,
   useWindowScroll,
+  useWindowSize,
   watch,
 } from "#imports";
 
 // Most of this credit goes to:
 // https://stackoverflow.com/questions/71165923/how-do-i-make-an-infinite-marquee-with-js#answer-71167758
 
+const loopContainerParent = ref<HTMLElement | null>(null);
 const loopContainer = ref<HTMLElement | null>(null);
 
 const props = withDefaults(
@@ -27,26 +31,29 @@ const props = withDefaults(
      * @default "right"
      */
     direction?: "left" | "right";
-    /** The target distance before resetting the marquee
-     * @default 100
-     */
-    target?: number;
   }>(),
-  { speed: 0.05, gap: "0rem", direction: "right", target: 100 },
+  { speed: 0.05, gap: "0rem", direction: "right" },
 );
 const lerpVals = ref({ current: 0, target: 0 });
 const interpolationFactor = 0.1;
 const directionConstant: -1 | 1 = props.direction === "left" ? -1 : 1;
 const leftPercent = `calc(${directionConstant * -100}% - ${props.gap})`;
-const isTargetVisible = useElementVisibility(loopContainer);
+const isTargetVisible = useElementVisibility(loopContainerParent);
+const { width: containerWidth } = useElementSize(loopContainer);
 
 const x = ref(0);
 
+const { width: windowWidth } = useWindowSize();
 const { y: windowY } = useWindowScroll();
 
 const lerp = (lerpVals: { current: number; target: number }) =>
   lerpVals.current * (1 - interpolationFactor) +
   lerpVals.target * interpolationFactor;
+
+const target = computed(
+  () =>
+    ((containerWidth.value - windowWidth.value) / containerWidth.value) * 100,
+);
 
 const { pause, resume } = useRafFn(
   () => {
@@ -54,7 +61,7 @@ const { pause, resume } = useRafFn(
     lerpValsConstant.target += props.speed;
     lerpValsConstant.current = lerp(lerpValsConstant);
 
-    if (lerpValsConstant.target > props.target) {
+    if (lerpValsConstant.target > target.value) {
       lerpValsConstant.current -= lerpValsConstant.target;
       lerpValsConstant.target = 0;
     }
@@ -65,7 +72,7 @@ const { pause, resume } = useRafFn(
 );
 
 tryOnMounted(() => {
-  loopContainer.value?.children[0].children[1]?.classList.add("repeated");
+  loopContainerParent.value?.children[0].children[1]?.classList.add("repeated");
 });
 
 watch(windowY, () => {
@@ -82,8 +89,15 @@ watch(isTargetVisible, () => {
 </script>
 
 <template>
-  <div ref="loopContainer">
-    <div :style="{ transform: `translateX(${x}%)` }" class="loop-container">
+  <div
+    ref="loopContainerParent"
+    :style="{ overflow: 'hidden' }"
+  >
+    <div
+      ref="loopContainer"
+      :style="{ transform: `translateX(${x}%)` }"
+      class="loop-container"
+    >
       <slot key="1" />
       <slot key="2" />
     </div>

@@ -3,7 +3,6 @@ import {
   watchPostEffect,
   toValue,
   tryOnScopeDispose,
-  ref,
   createEventHook,
   tryOnMounted,
 } from "#imports";
@@ -54,7 +53,7 @@ function useGsap(plugins: object[] = [ScrollTrigger]) {
     gsap,
 
     timeline: (vars?: StrongTimelineVars) => {
-      let tl = gsap.timeline(vars);
+      const tl = gsap.timeline(vars);
 
       const onMount = createEventHook<gsap.core.Timeline>();
 
@@ -62,7 +61,17 @@ function useGsap(plugins: object[] = [ScrollTrigger]) {
 
       onMount.off((tl) => tl.kill());
 
-      return onMount.on;
+      return {
+        tl,
+        tlFn: onMount.on,
+        play: () => tl.play(),
+        pause: () => tl.pause(),
+        restart: () => tl.restart(),
+        resume: () => tl.resume(),
+        progress: (value: number) => tl.progress(value),
+        seek: (value: number | string) => tl.seek(value),
+        isActive: () => tl.isActive(),
+      };
     },
 
     set: (

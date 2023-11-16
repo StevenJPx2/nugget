@@ -74,22 +74,22 @@ export const presetTweens = {
         to: {
           y: 0,
           scrollTrigger: {
-            start: "top-=250% center",
+            start: "top-=100% center",
             end: "bottom center",
-            markers: false,
           },
         },
       },
       top: {
         from: {
           y: "-200%",
+        },
+        to: {
+          y: 0,
           scrollTrigger: {
             start: "top+=50% center",
             end: "bottom center",
-            markers: false,
           },
         },
-        to: { y: 0 },
       },
       left: { from: { x: "-200%" }, to: { x: 0 } },
       right: { from: { x: "200%" }, to: { x: 0 } },
