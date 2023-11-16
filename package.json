@@ -1,8 +1,8 @@
 {
-  "name": "nugget",
-  "version": "0.0.1",
+  "name": "@fdcn/nugget",
+  "version": "0.1.0",
   "description": "Custom UI for shiny animations ✨",
-  "repository": "@fdcn/nugget",
+  "repository": "stevenjpx2/nugget",
   "license": "MIT",
   "type": "module",
   "exports": {
