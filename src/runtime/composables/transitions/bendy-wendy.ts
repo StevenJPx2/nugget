@@ -1,23 +1,30 @@
 import { unrefElement, type MaybeComputedElementRef } from "@vueuse/core";
-import { watch } from "#imports";
+import { watch, type MaybeRef, unref } from "#imports";
 import useConstructTransition, {
-  type UseConstructTransitionOptions,
+  type UseConstructTransitionCallbackOptions,
 } from "./transition";
-import type { Simplify } from "../../types";
+import type { Direction, Simplify } from "../../types";
 
 export type BendyWendyOptions = Simplify<
   {
     /** The SVG to animate */
-    svg: MaybeComputedElementRef<SVGElement>;
+    svg: MaybeComputedElementRef<SVGElement | null | undefined>;
     /** The path to animate */
-    path: MaybeComputedElementRef<SVGPathElement>;
-  } & UseConstructTransitionOptions
+    path: MaybeComputedElementRef<SVGPathElement | null | undefined>;
+    /** Direction of the animation */
+    direction?: MaybeRef<Direction>;
+  } & UseConstructTransitionCallbackOptions
 >;
 
 export default function useBendyWendyTransition(options: BendyWendyOptions) {
-  const { svg, path, ...constructOptions } = options;
-  const { enterTl, leaveTl, ...output } =
-    useConstructTransition(constructOptions);
+  const { svg, path, direction = "top", ...constructOptions } = options;
+  const unrefDirection = unref(direction);
+  const { enterTl, leaveTl, ...output } = useConstructTransition({
+    parentContainer: svg,
+    flipY: unrefDirection === "bottom",
+    flipX: unrefDirection === "right",
+    ...constructOptions,
+  });
 
   watch(
     () => [unrefElement(svg), unrefElement(path)] as const,

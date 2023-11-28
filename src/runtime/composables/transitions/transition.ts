@@ -1,7 +1,17 @@
 import useGsap from "../useGsap";
-import { readonly, ref, watch } from "#imports";
+import {
+  readonly,
+  ref,
+  watch,
+  type MaybeRef,
+  unrefElement,
+  unref,
+  type Ref,
+} from "#imports";
+import type { MaybeComputedElementRef } from "@vueuse/core";
+import type { Simplify } from "../../types";
 
-export type UseConstructTransitionOptions = {
+export type UseConstructTransitionCallbackOptions = {
   /** Callback when the enter animation is about to start */
   onBeforeEnter?: () => void;
   /** Callback when the enter animation starts */
@@ -16,18 +26,47 @@ export type UseConstructTransitionOptions = {
   onAfterLeave?: () => void;
 };
 
+type PlayState =
+  | "beforeEnter"
+  | "enter"
+  | "afterEnter"
+  | "beforeLeave"
+  | "leave"
+  | "afterLeave";
+
+export type UseConstructTransitionOptions = Simplify<
+  {
+    /** The element to animate */
+    parentContainer: MaybeComputedElementRef;
+    /** Should the animation be flipped horizontally */
+    flipX?: MaybeRef<boolean>;
+    /** Should the animation be flipped vertically */
+    flipY?: MaybeRef<boolean>;
+  } & UseConstructTransitionCallbackOptions
+>;
+
 export default function useConstructTransition(
   options: UseConstructTransitionOptions,
 ) {
-  const { timeline } = useGsap();
-  const playState = ref<
-    | "beforeEnter"
-    | "enter"
-    | "afterEnter"
-    | "beforeLeave"
-    | "leave"
-    | "afterLeave"
-  >("beforeEnter");
+  const { gsap, timeline } = useGsap();
+  const playState = ref<PlayState>("beforeEnter");
+
+  watch(
+    () =>
+      [
+        unrefElement(options.parentContainer),
+        unref(options.flipX),
+        unref(options.flipY),
+      ] as const,
+    ([container, flipX, flipY]) => {
+      if (!container) return;
+      gsap.set(container, {
+        scaleY: flipY ? -1 : 1,
+        scaleX: flipX ? -1 : 1,
+      });
+    },
+    { immediate: true, flush: "post" },
+  );
 
   const { tl: enterTl, isActive: isEnterActive } = timeline({
     paused: true,
@@ -112,7 +151,7 @@ export default function useConstructTransition(
   return {
     enterTl,
     leaveTl,
-    state: readonly(playState),
+    state: readonly(playState) as Readonly<Ref<PlayState>>,
     isActive,
     isAnimating,
     play,

@@ -18,10 +18,10 @@
     "dist"
   ],
   "scripts": {
-    "prepack": "nuxt-module-build",
+    "prepack": "nuxi build-module",
     "dev": "nuxi dev playground",
     "dev:build": "nuxi build playground",
-    "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
+    "dev:prepare": "nuxi build-module --stub && nuxi prepare playground",
     "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
     "prerelease": "npm run lint && npm run test && npm run prepack && changelogen --prerelease --push && npm publish && git push --follow-tags",
     "lint": "eslint .",

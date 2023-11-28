@@ -7,8 +7,9 @@ import {
   tryOnMounted,
 } from "#imports";
 import gsap from "gsap";
-import ScrollTrigger from "gsap/dist/ScrollTrigger";
+import ScrollTrigger from "gsap/ScrollTrigger";
 import type { Ease } from "../types";
+import type { EventHookOn } from "@vueuse/core";
 
 type EaseOption = {
   /** The ease of the tween
@@ -63,7 +64,7 @@ function useGsap(plugins: object[] = [ScrollTrigger]) {
 
       return {
         tl,
-        tlFn: onMount.on,
+        tlFn: onMount.on as EventHookOn<gsap.core.Timeline>,
         play: () => tl.play(),
         pause: () => tl.pause(),
         restart: () => tl.restart(),

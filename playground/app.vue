@@ -1,20 +1,29 @@
 <script setup lang="ts">
 import InfiniteMarquee from "../src/runtime/components/InfiniteMarquee.vue";
-import TransitionBendyWendy from "../src/runtime/components/transition/BendyWendy.vue";
 import { vSplitAnimate } from "../src/runtime/directives";
 import { ref } from "#imports";
 
-const runBendyWendy = ref(false);
+const runTransition = ref(false);
 </script>
 <template>
   <smooth-scroll>
-    <div :style="{ position: 'relative', width: '100%', height: '400px' }">
-      <button @mouseover="runBendyWendy = true">
-        {{ runBendyWendy ? "Stop" : "Run" }} Bendy Wendy
+    <div :style="{ position: 'relative', width: '400px', height: '400px' }">
+      <button
+        :style="{
+          position: 'absolute',
+          margin: 'auto',
+          zIndex: 1,
+        }"
+        @mouseover="runTransition = true"
+      >
+        {{ runTransition ? "Stop" : "Run" }} Bendy Wendy
       </button>
-      <transition-bendy-wendy
-        :run="runBendyWendy"
-        @complete="runBendyWendy = false"
+      <transition-offset
+        class="red h-full w-full"
+        :run="runTransition"
+        :main-container-attributes="{ style: { background: 'red' } }"
+        :offset-container-attributes="{ style: { background: 'blue' } }"
+        @complete="runTransition = false"
       />
     </div>
     <div
@@ -56,7 +65,12 @@ const runBendyWendy = ref(false);
     >
       <infinite-marquee gap="2rem">
         <div :style="{ display: 'inline-flex', gap: '2rem' }">
-          <p v-for="i in 20" :key="i">Nuxt module playground!</p>
+          <p
+            v-for="i in 20"
+            :key="i"
+          >
+            Nuxt module playground!
+          </p>
         </div>
       </infinite-marquee>
     </div>
@@ -64,6 +78,14 @@ const runBendyWendy = ref(false);
 </template>
 
 <style>
+.h-full {
+  height: 100%;
+}
+
+.w-full {
+  width: 100%;
+}
+
 .inline-block {
   display: inline-block;
 }

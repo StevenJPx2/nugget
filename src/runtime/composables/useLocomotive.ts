@@ -1,4 +1,4 @@
-import { ref, tryOnMounted, tryOnScopeDispose } from "#imports";
+import { ref, tryOnMounted, tryOnScopeDispose, type Ref } from "#imports";
 import { defaultWindow } from "@vueuse/core";
 import type LocomotiveScroll from "locomotive-scroll";
 import type { ILocomotiveScrollOptions } from "locomotive-scroll/dist/types/types";
@@ -10,7 +10,9 @@ import type { ILocomotiveScrollOptions } from "locomotive-scroll/dist/types/type
  * - This is used in the `SmoothScroll` component
  * - It is not recommended to use this composable directly because the component injects necessary CSS.
  */
-export default function (options: ILocomotiveScrollOptions = {}) {
+export default function (
+  options: ILocomotiveScrollOptions = {},
+): Ref<LocomotiveScroll | undefined> {
   const window = defaultWindow;
 
   if (!window) return ref(undefined);
