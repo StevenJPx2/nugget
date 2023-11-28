@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.1
+
+[compare changes](https://github.com/stevenjpx2/nugget/compare/v0.1.0...v0.1.1)
+
+### 🚀 Enhancements
+
+- Add transitions, fix types ([a033d2a](https://github.com/stevenjpx2/nugget/commit/a033d2a))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v0.1.0
 
 
