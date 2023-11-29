@@ -1,6 +1,5 @@
 declare global {
-  const gsap: typeof import("gsap");
-  const ScrollTrigger: typeof import("gsap/ScrollTrigger");
+  declare const gsap: typeof import("gsap");
 }
 
 export {};
