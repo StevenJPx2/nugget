@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.3
+
+[compare changes](https://github.com/stevenjpx2/nugget/compare/v0.1.2...v0.1.3)
+
+### 🩹 Fixes
+
+- Proper global typing of gsap ([9752d51](https://github.com/stevenjpx2/nugget/commit/9752d51))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v0.1.2
 
 [compare changes](https://github.com/stevenjpx2/nugget/compare/v0.1.1...v0.1.2)
