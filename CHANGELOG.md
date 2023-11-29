@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.4
+
+[compare changes](https://github.com/stevenjpx2/nugget/compare/v0.1.3...v0.1.4)
+
+### 🩹 Fixes
+
+- Import gsap alone for side-effects ([ed1476a](https://github.com/stevenjpx2/nugget/commit/ed1476a))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v0.1.3
 
 [compare changes](https://github.com/stevenjpx2/nugget/compare/v0.1.2...v0.1.3)
