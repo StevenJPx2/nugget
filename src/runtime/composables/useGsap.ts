@@ -6,6 +6,7 @@ import {
   createEventHook,
   tryOnMounted,
 } from "#imports";
+import "gsap";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import type { Ease } from "../types";

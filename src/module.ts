@@ -5,7 +5,6 @@ import {
   installModule,
   addComponentsDir,
   addImportsDir,
-  addTemplate,
 } from "@nuxt/kit";
 import { name, version } from "../package.json";
 
@@ -28,11 +27,6 @@ export default defineNuxtModule<ModuleOptions>({
 
     addComponentsDir({ path: resolver.resolve("./runtime/components") });
     addImportsDir(resolver.resolve("./runtime/composables"));
-    addTemplate({
-      filename: "gsap.d.ts",
-      write: true,
-      src: resolver.resolve("./runtime/gsap.d.ts"),
-    });
 
     await installModule("nuxt-split-type", {});
     await installModule("@vueuse/nuxt", {});
