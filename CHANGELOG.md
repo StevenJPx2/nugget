@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.2
+
+[compare changes](https://github.com/stevenjpx2/nugget/compare/v0.1.1...v0.1.2)
+
+### 🩹 Fixes
+
+- Add better type safety ([b498caa](https://github.com/stevenjpx2/nugget/commit/b498caa))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v0.1.1
 
 [compare changes](https://github.com/stevenjpx2/nugget/compare/v0.1.0...v0.1.1)
