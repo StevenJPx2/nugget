@@ -5,7 +5,6 @@ import {
   tryOnScopeDispose,
   createEventHook,
   tryOnMounted,
-  ref,
   shallowRef,
 } from "#imports";
 import "gsap";
@@ -13,6 +12,7 @@ import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import type { Ease } from "../types";
 import type { EventHookOn } from "@vueuse/core";
+import type { ShallowRef } from "vue";
 
 type EaseOption = {
   /** The ease of the tween
@@ -58,7 +58,19 @@ function useGsap(plugins: object[] = [ScrollTrigger]) {
   return {
     gsap,
 
-    timeline: (vars?: StrongTimelineVars) => {
+    timeline: (
+      vars?: StrongTimelineVars,
+    ): {
+      tl: ShallowRef<gsap.core.Timeline>;
+      tlFn: EventHookOn<gsap.core.Timeline>;
+      play: () => gsap.core.Timeline | undefined;
+      pause: () => gsap.core.Timeline | undefined;
+      restart: () => gsap.core.Timeline | undefined;
+      resume: () => gsap.core.Timeline | undefined;
+      progress: (value: number) => gsap.core.Timeline | undefined;
+      seek: (value: number | string) => gsap.core.Timeline | undefined;
+      isActive: () => boolean | undefined;
+    } => {
       const tl = shallowRef<gsap.core.Timeline>();
 
       const onMount = createEventHook<gsap.core.Timeline>();
@@ -74,14 +86,14 @@ function useGsap(plugins: object[] = [ScrollTrigger]) {
       onMount.off((tl) => tl.kill());
 
       return {
-        tl,
+        tl: tl as ShallowRef<gsap.core.Timeline>,
         tlFn: onMount.on as EventHookOn<gsap.core.Timeline>,
         play: () => tl.value?.play(),
         pause: () => tl.value?.pause(),
         restart: () => tl.value?.restart(),
         resume: () => tl.value?.resume(),
-        progress: (value: number) => tl.value?.progress(value),
-        seek: (value: number | string) => tl.value?.seek(value),
+        progress: (value) => tl.value?.progress(value),
+        seek: (value) => tl.value?.seek(value),
         isActive: () => tl.value?.isActive(),
       };
     },
