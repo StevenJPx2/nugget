@@ -13,7 +13,7 @@ const props = defineProps<{
 }>();
 const emit = defineEmits<{ complete: [] }>();
 const { run } = toRefs(props);
-const { play, stop, isAnimating } = useOffsetTransition({
+const { play, stop } = useOffsetTransition({
   parentContainer,
   mainContainer,
   offsetContainer,
@@ -26,9 +26,9 @@ const { play, stop, isAnimating } = useOffsetTransition({
 });
 
 watch(run, (value) => {
-  if (value && !isAnimating()) {
+  if (value) {
     play();
-  } else if (!value && isAnimating()) {
+  } else if (!value) {
     stop();
   }
 });

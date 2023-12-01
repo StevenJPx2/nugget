@@ -2,12 +2,12 @@
 Get your module up and running quickly.
 
 Find and replace all on all files (CMD+SHIFT+F):
-- Name: Nugget UI
+- Name: Nugget
 - Package name: @fdcn/nugget
-- Description: My new Nuxt module
+- Description: Democratise premium animations using nugget.
 -->
 
-# Nugget UI
+# Nugget
 
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
@@ -26,6 +26,37 @@ Democratize **premium** animations using nugget.
 - ⛰ &nbsp;Foo
 - 🚠 &nbsp;Bar
 - 🌲 &nbsp;Baz
+
+### Composables
+
+#### Low-level
+- `useGsap`: Exposes [gsap][gsap-href] functions. This is internally used in all the other animation composables.
+```js
+const {
+  gsap, // re-exported gsap instance
+  timeline, // Define timeline here.
+  set, // SSR-friendly `gsap.set`
+  fromTo, // SSR-friendly `gsap.fromTo`
+  to, // SSR-friendly `gsap.to`
+  from, // SSR-friendly `gsap.from`
+} = useGsap([ScrollTrigger]); // Add plugins here
+```
+
+**`timeline` Usage**
+```js
+const {
+  tl, // exposed timeline object
+  tlFn, //
+  play, //
+  pause, //
+  restart, //
+  resume, //
+  progress, //
+  seek, //
+} = timeline({ scrollTrigger: ".container", paused: true });
+
+```
+
 
 ## Quick Setup
 
@@ -52,7 +83,7 @@ export default defineNuxtConfig({
 })
 ```
 
-That's it! You can now use Nugget UI Module in your Nuxt app ✨
+That's it! You can now use Nugget Module in your Nuxt app ✨
 
 ## Development
 
@@ -92,3 +123,5 @@ npm run release
 
 [nuxt-src]: https://img.shields.io/badge/Nuxt-18181B?logo=nuxt.js
 [nuxt-href]: https://nuxt.com
+[gsap-href]: https://gsap.com/
+[locomotive-scroll]: https://github.com/locomotivemtl/locomotive-scroll/tree/v5-beta

@@ -27,10 +27,16 @@ export default function useBendyWendyTransition(options: BendyWendyOptions) {
   });
 
   watch(
-    () => [unrefElement(svg), unrefElement(path)] as const,
-    ([svg, path]) => {
-      if (!svg || !path) return;
-      enterTl
+    () =>
+      [
+        unrefElement(svg),
+        unrefElement(path),
+        unref(enterTl),
+        unref(leaveTl),
+      ] as const,
+    ([svg, path, eTl, lTl]) => {
+      if (!svg || !path || !eTl || !lTl) return;
+      eTl
         .set(svg, {
           width: "100%",
           height: "100%",
@@ -54,7 +60,7 @@ export default function useBendyWendyTransition(options: BendyWendyOptions) {
           attr: { d: "M 0 0 V 100 Q 50 100 100 100 V 0 z" },
         });
 
-      leaveTl
+      lTl
         .set(path, {
           attr: { d: "M 0 0 V 100 Q 50 100 100 100 V 0 z" },
         })

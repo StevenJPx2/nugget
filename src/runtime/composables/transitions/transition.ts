@@ -68,7 +68,12 @@ export default function useConstructTransition(
     { immediate: true, flush: "post" },
   );
 
-  const { tl: enterTl, isActive: isEnterActive } = timeline({
+  const {
+    tl: enterTl,
+    isActive: isEnterActive,
+    restart: enterRestart,
+    pause: enterPause,
+  } = timeline({
     paused: true,
     onStart: () => {
       playState.value = "enter";
@@ -77,7 +82,12 @@ export default function useConstructTransition(
       playState.value = "afterEnter";
     },
   });
-  const { tl: leaveTl, isActive: isLeaveActive } = timeline({
+  const {
+    tl: leaveTl,
+    isActive: isLeaveActive,
+    restart: leaveRestart,
+    pause: leavePause,
+  } = timeline({
     paused: true,
     onStart: () => {
       playState.value = "leave";
@@ -97,19 +107,21 @@ export default function useConstructTransition(
 
     if (playState.value === "beforeEnter" || playState.value === "afterLeave") {
       playState.value = "beforeEnter";
-      enterTl.restart();
+      enterRestart();
     } else if (playState.value === "afterEnter") {
       playState.value = "beforeLeave";
-      leaveTl.restart();
+      leaveRestart();
     }
   };
 
   const stop = () => {
+    if (!isAnimating()) return;
+
     if (playState.value === "enter") {
-      enterTl.pause().progress(1);
+      enterPause()?.progress(1);
       playState.value = "afterEnter";
     } else if (playState.value === "leave") {
-      leaveTl.pause().progress(1);
+      leavePause()?.progress(1);
       playState.value = "afterLeave";
     }
   };

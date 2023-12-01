@@ -12,7 +12,7 @@ const { run, direction } = toRefs(props);
 const svgRef = ref<SVGElement | null>(null);
 const pathRef = ref<SVGPathElement | null>(null);
 
-const { play, stop, isAnimating } = useBendyWendyTransition({
+const { play, stop } = useBendyWendyTransition({
   svg: svgRef,
   path: pathRef,
   direction: direction,
@@ -25,9 +25,9 @@ const { play, stop, isAnimating } = useBendyWendyTransition({
 });
 
 watch(run, (value) => {
-  if (value && !isAnimating()) {
+  if (value) {
     play();
-  } else if (!value && isAnimating()) {
+  } else if (!value) {
     stop();
   }
 });

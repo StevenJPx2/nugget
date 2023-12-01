@@ -5,8 +5,6 @@ import {
   tryOnScopeDispose,
   createEventHook,
   tryOnMounted,
-  ref,
-  shallowRef,
 } from "#imports";
 import "gsap";
 import gsap from "gsap";
@@ -52,37 +50,29 @@ const activationFn = (
  * - It registers `ScrollTrigger` by default
  * */
 function useGsap(plugins: object[] = [ScrollTrigger]) {
-  tryOnMounted(() => {
-    gsap.registerPlugin(...plugins);
-  });
+  gsap.registerPlugin(...plugins);
   return {
     gsap,
 
     timeline: (vars?: StrongTimelineVars) => {
-      const tl = shallowRef<gsap.core.Timeline>();
+      const tl = gsap.timeline(vars);
 
       const onMount = createEventHook<gsap.core.Timeline>();
 
-      tryOnMounted(() => {
-        tl.value = gsap.timeline(vars);
-      });
-
-      watchPostEffect(() => {
-        onMount.trigger(tl.value);
-      });
+      tryOnMounted(() => onMount.trigger(tl));
 
       onMount.off((tl) => tl.kill());
 
       return {
         tl,
         tlFn: onMount.on as EventHookOn<gsap.core.Timeline>,
-        play: () => tl.value?.play(),
-        pause: () => tl.value?.pause(),
-        restart: () => tl.value?.restart(),
-        resume: () => tl.value?.resume(),
-        progress: (value: number) => tl.value?.progress(value),
-        seek: (value: number | string) => tl.value?.seek(value),
-        isActive: () => tl.value?.isActive(),
+        play: () => tl.play(),
+        pause: () => tl.pause(),
+        restart: () => tl.restart(),
+        resume: () => tl.resume(),
+        progress: (value: number) => tl.progress(value),
+        seek: (value: number | string) => tl.seek(value),
+        isActive: () => tl.isActive(),
       };
     },
 

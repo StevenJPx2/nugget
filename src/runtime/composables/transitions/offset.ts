@@ -3,7 +3,7 @@ import type { Simplify } from "../../types";
 import useConstructTransition, {
   type UseConstructTransitionOptions,
 } from "./transition";
-import { watch, unrefElement } from "#imports";
+import { watch, unrefElement, unref } from "#imports";
 
 export type OffsetOptions = Simplify<
   {
@@ -23,10 +23,12 @@ export default function useOffsetTransition(options: OffsetOptions) {
         unrefElement(mainContainer),
         unrefElement(offsetContainer),
         unrefElement(constructOptions.parentContainer),
+        unref(enterTl),
+        unref(leaveTl),
       ] as const,
-    ([main, offset, parent]) => {
-      if (!main || !offset || !parent) return;
-      enterTl
+    ([main, offset, parent, eTl, lTl]) => {
+      if (!main || !offset || !parent || !eTl || !lTl) return;
+      eTl
         .set(parent, { overflow: "hidden", position: "relative" })
         .set(main, {
           position: "absolute",
@@ -48,7 +50,7 @@ export default function useOffsetTransition(options: OffsetOptions) {
         })
         .to(main, { duration: 0.8, ease: "power4.inOut", scaleX: 1 })
         .to(offset, { duration: 0.8, ease: "power4.inOut", scaleX: 1 }, 0.1);
-      leaveTl
+      lTl
         .set(main, { transformOrigin: "right" })
         .set(offset, { transformOrigin: "right" })
         .to(offset, { duration: 0.8, ease: "power4.out", scaleX: 0 })
