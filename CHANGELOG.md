@@ -1,6 +1,10 @@
 # Changelog
 
 
+## v0.1.5
+
+[compare changes](https://github.com/stevenjpx2/nugget/compare/v0.1.4...v0.1.5)
+
 ## v0.1.4
 
 [compare changes](https://github.com/stevenjpx2/nugget/compare/v0.1.3...v0.1.4)
