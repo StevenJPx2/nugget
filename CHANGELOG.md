@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.6
+
+[compare changes](https://github.com/stevenjpx2/nugget/compare/v0.1.5...v0.1.6)
+
+### 🩹 Fixes
+
+- **useGsap:** Fix types for timeline ([140d184](https://github.com/stevenjpx2/nugget/commit/140d184))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v0.1.5
 
 [compare changes](https://github.com/stevenjpx2/nugget/compare/v0.1.4...v0.1.5)
