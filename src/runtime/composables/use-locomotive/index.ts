@@ -10,7 +10,7 @@ import type { ILocomotiveScrollOptions } from "locomotive-scroll/dist/types/type
  * - This is used in the `SmoothScroll` component
  * - It is not recommended to use this composable directly because the component injects necessary CSS.
  */
-export default function (
+export function useLocomotive(
   options: ILocomotiveScrollOptions = {},
 ): Ref<LocomotiveScroll | undefined> {
   const window = defaultWindow;

@@ -7,8 +7,8 @@ import { watch, unrefElement, unref } from "#imports";
 
 export type OffsetOptions = Simplify<
   {
-    mainContainer: MaybeComputedElementRef<HTMLElement | null | undefined>;
-    offsetContainer: MaybeComputedElementRef<HTMLElement | null | undefined>;
+    mainContainer: MaybeComputedElementRef;
+    offsetContainer: MaybeComputedElementRef;
   } & UseConstructTransitionOptions
 >;
 

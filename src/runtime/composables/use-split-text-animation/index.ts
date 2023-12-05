@@ -1,9 +1,10 @@
 import type { MaybeComputedElementRef } from "@vueuse/core";
 import { useSplitText } from "#imports";
-import type { Simplify } from "../types";
-import useAnimateOnScroll, {
+import type { Simplify } from "../../types";
+import {
+  useAnimateOnScroll,
   type UseAnimateOnScrollOptions,
-} from "./useAnimateOnScroll";
+} from "../use-animate-on-scroll";
 
 export type PartialSplitTextAnimationOptions = {
   /** Defines how the text should be split
@@ -40,7 +41,7 @@ export type UseSplitTextAnimationOptions = Simplify<
  * useSplitTextAnimation(refEl, options);
  * ```
  */
-export default function (
+export function useSplitTextAnimation(
   el: MaybeComputedElementRef,
   options: UseSplitTextAnimationOptions,
 ) {

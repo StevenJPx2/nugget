@@ -5,12 +5,14 @@ import {
   tryOnScopeDispose,
   createEventHook,
   tryOnMounted,
+  shallowRef,
 } from "#imports";
 import "gsap";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import type { Ease } from "../types";
+import type { Ease } from "../../types";
 import type { EventHookOn } from "@vueuse/core";
+import type { ShallowRef } from "vue";
 
 type EaseOption = {
   /** The ease of the tween
@@ -49,30 +51,50 @@ const activationFn = (
  * - It also allows the LSP to infer the correct types for `gsap`
  * - It registers `ScrollTrigger` by default
  * */
-function useGsap(plugins: object[] = [ScrollTrigger]) {
-  gsap.registerPlugin(...plugins);
+export function useGsap(plugins: object[] = [ScrollTrigger]) {
+  tryOnMounted(() => {
+    gsap.registerPlugin(...plugins);
+  });
   return {
     gsap,
 
-    timeline: (vars?: StrongTimelineVars) => {
-      const tl = gsap.timeline(vars);
+    timeline: (
+      vars?: StrongTimelineVars,
+    ): {
+      tl: ShallowRef<gsap.core.Timeline | undefined>;
+      tlFn: EventHookOn<gsap.core.Timeline>;
+      play: () => gsap.core.Timeline | undefined;
+      pause: () => gsap.core.Timeline | undefined;
+      restart: () => gsap.core.Timeline | undefined;
+      resume: () => gsap.core.Timeline | undefined;
+      progress: (value: number) => gsap.core.Timeline | undefined;
+      seek: (value: number | string) => gsap.core.Timeline | undefined;
+      isActive: () => boolean | undefined;
+    } => {
+      const tl = shallowRef<gsap.core.Timeline>();
 
       const onMount = createEventHook<gsap.core.Timeline>();
 
-      tryOnMounted(() => onMount.trigger(tl));
+      tryOnMounted(() => {
+        tl.value = gsap.timeline(vars);
+      });
+
+      watchPostEffect(() => {
+        onMount.trigger(tl.value);
+      });
 
       onMount.off((tl) => tl.kill());
 
       return {
         tl,
-        tlFn: onMount.on as EventHookOn<gsap.core.Timeline>,
-        play: () => tl.play(),
-        pause: () => tl.pause(),
-        restart: () => tl.restart(),
-        resume: () => tl.resume(),
-        progress: (value: number) => tl.progress(value),
-        seek: (value: number | string) => tl.seek(value),
-        isActive: () => tl.isActive(),
+        tlFn: onMount.on,
+        play: () => tl.value?.play(),
+        pause: () => tl.value?.pause(),
+        restart: () => tl.value?.restart(),
+        resume: () => tl.value?.resume(),
+        progress: (value) => tl.value?.progress(value),
+        seek: (value) => tl.value?.seek(value),
+        isActive: () => tl.value?.isActive(),
       };
     },
 
@@ -122,7 +144,5 @@ function useGsap(plugins: object[] = [ScrollTrigger]) {
     },
   };
 }
-
-export default useGsap;
 
 export type UseGsapReturn = ReturnType<typeof useGsap>;

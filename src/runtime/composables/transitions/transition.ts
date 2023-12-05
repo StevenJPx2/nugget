@@ -27,12 +27,9 @@ export type UseConstructTransitionCallbackOptions = {
 };
 
 type PlayState =
-  | "beforeEnter"
-  | "enter"
-  | "afterEnter"
-  | "beforeLeave"
-  | "leave"
-  | "afterLeave";
+  keyof UseConstructTransitionCallbackOptions extends `on${infer K}`
+    ? Uncapitalize<K>
+    : never;
 
 export type UseConstructTransitionOptions = Simplify<
   {

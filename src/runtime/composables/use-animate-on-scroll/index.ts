@@ -1,6 +1,6 @@
 import { toValue, type MaybeRefOrGetter } from "#imports";
-import useGsap, { type UseGsapReturn } from "./useGsap";
-import type { Simplify } from "../types";
+import useGsap, { type UseGsapReturn } from "../use-gsap";
+import type { Simplify } from "../../types";
 
 /** Options for `useAnimateOnScroll` */
 export type UseAnimateOnScrollOptions = Simplify<
@@ -13,7 +13,7 @@ export type UseAnimateOnScrollOptions = Simplify<
   }
 >;
 
-export default function (
+export function useAnimateOnScroll(
   el: MaybeRefOrGetter<gsap.DOMTarget | undefined>,
   options: UseAnimateOnScrollOptions,
 ) {

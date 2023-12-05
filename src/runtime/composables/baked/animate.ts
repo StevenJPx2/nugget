@@ -1,5 +1,5 @@
-import { type MaybeRefOrGetter, useGsap } from "#imports";
-import type { StrongTweenVars } from "../useGsap";
+import { type MaybeRefOrGetter } from "#imports";
+import { useGsap, type StrongTweenVars } from "../use-gsap";
 import { type AnimationOptions } from "./types";
 import { generateAnimationTweens } from "./utils";
 

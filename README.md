@@ -30,33 +30,34 @@ Democratize **premium** animations using nugget.
 ### Composables
 
 #### Low-level
-- `useGsap`: Exposes [gsap][gsap-href] functions. This is internally used in all the other animation composables.
-```js
-const {
-  gsap, // re-exported gsap instance
-  timeline, // Define timeline here.
-  set, // SSR-friendly `gsap.set`
-  fromTo, // SSR-friendly `gsap.fromTo`
-  to, // SSR-friendly `gsap.to`
-  from, // SSR-friendly `gsap.from`
-} = useGsap([ScrollTrigger]); // Add plugins here
-```
+- [`useGsap`](/src/runtime/composables/use-gsap): Exposes [gsap][gsap-href] functions. This is internally used in all the other animation composables.
+- [`useLocomotive`](/src/runtime/composables/use-locomotive): Exposes [Locomotive Scroll][locomotive-href] for smooth scroll and parallax effects. Use `<SmoothScroll />` for CSS styles.
+- [`useConstructTransition`](/src/runtime/composables/transitions): Used for creating transitions.
 
-**`timeline` Usage**
-```js
-const {
-  tl, // exposed timeline object
-  tlFn, //
-  play, //
-  pause, //
-  restart, //
-  resume, //
-  progress, //
-  seek, //
-} = timeline({ scrollTrigger: ".container", paused: true });
+#### Mid-level
+- [`useAnimateOnScroll`](/src/runtime/composables/use-animate-on-scroll)
+- [`useSplitTextAnimation`](/src/runtime/composables/use-split-text-animation)
 
-```
+#### High-level
+- [**Baked** animations](/src/runtime/composables/baked): Define stackable, premium animations. All mid-level composables have a baked version.
+  - `useBakedAnimation`: Exposes a `fromTo` tween with baked settings.
+  - `useBakedAnimateOnScroll`: Runs baked animations on scroll. Scroll settings are automatically determined if not explicitly set.
+  - `useBakedSplitTextAnimation`: Runs `useSplitTextAnimation` with baked presets.
+- [Transitions](/src/runtime/composables/transitions): Composables for kickass transitions that can be used for anything.
+  - `useBendyWendy`
+  - `useOffset`
 
+### Components
+- `InfiniteMarquee`: Used for making cool-ass marquees
+- `SmoothScroll`: Component version of `useLocomotive`
+- `transitions/`: Component versions of transition composables.
+
+## Roadmap
+- [ ] Make non-scroll controlled infinite marquee.
+- [ ] Make hover stop marquee.
+- [ ] Image hover effects
+- [ ] Button hover effects
+- [ ] Tooltip effects
 
 ## Quick Setup
 

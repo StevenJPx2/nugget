@@ -18,14 +18,14 @@ const {
 **`timeline` Usage**
 ```js
 const {
-  tl, // exposed timeline object
-  tlFn, //
-  play, //
-  pause, //
-  restart, //
-  resume, //
-  progress, //
-  seek, //
+  tl, // timeline ref
+  tlFn, // SSR-proof function
+  play, // SSR-friendly play
+  pause, // SSR-friendly pause
+  restart, // SSR-friendly restart
+  resume, // SSR-friendly resume
+  progress, // SSR-friendly progress
+  seek, // SSR-friendly seek
 } = timeline({ scrollTrigger: ".container", paused: true });
 ```
 

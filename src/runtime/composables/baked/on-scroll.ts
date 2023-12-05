@@ -2,7 +2,7 @@ import { toValue, type MaybeRefOrGetter } from "#imports";
 import { type UseBakedAnimationOptions } from "./animate";
 import type { Simplify } from "../../types";
 import { generateAnimationTweens } from "./utils";
-import useAnimateOnScroll from "../useAnimateOnScroll";
+import { useAnimateOnScroll } from "../use-animate-on-scroll";
 
 /** Options for `useAnimateOnScroll` */
 export type UseBakedAnimateOnScrollOptions = Simplify<
