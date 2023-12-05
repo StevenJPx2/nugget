@@ -14,31 +14,25 @@ Find and replace all on all files (CMD+SHIFT+F):
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
 
-Democratize **premium** animations using nugget.
+Democratize **premium** animations using nugget. Nugget exposes different headless, unstyled composables and components to allow you to have the flexibility to animate what you want, but also has sane, beautiful presets that you do not have to break your head over.
 
-- [✨ &nbsp;Release Notes](/CHANGELOG.md)
+- [✨ Release Notes](/CHANGELOG.md)
 <!-- - [🏀 Online playground](https://stackblitz.com/github/your-org/@fdcn/nugget?file=playground%2Fapp.vue) -->
-<!-- - [📖 &nbsp;Documentation](https://example.com) -->
+<!-- - [📖 Documentation](https://example.com) -->
 
-## Features
 
-<!-- Highlight some of the features your module provide here -->
-- ⛰ &nbsp;Foo
-- 🚠 &nbsp;Bar
-- 🌲 &nbsp;Baz
+## Composables
 
-### Composables
-
-#### Low-level
+### Low-level
 - [`useGsap`](/src/runtime/composables/use-gsap): Exposes [gsap][gsap-href] functions. This is internally used in all the other animation composables.
 - [`useLocomotive`](/src/runtime/composables/use-locomotive): Exposes [Locomotive Scroll][locomotive-href] for smooth scroll and parallax effects. Use `<SmoothScroll />` for CSS styles.
 - [`useConstructTransition`](/src/runtime/composables/transitions): Used for creating transitions.
 
-#### Mid-level
+### Mid-level
 - [`useAnimateOnScroll`](/src/runtime/composables/use-animate-on-scroll)
 - [`useSplitTextAnimation`](/src/runtime/composables/use-split-text-animation)
 
-#### High-level
+### High-level
 - [**Baked** animations](/src/runtime/composables/baked): Define stackable, premium animations. All mid-level composables have a baked version.
   - `useBakedAnimation`: Exposes a `fromTo` tween with baked settings.
   - `useBakedAnimateOnScroll`: Runs baked animations on scroll. Scroll settings are automatically determined if not explicitly set.
@@ -47,7 +41,7 @@ Democratize **premium** animations using nugget.
   - `useBendyWendy`
   - `useOffset`
 
-### Components
+## Components
 - `InfiniteMarquee`: Used for making cool-ass marquees
 - `SmoothScroll`: Component version of `useLocomotive`
 - `transitions/`: Component versions of transition composables.
@@ -125,4 +119,4 @@ npm run release
 [nuxt-src]: https://img.shields.io/badge/Nuxt-18181B?logo=nuxt.js
 [nuxt-href]: https://nuxt.com
 [gsap-href]: https://gsap.com/
-[locomotive-scroll]: https://github.com/locomotivemtl/locomotive-scroll/tree/v5-beta
+[locomotive-href]: https://github.com/locomotivemtl/locomotive-scroll/tree/v5-beta
