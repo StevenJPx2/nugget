@@ -1,4 +1,5 @@
-import useGsap from "../useGsap";
+import "gsap";
+import { useGsap } from "../use-gsap";
 import {
   readonly,
   ref,
@@ -8,8 +9,9 @@ import {
   unref,
   type Ref,
 } from "#imports";
+import type { ShallowRef } from "vue";
 import type { MaybeComputedElementRef } from "@vueuse/core";
-import type { Simplify } from "../../types";
+import type { Direction, Simplify } from "../../types";
 
 export type UseConstructTransitionCallbackOptions = {
   /** Callback when the enter animation is about to start */
@@ -26,7 +28,7 @@ export type UseConstructTransitionCallbackOptions = {
   onAfterLeave?: () => void;
 };
 
-type PlayState =
+export type PlayState =
   keyof UseConstructTransitionCallbackOptions extends `on${infer K}`
     ? Uncapitalize<K>
     : never;
@@ -35,16 +37,29 @@ export type UseConstructTransitionOptions = Simplify<
   {
     /** The element to animate */
     parentContainer: MaybeComputedElementRef;
-    /** Should the animation be flipped horizontally */
-    flipX?: MaybeRef<boolean>;
-    /** Should the animation be flipped vertically */
-    flipY?: MaybeRef<boolean>;
+    /** Direction to animate transition in */
+    direction?: MaybeRef<Direction | undefined>;
   } & UseConstructTransitionCallbackOptions
+>;
+
+export type TransitionOutput = {
+  state: Readonly<Ref<PlayState>>;
+  isActive: () => "enter" | "leave" | "none";
+  isAnimating: () => boolean;
+  play: () => void;
+  stop: () => void;
+};
+
+export type UseConstructTransitionOutput = Simplify<
+  TransitionOutput & {
+    enterTl: ShallowRef<gsap.core.Timeline | undefined>;
+    leaveTl: ShallowRef<gsap.core.Timeline | undefined>;
+  }
 >;
 
 export default function useConstructTransition(
   options: UseConstructTransitionOptions,
-) {
+): UseConstructTransitionOutput {
   const { gsap, timeline } = useGsap();
   const playState = ref<PlayState>("beforeEnter");
 
@@ -52,14 +67,13 @@ export default function useConstructTransition(
     () =>
       [
         unrefElement(options.parentContainer),
-        unref(options.flipX),
-        unref(options.flipY),
+        unref(options.direction),
       ] as const,
-    ([container, flipX, flipY]) => {
+    ([container, direction]) => {
       if (!container) return;
       gsap.set(container, {
-        scaleY: flipY ? -1 : 1,
-        scaleX: flipX ? -1 : 1,
+        scaleY: direction === "bottom" ? -1 : 1,
+        scaleX: direction === "right" ? -1 : 1,
       });
     },
     { immediate: true, flush: "post" },
@@ -160,7 +174,7 @@ export default function useConstructTransition(
   return {
     enterTl,
     leaveTl,
-    state: readonly(playState) as Readonly<Ref<PlayState>>,
+    state: readonly(playState),
     isActive,
     isAnimating,
     play,

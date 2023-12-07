@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { ref, toRefs, useBendyWendyTransition, watch } from "#imports";
-import type { Direction } from "../../types";
+import type { TransitionProps, TransitionEmits } from "./utils";
+import { callbackFactory } from "./utils";
 
-const props = withDefaults(
-  defineProps<{ run: boolean; direction: Direction }>(),
-  { direction: "top" },
-);
-const emit = defineEmits<{ complete: [] }>();
+const props = withDefaults(defineProps<TransitionProps>(), {
+  direction: "top",
+});
+const emit = defineEmits<TransitionEmits>();
 const { run, direction } = toRefs(props);
 
 const svgRef = ref<SVGElement | null>(null);
@@ -16,12 +16,7 @@ const { play, stop } = useBendyWendyTransition({
   svg: svgRef,
   path: pathRef,
   direction: direction,
-  onAfterEnter: () => {
-    emit("complete");
-  },
-  onAfterLeave: () => {
-    emit("complete");
-  },
+  ...callbackFactory(emit),
 });
 
 watch(run, (value) => {

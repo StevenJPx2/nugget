@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from "#imports";
-import useLocomotive from "../composables/useLocomotive";
+import { useLocomotive } from "../composables";
 
 const slotRef = ref<HTMLElement>();
 

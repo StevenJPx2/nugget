@@ -1,5 +1,5 @@
 import { toValue, type MaybeRefOrGetter } from "#imports";
-import useGsap, { type UseGsapReturn } from "../use-gsap";
+import { useGsap, type UseGsapReturn } from "../use-gsap";
 import type { Simplify } from "../../types";
 
 /** Options for `useAnimateOnScroll` */

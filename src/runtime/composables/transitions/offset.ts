@@ -1,21 +1,31 @@
 import type { MaybeComputedElementRef } from "@vueuse/core";
-import type { Simplify } from "../../types";
+import type { Direction, Simplify } from "../../types";
 import useConstructTransition, {
+  type TransitionOutput,
   type UseConstructTransitionOptions,
 } from "./transition";
-import { watch, unrefElement, unref } from "#imports";
+import { watch, unrefElement, unref, type MaybeRef } from "#imports";
 
 export type OffsetOptions = Simplify<
   {
+    /** Container for the initial animation */
     mainContainer: MaybeComputedElementRef;
+    /** Container for the offset animation */
     offsetContainer: MaybeComputedElementRef;
+    /** Direction to animate transition in */
+    direction: MaybeRef<Direction | undefined>;
   } & UseConstructTransitionOptions
 >;
 
-export default function useOffsetTransition(options: OffsetOptions) {
-  const { mainContainer, offsetContainer, ...constructOptions } = options;
-  const { enterTl, leaveTl, ...output } =
-    useConstructTransition(constructOptions);
+export default function useOffsetTransition(
+  options: OffsetOptions,
+): TransitionOutput {
+  const { mainContainer, offsetContainer, direction, ...constructOptions } =
+    options;
+  const { enterTl, leaveTl, ...output } = useConstructTransition({
+    direction,
+    ...constructOptions,
+  });
 
   watch(
     () =>
@@ -49,7 +59,7 @@ export default function useOffsetTransition(options: OffsetOptions) {
           transformOrigin: "left",
         })
         .to(main, { duration: 0.8, ease: "power4.inOut", scaleX: 1 })
-        .to(offset, { duration: 0.8, ease: "power4.inOut", scaleX: 1 }, 0.1);
+        .to(offset, { duration: 0.8, ease: "power4.inOut", scaleX: 1 }, 0);
       lTl
         .set(main, { transformOrigin: "right" })
         .set(offset, { transformOrigin: "right" })

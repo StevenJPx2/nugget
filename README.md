@@ -52,6 +52,8 @@ Democratize **premium** animations using nugget. Nugget exposes different headle
 - [ ] Image hover effects
 - [ ] Button hover effects
 - [ ] Tooltip effects
+- [ ] Vue version
+- [ ] Docs page
 
 ## Quick Setup
 

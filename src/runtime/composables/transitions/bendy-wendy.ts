@@ -1,6 +1,7 @@
 import { unrefElement, type MaybeComputedElementRef } from "@vueuse/core";
 import { watch, type MaybeRef, unref } from "#imports";
 import useConstructTransition, {
+  type TransitionOutput,
   type UseConstructTransitionCallbackOptions,
 } from "./transition";
 import type { Direction, Simplify } from "../../types";
@@ -16,13 +17,13 @@ export type BendyWendyOptions = Simplify<
   } & UseConstructTransitionCallbackOptions
 >;
 
-export default function useBendyWendyTransition(options: BendyWendyOptions) {
+export default function useBendyWendyTransition(
+  options: BendyWendyOptions,
+): TransitionOutput {
   const { svg, path, direction = "top", ...constructOptions } = options;
-  const unrefDirection = unref(direction);
   const { enterTl, leaveTl, ...output } = useConstructTransition({
     parentContainer: svg,
-    flipY: unrefDirection === "bottom",
-    flipX: unrefDirection === "right",
+    direction,
     ...constructOptions,
   });
 

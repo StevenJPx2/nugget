@@ -1,29 +1,54 @@
 <script setup lang="ts">
-import InfiniteMarquee from "../src/runtime/components/InfiniteMarquee.vue";
 import { vSplitAnimate } from "../src/runtime/directives";
 import { ref } from "#imports";
+import { promiseTimeout } from "@vueuse/core";
 
 const runTransition = ref(false);
+const direction = ref<"left" | "right">("left");
+const onAfterEnter = async () => {
+  runTransition.value = false;
+  await promiseTimeout(500);
+  runTransition.value = true;
+};
 </script>
 <template>
   <smooth-scroll>
     <div :style="{ position: 'relative', width: '400px', height: '400px' }">
-      <button
+      <div
         :style="{
           position: 'absolute',
+          display: 'flex',
+          justifyContent: 'space-between',
           margin: 'auto',
           zIndex: 1,
         }"
-        @mouseover="runTransition = true"
       >
-        {{ runTransition ? "Stop" : "Run" }} Bendy Wendy
-      </button>
+        <button
+          @mouseover="
+            direction = 'right';
+            runTransition = true;
+          "
+        >
+          &lt;
+        </button>
+
+        <button
+          @mouseover="
+            direction = 'left';
+            runTransition = true;
+          "
+        >
+          &gt;
+        </button>
+      </div>
       <transition-offset
         class="red h-full w-full"
         :run="runTransition"
+        :direction="direction"
         :main-container-attributes="{ style: { background: 'red' } }"
         :offset-container-attributes="{ style: { background: 'blue' } }"
-        @complete="runTransition = false"
+        @after-leave="runTransition = false"
+        @after-enter="onAfterEnter"
       />
     </div>
     <div
