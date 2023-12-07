@@ -1,6 +1,27 @@
 # Changelog
 
 
+## v0.1.7
+
+[compare changes](https://github.com/stevenjpx2/nugget/compare/v0.1.6...v0.1.7)
+
+### 🚀 Enhancements
+
+- Add transition helpers, improve transition testing ([6b7fa65](https://github.com/stevenjpx2/nugget/commit/6b7fa65))
+- Do not reinvoke gsap functions on window resize ([384a603](https://github.com/stevenjpx2/nugget/commit/384a603))
+
+### 🩹 Fixes
+
+- **docs:** Fix structure ([94ac318](https://github.com/stevenjpx2/nugget/commit/94ac318))
+
+### 💅 Refactors
+
+- Change location of composables, update docs ([704a273](https://github.com/stevenjpx2/nugget/commit/704a273))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v0.1.6
 
 [compare changes](https://github.com/stevenjpx2/nugget/compare/v0.1.5...v0.1.6)
