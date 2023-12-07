@@ -1,17 +1,17 @@
 import {
   type MaybeRefOrGetter,
   watchPostEffect,
-  toValue,
   tryOnScopeDispose,
   createEventHook,
   tryOnMounted,
   shallowRef,
+  until,
 } from "#imports";
 import "gsap";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import type { Ease } from "../../types";
-import type { EventHookOn } from "@vueuse/core";
+import { invoke, type EventHookOn } from "@vueuse/core";
 import type { ShallowRef } from "vue";
 
 type EaseOption = {
@@ -38,8 +38,10 @@ const activationFn = (
   tween: gsap.core.Tween | undefined,
   updateFactory: (el: gsap.TweenTarget | undefined) => void,
 ) => {
-  const updateFn = () => updateFactory(toValue(el));
-  watchPostEffect(updateFn);
+  invoke(async () => {
+    const val = await until(el).toMatch((v) => v !== undefined);
+    updateFactory(val);
+  });
 
   tryOnScopeDispose(() => tween?.kill());
 };

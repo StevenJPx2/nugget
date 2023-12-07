@@ -25,7 +25,7 @@ export function useAnimateOnScroll(
   if (options.scrollAnimationOptions) {
     scrollAnimationOptions = {
       trigger: unrefEl,
-      start: "top bottom",
+      start: "top 80%",
     };
     if (options.scrollAnimationOptions instanceof Object) {
       scrollAnimationOptions = {

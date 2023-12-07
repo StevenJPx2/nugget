@@ -53,7 +53,7 @@ const onAfterEnter = async () => {
     </div>
     <div
       :style="{
-        height: '100vh',
+        height: '200vh',
         display: 'grid',
         alignItems: 'center',
         fontFamily: 'sans-serif',
