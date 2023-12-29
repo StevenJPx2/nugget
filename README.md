@@ -47,8 +47,8 @@ Democratize **premium** animations using nugget. Nugget exposes different headle
 - `transitions/`: Component versions of transition composables.
 
 ## Roadmap
-- [ ] Make non-scroll controlled infinite marquee.
-- [ ] Make hover stop marquee.
+- [x] Make non-scroll controlled infinite marquee.
+- [x] Make hover stop marquee.
 - [ ] Image hover effects
 - [ ] Button hover effects
 - [ ] Tooltip effects

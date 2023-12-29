@@ -6,6 +6,7 @@ import {
   tryOnMounted,
   shallowRef,
   until,
+  isRef,
 } from "#imports";
 import "gsap";
 import gsap from "gsap";
@@ -39,6 +40,10 @@ const activationFn = (
   updateFactory: (el: gsap.TweenTarget | undefined) => void,
 ) => {
   invoke(async () => {
+    if (!isRef<gsap.TweenTarget | undefined>(el)) {
+      updateFactory(el);
+      return;
+    }
     const val = await until(el).toMatch((v) => v !== undefined);
     updateFactory(val);
   });

@@ -88,7 +88,12 @@ const onAfterEnter = async () => {
         fontFamily: 'sans-serif',
       }"
     >
-      <infinite-marquee gap="2rem">
+      <infinite-marquee
+        gap="2rem"
+        :pause-on-hover="true"
+        :speed="0.07"
+        :acceleration="0"
+      >
         <div :style="{ display: 'inline-flex', gap: '2rem' }">
           <p
             v-for="i in 20"

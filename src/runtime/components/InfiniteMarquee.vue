@@ -2,6 +2,7 @@
 import {
   computed,
   ref,
+  toRef,
   tryOnMounted,
   useElementSize,
   useElementVisibility,
@@ -9,6 +10,7 @@ import {
   useWindowScroll,
   useWindowSize,
   watch,
+  watchEffect,
 } from "#imports";
 
 // Most of this credit goes to:
@@ -31,9 +33,19 @@ const props = withDefaults(
      * @default "right"
      */
     direction?: "left" | "right";
+    /** Whether the marquee should pause on hover
+     * @default undefined
+     */
+    pauseOnHover?: boolean;
+    /** The acceleration of the marquee
+     * @default 0.05
+     */
+    acceleration?: number;
   }>(),
-  { speed: 0.05, gap: "0rem", direction: "right" },
+  { speed: 0.05, gap: "0rem", direction: "right", acceleration: 0.05 },
 );
+
+const isHovering = ref(false);
 const lerpVals = ref({ current: 0, target: 0 });
 const interpolationFactor = 0.1;
 const directionConstant: -1 | 1 = props.direction === "left" ? -1 : 1;
@@ -55,7 +67,11 @@ const target = computed(
     ((containerWidth.value - windowWidth.value) / containerWidth.value) * 100,
 );
 
-const { pause, resume } = useRafFn(
+const {
+  pause: pauseRaf,
+  resume: resumeRaf,
+  isActive: isRafActive,
+} = useRafFn(
   () => {
     const lerpValsConstant = lerpVals.value;
     lerpValsConstant.target += props.speed;
@@ -76,14 +92,14 @@ tryOnMounted(() => {
 });
 
 watch(windowY, () => {
-  lerpVals.value.target += props.speed * 5;
+  lerpVals.value.target += props.acceleration * 5;
 });
 
-watch(isTargetVisible, () => {
-  if (isTargetVisible.value) {
-    resume();
+watchEffect(() => {
+  if ((!isTargetVisible.value || isHovering.value) && isRafActive.value) {
+    pauseRaf();
   } else {
-    pause();
+    resumeRaf();
   }
 });
 </script>
@@ -92,6 +108,8 @@ watch(isTargetVisible, () => {
   <div
     ref="loopContainerParent"
     :style="{ overflow: 'hidden' }"
+    @mouseover="if (props.pauseOnHover) isHovering = true;"
+    @mouseleave="if (props.pauseOnHover) isHovering = false;"
   >
     <div
       ref="loopContainer"
