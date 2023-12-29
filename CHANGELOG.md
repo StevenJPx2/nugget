@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.8
+
+[compare changes](https://github.com/stevenjpx2/nugget/compare/v0.1.7...v0.1.8)
+
+### 🚀 Enhancements
+
+- **InfiniteMarquee:** Add pauseOnHover and acceleration ([bbb6309](https://github.com/stevenjpx2/nugget/commit/bbb6309))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v0.1.7
 
 [compare changes](https://github.com/stevenjpx2/nugget/compare/v0.1.6...v0.1.7)
