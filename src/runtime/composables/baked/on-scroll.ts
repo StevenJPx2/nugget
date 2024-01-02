@@ -1,4 +1,4 @@
-import { toValue, type MaybeRefOrGetter } from "#imports";
+import { type MaybeRefOrGetter, toRef } from "#imports";
 import { type UseBakedAnimationOptions } from "./animate";
 import type { Simplify } from "../../types";
 import { generateAnimationTweens } from "./utils";
@@ -19,7 +19,6 @@ export default function (
   el: MaybeRefOrGetter<gsap.DOMTarget | undefined>,
   options: UseBakedAnimateOnScrollOptions = {},
 ) {
-  const unrefEl = toValue(el);
   const {
     animationOptions = {},
     tweenValues = {},
@@ -27,7 +26,7 @@ export default function (
   } = options;
 
   const { from, to } = generateAnimationTweens(animationOptions);
-  useAnimateOnScroll(unrefEl, {
+  useAnimateOnScroll(toRef(el), {
     from,
     to: { ...to, ...tweenValues },
     scrollAnimationOptions,

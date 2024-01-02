@@ -2,6 +2,16 @@
 import { vSplitAnimate } from "../src/runtime/directives";
 import { ref } from "#imports";
 import { promiseTimeout } from "@vueuse/core";
+import { useBakedTransition } from "../src/runtime/composables/transitions";
+
+const stingEffectContainer = ref<HTMLDivElement | null>(null);
+
+const { play, stop } = useBakedTransition({
+  parentContainer: stingEffectContainer,
+  animationOptions: {
+    translate: true,
+  },
+});
 
 const runTransition = ref(false);
 const direction = ref<"left" | "right">("left");
@@ -13,6 +23,25 @@ const onAfterEnter = async () => {
 </script>
 <template>
   <smooth-scroll>
+    <button
+      class="bg-yellow-500 grid place-content-center relative px-8 py-5 overflow-hidden"
+      @mouseover="
+        stop();
+        play();
+      "
+      @mouseout="
+        stop();
+        play();
+      "
+    >
+      <div
+        ref="stingEffectContainer"
+        class="rounded-sm bg-red-500 pointer-events-none absolute inset-[5%]"
+      />
+      <span class="inline-block text-white z-[1] pointer-events-none">
+        hover over me!
+      </span>
+    </button>
     <div :style="{ position: 'relative', width: '400px', height: '400px' }">
       <div
         :style="{
@@ -108,27 +137,8 @@ const onAfterEnter = async () => {
 </template>
 
 <style>
-.h-full {
-  height: 100%;
-}
-
-.w-full {
-  width: 100%;
-}
-
-.inline-block {
-  display: inline-block;
-}
-
-.block {
-  display: block;
-}
-
-.overflow-hidden {
-  overflow: hidden;
-}
-
-.h-fit {
-  height: fit-content;
+button {
+  @apply bg-yellow-500 grid place-content-center relative px-8 py-5 overflow-hidden;
+  @apply m-5 shadow-md;
 }
 </style>

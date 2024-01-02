@@ -1,10 +1,11 @@
 import { unrefElement, type MaybeComputedElementRef } from "@vueuse/core";
-import { watch, type MaybeRef, unref } from "#imports";
-import useConstructTransition, {
+import { watch, unref } from "#imports";
+import {
+  useConstructTransition,
   type TransitionOutput,
-  type UseConstructTransitionCallbackOptions,
-} from "./transition";
-import type { Direction, Simplify } from "../../types";
+  type UseConstructTransitionOptions,
+} from "./construct";
+import type { Simplify } from "../../types";
 
 export type BendyWendyOptions = Simplify<
   {
@@ -12,12 +13,10 @@ export type BendyWendyOptions = Simplify<
     svg: MaybeComputedElementRef<SVGElement | null | undefined>;
     /** The path to animate */
     path: MaybeComputedElementRef<SVGPathElement | null | undefined>;
-    /** Direction of the animation */
-    direction?: MaybeRef<Direction>;
-  } & UseConstructTransitionCallbackOptions
+  } & Omit<UseConstructTransitionOptions, "parentContainer">
 >;
 
-export default function useBendyWendyTransition(
+export function useBendyWendyTransition(
   options: BendyWendyOptions,
 ): TransitionOutput {
   const { svg, path, direction = "top", ...constructOptions } = options;

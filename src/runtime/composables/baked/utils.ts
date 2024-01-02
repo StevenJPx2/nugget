@@ -1,4 +1,4 @@
-import type { StrongTweenVars } from "../useGsap";
+import type { StrongTweenVars } from "../use-gsap";
 import { presetTweens, type AnimationOptions } from "./types";
 
 /** Generates the baked animation tweens

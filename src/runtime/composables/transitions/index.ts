@@ -1,2 +1,4 @@
-export { default as useBendyWendyTransition } from "./bendy-wendy";
-export { default as useOffsetTransition } from "./offset";
+export { useBendyWendyTransition } from "./bendy-wendy";
+export { useOffsetTransition } from "./offset";
+export { useConstructTransition } from "./construct";
+export { useBakedTransition } from "./baked";

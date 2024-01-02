@@ -8,6 +8,7 @@ import {
   unrefElement,
   unref,
   type Ref,
+  computed,
 } from "#imports";
 import type { ShallowRef } from "vue";
 import type { MaybeComputedElementRef } from "@vueuse/core";
@@ -57,7 +58,7 @@ export type UseConstructTransitionOutput = Simplify<
   }
 >;
 
-export default function useConstructTransition(
+export function useConstructTransition(
   options: UseConstructTransitionOptions,
 ): UseConstructTransitionOutput {
   const { gsap, timeline } = useGsap();

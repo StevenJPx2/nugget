@@ -1,9 +1,10 @@
 import type { MaybeComputedElementRef } from "@vueuse/core";
 import type { Direction, Simplify } from "../../types";
-import useConstructTransition, {
+import {
+  useConstructTransition,
   type TransitionOutput,
   type UseConstructTransitionOptions,
-} from "./transition";
+} from "./construct";
 import { watch, unrefElement, unref, type MaybeRef } from "#imports";
 
 export type OffsetOptions = Simplify<
@@ -17,9 +18,7 @@ export type OffsetOptions = Simplify<
   } & UseConstructTransitionOptions
 >;
 
-export default function useOffsetTransition(
-  options: OffsetOptions,
-): TransitionOutput {
+export function useOffsetTransition(options: OffsetOptions): TransitionOutput {
   const { mainContainer, offsetContainer, direction, ...constructOptions } =
     options;
   const { enterTl, leaveTl, ...output } = useConstructTransition({
