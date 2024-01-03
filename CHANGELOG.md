@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v0.1.9
+
+[compare changes](https://github.com/stevenjpx2/nugget/compare/v0.1.8...v0.1.9)
+
+### 🚀 Enhancements
+
+- **useBakedTransition:** Add new composable ([369cfe5](https://github.com/stevenjpx2/nugget/commit/369cfe5))
+- **useGenericTransition:** Add composable for generic from-to transitions ([0dbe5a1](https://github.com/stevenjpx2/nugget/commit/0dbe5a1))
+
+### 📖 Documentation
+
+- **useBakedTransition, useGenericTransition:** Add tsdoc ([267df27](https://github.com/stevenjpx2/nugget/commit/267df27))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v0.1.8
 
 [compare changes](https://github.com/stevenjpx2/nugget/compare/v0.1.7...v0.1.8)
