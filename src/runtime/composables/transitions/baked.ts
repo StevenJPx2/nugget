@@ -14,6 +14,9 @@ export type UseBakedTransitionOptions = Simplify<
   } & UseConstructTransitionOptions
 >;
 
+/**
+ * Composable to create baked transitions
+ */
 export function useBakedTransition(
   options: UseBakedTransitionOptions,
 ): TransitionOutput {

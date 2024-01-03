@@ -12,6 +12,12 @@ export type UseGenericTransitionOptions = Simplify<
 >;
 /**
  * Composable to create generic transitions
+ * @remarks
+ * - This transition uses the `from` and `to` variables to animate
+ * - The enter and leave will be the same, just in reverse
+ * - The `from` is the initial and end, `to` is the entered state
+ * - to have separate durations and ease for enter and exit, adjust `to` for entry, and `from` for exit
+ *   @see {@link useBakedTransition}for a transition that uses this composable
  */
 export function useGenericTransition(
   options: UseGenericTransitionOptions,

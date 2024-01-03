@@ -16,6 +16,11 @@ export type BendyWendyOptions = Simplify<
   } & Omit<UseConstructTransitionOptions, "parentContainer">
 >;
 
+/**
+ * Composable to create bendy wendy transitions
+ * @remarks
+ * This transition uses the `path` element to create a bendy wendy animation; it's a bit like a liquid animation.
+ */
 export function useBendyWendyTransition(
   options: BendyWendyOptions,
 ): TransitionOutput {
