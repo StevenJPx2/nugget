@@ -33,7 +33,8 @@ const activationFn = (
   tryOnScopeDispose(() => tween.value?.kill());
 };
 
-/** Composable to use gsap
+/**
+ * Composable to use gsap
  * @param plugins - The plugins to register to gsap
  * @remarks
  * - This is a composable to make it easier to use gsap with Vue

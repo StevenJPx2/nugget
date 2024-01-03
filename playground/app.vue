@@ -10,6 +10,8 @@ const { play, stop } = useBakedTransition({
   parentContainer: stingEffectContainer,
   animationOptions: {
     translate: true,
+    scale: "in",
+    skew: "bottom",
   },
 });
 
@@ -24,7 +26,7 @@ const onAfterEnter = async () => {
 <template>
   <smooth-scroll>
     <button
-      class="bg-yellow-500 grid place-content-center relative px-8 py-5 overflow-hidden"
+      class="bg-yellow-500 rounded-md grid place-content-center relative px-8 py-5 overflow-hidden"
       @mouseover="
         stop();
         play();
@@ -36,7 +38,7 @@ const onAfterEnter = async () => {
     >
       <div
         ref="stingEffectContainer"
-        class="rounded-sm bg-red-500 pointer-events-none absolute inset-[5%]"
+        class="rounded-lg bg-red-500 pointer-events-none absolute inset-0 border-4 border-yellow-500"
       />
       <span class="inline-block text-white z-[1] pointer-events-none">
         hover over me!
