@@ -1,4 +1,4 @@
-import { toRef, tryOnMounted, unref, unrefElement, watch } from "#imports";
+import { toRef, unref, unrefElement, watch } from "#imports";
 import type { Simplify } from "../../types";
 import { type StrongTweenVars, useGsap } from "../use-gsap";
 import {
@@ -8,7 +8,25 @@ import {
 } from "./construct";
 
 export type UseGenericTransitionOptions = Simplify<
-  { from: StrongTweenVars; to: StrongTweenVars } & UseConstructTransitionOptions
+  (
+    | {
+        strategy: "from-to";
+        /** The initial state of the element */
+        from: StrongTweenVars;
+        /** The entered state of the element */
+        to: StrongTweenVars;
+      }
+    | {
+        strategy: "enter-set-exit";
+        /** The initial state of the element */
+        enter: StrongTweenVars;
+        /** The entered state of the element */
+        set: StrongTweenVars;
+        /** The exiting state of the element */
+        exit: StrongTweenVars;
+      }
+  ) &
+    UseConstructTransitionOptions
 >;
 /**
  * Composable to create generic transitions
@@ -22,29 +40,51 @@ export type UseGenericTransitionOptions = Simplify<
 export function useGenericTransition(
   options: UseGenericTransitionOptions,
 ): TransitionOutput {
-  const { from, to, ...constructOptions } = options;
-  const container = toRef(constructOptions.parentContainer);
+  const container = toRef(options.parentContainer);
 
-  const { set } = useGsap();
+  const { set: setGsap } = useGsap();
 
-  const { enterTl, leaveTl, ...output } =
-    useConstructTransition(constructOptions);
+  if (options.strategy === "from-to") {
+    const { from, to, ...constructOptions } = options;
 
-  tryOnMounted(() => {
-    set(container, from);
-  });
+    const { enterTl, leaveTl, ...output } =
+      useConstructTransition(constructOptions);
 
-  watch(
-    () => [unrefElement(container), unref(enterTl), unref(leaveTl)] as const,
-    ([parent, eTl, lTl]) => {
-      if (!parent || !eTl || !lTl) return;
+    setGsap(container, from);
 
-      eTl.fromTo(parent, from, to);
+    watch(
+      () => [unrefElement(container), unref(enterTl), unref(leaveTl)] as const,
+      ([parent, eTl, lTl]) => {
+        if (!parent || !eTl || !lTl) return;
 
-      lTl.fromTo(parent, to, from);
-    },
-    { immediate: true, flush: "post" },
-  );
+        eTl.fromTo(parent, from, to);
 
-  return output;
+        lTl.fromTo(parent, to, from);
+      },
+      { immediate: true, flush: "post" },
+    );
+
+    return output;
+  } else {
+    const { enter, set, exit, ...constructOptions } = options;
+
+    const { enterTl, leaveTl, ...output } =
+      useConstructTransition(constructOptions);
+
+    setGsap(container, enter);
+
+    watch(
+      () => [unrefElement(container), unref(enterTl), unref(leaveTl)] as const,
+      ([parent, eTl, lTl]) => {
+        if (!parent || !eTl || !lTl) return;
+
+        eTl.fromTo(parent, enter, set);
+
+        lTl.fromTo(parent, set, exit);
+      },
+      { immediate: true, flush: "post" },
+    );
+
+    return output;
+  }
 }

@@ -93,7 +93,7 @@ const onAfterEnter = async () => {
       <h1
         v-split-animate="{
           splitBy: 'lines',
-          animationOptions: { translate: 'left' },
+          animationOptions: { translate: true },
           splitOptions: {
             wrapping: {
               select: 'lines',

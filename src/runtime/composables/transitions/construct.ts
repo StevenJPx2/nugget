@@ -8,7 +8,6 @@ import {
   unrefElement,
   unref,
   type Ref,
-  computed,
 } from "#imports";
 import type { ShallowRef } from "vue";
 import type { MaybeComputedElementRef } from "@vueuse/core";
