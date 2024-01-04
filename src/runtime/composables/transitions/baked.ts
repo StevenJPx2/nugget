@@ -27,9 +27,9 @@ export function useBakedTransition(
   } = options;
   const { from, to } = generateAnimationTweens(animationOptions);
   const output = useGenericTransition({
-    strategy: "from-to",
-    from: { ...from, duration: 0.4, ease: "power2" },
-    to: { ...to, duration: 0.6, ease: "expo.out" },
+    initial: from,
+    enter: { ...to, duration: 0.6, ease: "expo.out" },
+    exit: { ...from, duration: 0.3, ease: "power2.in" },
     direction,
     ...constructOptions,
   });
