@@ -18,7 +18,7 @@ Democratize **premium** animations using nugget. Nugget exposes different headle
 
 - [✨ Release Notes](/CHANGELOG.md)
 <!-- - [🏀 Online playground](https://stackblitz.com/github/your-org/@fdcn/nugget?file=playground%2Fapp.vue) -->
-<!-- - [📖 Documentation](https://example.com) -->
+- [📖 Documentation](https://nugget.stevenjohn.co) ![Static Badge](https://img.shields.io/badge/%E2%9A%A0%EF%B8%8F-WIP-red)
 
 
 ## Composables
