@@ -13,7 +13,7 @@ hero:
       link: /get-started
     - theme: alt
       text: Composables
-      link: /runtime/composables/use-gsap/README
+      link: /composables/use-gsap
 
 features:
   - title: Fully Featured
