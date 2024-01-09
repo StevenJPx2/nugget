@@ -20,9 +20,9 @@ Because of this, this composable will be most useful for:
 `useConstructTransition` - As explained above, composable used in all the composables below. It gives the most control over every part of the transition.
 
 ### Mid-level
-`useGenericTransition` - used for constructing simpler transitions. It gives animation control but abstracts away the nitty-gritty of the enter-exit strategy. Useful if you're making a transition with a 1-2-1 or 1-2-3 pattern. See [`useBakedTransition`](./baked) for usage of this composable.
+`useGenericTransition` - used for constructing simpler transitions. It gives animation control but abstracts away the nitty-gritty of the enter-exit strategy. Useful if you're making a transition with a 1-2-1 or 1-2-3 pattern. See [`useBakedTransition`](../baked.ts) for usage of this composable.
 
 ### High-level
-- `useBakedTransition` - implements [**baked**](../baked) animations in transitions. Allows you to easily stack premium animations with no effort.
+- `useBakedTransition` - implements [**baked**](../baked/README.md) animations in transitions. Allows you to easily stack premium animations with no effort.
 - `useBendyWendyTransition` - implements a very opinionated transition that looks bendy-wendy.
 - `useOffsetTransition` - implements an opinionated offset transition.

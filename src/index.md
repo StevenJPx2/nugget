@@ -12,8 +12,8 @@ hero:
       text: Get started
       link: /get-started
     - theme: alt
-      text: API Examples
-      link: /api-examples
+      text: Composables
+      link: /runtime/composables/use-gsap/README
 
 features:
   - title: Fully Featured
