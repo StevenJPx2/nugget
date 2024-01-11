@@ -10,7 +10,7 @@ export default defineConfig({
   cleanUrls: true,
   ignoreDeadLinks: true,
   rewrites: {
-    "runtime/:type/:obj*/README.md": "api/:type/:obj*/index.md",
+    "runtime/:type+/README.md": "api/:type+/index.md",
     "runtime/:type+.md": "api/:type+.md",
   },
   sitemap: {
