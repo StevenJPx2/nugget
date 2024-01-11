@@ -16,11 +16,11 @@ hero:
       link: /composables/use-gsap
 
 features:
-  - title: Fully Featured
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Strangely Familiar
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - icon: 🚀
+    title: Fully Featured
+    details: From low level composables to beautiful presets, Nugget gives you all you need in an animation library.
+  - icon: 🤔
+    title: Strangely Familiar
+    details: By using battle-tested libraries like gsap and locomotive-scroll, this ensures a familiar API while not compromising on SSR and performance.
 ---
 
