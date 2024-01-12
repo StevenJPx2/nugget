@@ -15,7 +15,10 @@ const {
 } = useGsap([ScrollTrigger]); // Add plugins here
 ```
 
+You can use (`set`, `fromTo`, `to`, `from`) the way you would use it normally, but with no issues.
+
 **`timeline` Usage**
+
 ```js
 const {
   tl, // timeline ref
@@ -29,7 +32,15 @@ const {
 } = timeline({ scrollTrigger: ".container", paused: true });
 ```
 
+You can use `tlFn` to have an isolated instance of the timeline which will register on mount.
 
+## Example
+
+```ts
+const container = ref<HTMLElement>();
+const { set } = useGsap();
+
+set(container, { x: -100 });
+```
 
 [gsap-href]: https://gsap.com/
-

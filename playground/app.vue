@@ -126,12 +126,7 @@ const onAfterEnter = async () => {
         :acceleration="0"
       >
         <div :style="{ display: 'inline-flex', gap: '2rem' }">
-          <p
-            v-for="i in 20"
-            :key="i"
-          >
-            Nuxt module playground!
-          </p>
+          <p v-for="i in 20" :key="i">Nuxt module playground!</p>
         </div>
       </infinite-marquee>
     </div>

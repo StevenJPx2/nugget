@@ -1,10 +1,20 @@
 <script lang="ts" setup>
 import { ref } from "#imports";
 import { useLocomotive } from "../composables";
+import type { ILocomotiveScrollOptions } from "locomotive-scroll/dist/types/types";
 
+const props = defineProps<{
+  /** The options to pass to LocomotiveScroll
+   * @default {}
+   */
+  options?: ILocomotiveScrollOptions;
+}>();
 const slotRef = ref<HTMLElement>();
 
-useLocomotive({ lenisOptions: { content: slotRef.value } });
+useLocomotive({
+  ...props.options,
+  lenisOptions: { content: slotRef.value, ...props.options?.lenisOptions },
+});
 </script>
 
 <template>

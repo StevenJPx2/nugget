@@ -106,13 +106,17 @@ watchEffect(() => {
 <template>
   <div
     ref="loopContainerParent"
-    :style="{ overflow: 'hidden' }"
+    :style="{
+      overflow: 'hidden',
+    }"
     @mouseover="if (props.pauseOnHover) isHovering = true;"
     @mouseleave="if (props.pauseOnHover) isHovering = false;"
   >
     <div
       ref="loopContainer"
-      :style="{ transform: `translateX(${x}%)` }"
+      :style="{
+        transform: `translateX(${x}%)`,
+      }"
       class="loop-container"
     >
       <slot key="1" />

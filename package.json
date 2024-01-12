@@ -47,6 +47,7 @@
     "changelogen": "^0.5.5",
     "defu": "^6.1.4",
     "eslint": "^8.56.0",
+    "glob": "^10.3.10",
     "locomotive-scroll": "beta",
     "nuxt": "^3.9.0",
     "pathe": "^1.1.1",
