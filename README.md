@@ -9,13 +9,12 @@ Find and replace all on all files (CMD+SHIFT+F):
 
 # Nugget
 
+![Nugget](./src/public/nugget-banner.jpg)
+
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
-
-<img src="src/assets/logo.svg" align="right" />
----
 
 Democratize **premium** animations using nugget. Nugget exposes different
 headless, unstyled composables and components to allow you to have the
