@@ -6,6 +6,7 @@ hero:
   name: "Nugget"
   text: "A Nuxt module that enchances your animations ✨"
   tagline: Make your animation life easier!
+  image: /logo.svg
 
   actions:
     - theme: brand

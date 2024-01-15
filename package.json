@@ -1,7 +1,7 @@
 {
   "name": "@fdcn/nugget",
   "version": "0.1.9",
-  "description": "Custom UI for shiny animations ✨",
+  "description": "A Nuxt module that enchances your animations ✨",
   "repository": "stevenjpx2/nugget",
   "license": "MIT",
   "type": "module",
