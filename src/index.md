@@ -5,15 +5,15 @@ layout: home
 hero:
   name: "Nugget"
   text: "A Nuxt module that enchances your animations ✨"
-  tagline: Nugget exposes different headless, unstyled composables and components to allow you to have the flexibility to animate what you want, but also has sane, beautiful presets that you do not have to break your head over.
+  tagline: Make your animation life easier!
 
   actions:
     - theme: brand
       text: Get started
-      link: /get-started
+      link: /guide/get-started
     - theme: alt
-      text: Composables
-      link: /composables/use-gsap
+      text: Reference
+      link: /ref/composables
 
 features:
   - icon: 🚀
@@ -22,5 +22,7 @@ features:
   - icon: 🤔
     title: Strangely Familiar
     details: By using battle-tested libraries like gsap and locomotive-scroll, this ensures a familiar API while not compromising on SSR and performance.
+  - icon: 🛠️
+    title: Completely Customizable
+    details: Nugget exposes different headless, unstyled composables and components to allow you to have the flexibility to animate what you want.
 ---
-

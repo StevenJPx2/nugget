@@ -7,7 +7,7 @@ This will not inject the basic styles that [lenis][lenis-href] (which is used in
 If you want to use it, wrap the root of your app in [`<SmoothScroll />`](../../components/smooth-scroll).
 :::
 
-# Usage
+## Usage
 
 First install `locomotive-scroll`:
 
@@ -33,7 +33,7 @@ bun i -D locomotive-scroll@beta
 
 Now you can use it by calling `useLocomotive`!
 
-# Example
+## Example
 
 ```ts
 useLocomotive();

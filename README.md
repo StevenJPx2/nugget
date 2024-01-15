@@ -14,13 +14,14 @@ Find and replace all on all files (CMD+SHIFT+F):
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
 
-Democratize **premium** animations using nugget.
-Nugget exposes different headless, unstyled composables and components to allow you to have the flexibility to animate what you want, but also has sane, beautiful presets that you do not have to break your head over.
-
-- [✨ Release Notes](/CHANGELOG.md)
+<img src="src/assets/logo.svg" align="right" />
+Democratize **premium** animations using nugget. Nugget exposes different
+headless, unstyled composables and components to allow you to have the
+flexibility to animate what you want, but also has sane, beautiful presets that
+you do not have to break your head over. - [✨ Release Notes](/CHANGELOG.md)
 <!-- - [🏀 Online playground](https://stackblitz.com/github/your-org/@fdcn/nugget?file=playground%2Fapp.vue) -->
-- [📖 Documentation](https://nugget.stevenjohn.co) ![Static Badge](https://img.shields.io/badge/%E2%9A%A0%EF%B8%8F-WIP-red)
-
+- [📖 Documentation](https://nugget.stevenjohn.co) ![Static
+Badge](https://img.shields.io/badge/%E2%9A%A0%EF%B8%8F-WIP-red)
 ## Composables
 
 ### Low-level
