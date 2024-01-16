@@ -1,21 +1,9 @@
 import { type MaybeRefOrGetter } from "#imports";
-import { useGsap, type StrongTweenVars } from "../use-gsap";
-import { type AnimationOptions } from "./types";
-import { generateAnimationTweens } from "./utils";
-
-/** Options for the animation
- * @remarks
- * Uses `gsap.TweenVars` as a base type for the animation options
- * @see {@link https://greensock.com/docs/v3/GSAP/gsap.to()}
- * */
-export type UseBakedAnimationOptions = {
-  /** Options for the animation */
-  animationOptions: AnimationOptions;
-  /** Tween values for `gsap.to()`
-   * @remarks `ease` is strongly typed
-   * */
-  tweenValues?: StrongTweenVars;
-};
+import {
+  generateAnimationTweens,
+  type UseBakedAnimationOptions,
+} from "../baked/utils";
+import { useGsap } from ".";
 
 /**
  * Animates an element with baked animation options to make it easier to animate repetitive animations
@@ -49,7 +37,7 @@ export type UseBakedAnimationOptions = {
  * ```
  * @see {@link https://greensock.com/docs/v3/GSAP/gsap.fromTo()}
  */
-export default function (
+export function useBakedFromTo(
   el: MaybeRefOrGetter<gsap.TweenTarget | undefined>,
   options: UseBakedAnimationOptions,
 ) {

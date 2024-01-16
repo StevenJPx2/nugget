@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { vSplitAnimate } from "../src/runtime/directives";
-import { ref } from "#imports";
+import { vSplitAnimate } from "../src/runtime/composables/directives";
+import { ref, useBakedTransition } from "#imports";
 import { promiseTimeout } from "@vueuse/core";
-import { useBakedTransition } from "../src/runtime/composables/transitions";
 
 const stingEffectContainer = ref<HTMLDivElement | null>(null);
 
@@ -92,12 +91,15 @@ const onAfterEnter = async () => {
     >
       <h1
         v-split-animate="{
-          splitBy: 'lines',
-          animationOptions: { translate: true },
-          splitOptions: {
-            wrapping: {
-              select: 'lines',
-              wrapClass: 'inline-block overflow-hidden',
+          baked: true,
+          options: {
+            splitBy: 'lines',
+            animationOptions: { translate: true },
+            splitOptions: {
+              wrapping: {
+                select: 'lines',
+                wrapClass: 'inline-block overflow-hidden',
+              },
             },
           },
         }"

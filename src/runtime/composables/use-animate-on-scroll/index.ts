@@ -20,19 +20,24 @@ export function useAnimateOnScroll(
   const unrefEl = toValue(el);
   const { from, to } = options;
 
-  let scrollAnimationOptions: gsap.AnimationVars["scrollTrigger"] = undefined;
+  let scrollTrigger: gsap.AnimationVars["scrollTrigger"] = undefined;
 
   if (options.scrollAnimationOptions) {
-    scrollAnimationOptions = {
+    scrollTrigger = {
       trigger: unrefEl,
       start: "top 80%",
     };
     if (options.scrollAnimationOptions instanceof Object) {
-      scrollAnimationOptions = {
+      scrollTrigger = {
         trigger: unrefEl,
         ...options.scrollAnimationOptions,
       };
     }
+
+    scrollTrigger = {
+      ...scrollTrigger,
+      ...(to.scrollTrigger ?? {}),
+    };
   }
 
   const { fromTo } = useGsap();
@@ -41,10 +46,10 @@ export function useAnimateOnScroll(
     from,
     to: {
       ...to,
-      scrollTrigger: {
-        ...(scrollAnimationOptions ?? {}),
-        ...(to.scrollTrigger ?? {}),
-      },
+      scrollTrigger,
     },
   });
 }
+
+export * from "./baked";
+export * from "./directive";

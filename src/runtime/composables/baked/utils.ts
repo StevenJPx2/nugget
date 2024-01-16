@@ -1,5 +1,6 @@
 import type { StrongTweenVars } from "../use-gsap";
-import { presetTweens, type AnimationOptions } from "./types";
+import { presetTweens } from "./presets";
+import { type AnimationOptions } from "./types";
 
 /** Generates the baked animation tweens
  * @param animationOptions - The animation options
@@ -35,3 +36,5 @@ export function generateAnimationTweens(animationOptions: AnimationOptions): {
 
   return tweens;
 }
+
+export * from "./types";

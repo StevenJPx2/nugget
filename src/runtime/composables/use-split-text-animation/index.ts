@@ -25,9 +25,8 @@ export type UseSplitTextAnimationOptions = Simplify<
  * @param el - The element or ref to animate
  * @param options - The animation options
  * @remarks
- * - Made so that it works with a basic but nice effect out of the box
  * - Uses the `useSplitText` composable to split the text
- * - Uses the `useBakedAnimation` composable for the animation
+ * - Uses the `useAnimateOnScroll` composable for the animation
  * @example
  * ```ts
  * const refEl = ref<HTMLElement>();
@@ -57,3 +56,5 @@ export function useSplitTextAnimation(
 
   useAnimateOnScroll(splitEl[splitBy], animateOnScrollOptions);
 }
+
+export * from "./baked";

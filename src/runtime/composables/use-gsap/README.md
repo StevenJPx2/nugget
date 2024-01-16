@@ -34,6 +34,40 @@ const {
 
 You can use `tlFn` to have an isolated instance of the timeline which will register on mount.
 
+## Baked version
+
+This exposes `fromTo` with [`baked`](../baked) animations.
+
+```ts
+const container = ref<HTMLElement>();
+useBakedFromTo(container, { translate: true, scale: true });
+```
+
+## Directive
+
+Can also be imported as `vFromTo`.
+
+### Unbaked
+
+```vue
+<div
+  v-from-to="{
+    options: { from: { x: 0 }, to: { x: 10 } },
+  }"
+/>
+```
+
+### Baked
+
+```vue
+<div
+  v-from-to="{
+    baked: true,
+    options: { translate: true, scale: true },
+  }"
+/>
+```
+
 ## Example
 
 ```ts

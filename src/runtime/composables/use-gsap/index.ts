@@ -98,3 +98,5 @@ export function useGsap(plugins: object[] = [ScrollTrigger]) {
 }
 
 export type UseGsapReturn = ReturnType<typeof useGsap>;
+
+export * from "./baked";

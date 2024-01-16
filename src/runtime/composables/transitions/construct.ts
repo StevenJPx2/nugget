@@ -12,6 +12,7 @@ import {
 import type { ShallowRef } from "vue";
 import type { MaybeComputedElementRef } from "@vueuse/core";
 import type { Direction, Simplify } from "../../types";
+import { concat, pascalCase } from "string-ts";
 
 export type UseConstructTransitionCallbackOptions = {
   /** Callback when the enter animation is about to start */
@@ -138,37 +139,7 @@ export function useConstructTransition(
   };
 
   watch(playState, (value) => {
-    switch (value) {
-      case "beforeEnter": {
-        options.onBeforeEnter?.();
-        break;
-      }
-      case "beforeLeave": {
-        options.onBeforeLeave?.();
-        break;
-      }
-      case "afterEnter": {
-        options.onAfterEnter?.();
-        break;
-      }
-      case "afterLeave": {
-        options.onAfterLeave?.();
-        break;
-      }
-      case "enter": {
-        options.onEnter?.();
-        break;
-      }
-      case "leave": {
-        options.onLeave?.();
-        break;
-      }
-      default: {
-        // compile-time check to ensure all cases are handled
-        const _: never = value;
-        _;
-      }
-    }
+    options[concat("on", pascalCase(value))]?.();
   });
 
   return {
