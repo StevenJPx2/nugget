@@ -23,47 +23,45 @@ you do not have to break your head over.
 
 - [✨ Release Notes](/CHANGELOG.md)
 <!-- - [🏀 Online playground](https://stackblitz.com/github/your-org/@fdcn/nugget?file=playground%2Fapp.vue) -->
-- [📖 Documentation](https://nugget.stevenjohn.co) ![Static
-Badge](https://img.shields.io/badge/%E2%9A%A0%EF%B8%8F-WIP-red)
+- [📖 Documentation](https://nugget.stevenjohn.co) ![WIP](https://img.shields.io/badge/%E2%9A%A0%EF%B8%8F-WIP-red)
 
-## Composables
+## Usage
 
-### Low-level
+```vue
+<script setup lang="ts">
+const container = ref<HTMLDivElement | null>(null);
 
-- [`useGsap`](/src/runtime/composables/use-gsap): Exposes [gsap][gsap-href] functions. This is internally used in all the other animation composables.
-- [`useLocomotive`](/src/runtime/composables/use-locomotive): Exposes [Locomotive Scroll][locomotive-href] for smooth scroll and parallax effects. Use `<SmoothScroll />` for CSS styles.
-- [`useConstructTransition`](/src/runtime/composables/transitions): Used for creating transitions.
+const { play } = useBakedTransition({
+  parentContainer: container,
+  animationOptions: {
+    translate: true,
+    scale: "in",
+    skew: "bottom",
+  },
+});
+</script>
 
-### Mid-level
-
-- [`useAnimateOnScroll`](/src/runtime/composables/use-animate-on-scroll)
-- [`useSplitTextAnimation`](/src/runtime/composables/use-split-text-animation)
-
-### High-level
-
-- [**Baked** animations](/src/runtime/composables/baked): Define stackable, premium animations. All mid-level composables have a baked version.
-  - `useBakedAnimation`: Exposes a `fromTo` tween with baked settings.
-  - `useBakedAnimateOnScroll`: Runs baked animations on scroll. Scroll settings are automatically determined if not explicitly set.
-  - `useBakedSplitTextAnimation`: Runs `useSplitTextAnimation` with baked presets.
-- [Transitions](/src/runtime/composables/transitions): Composables for kickass transitions that can be used for anything.
-  - `useBendyWendy`
-  - `useOffset`
-
-## Components
-
-- `InfiniteMarquee`: Used for making cool-ass marquees
-- `SmoothScroll`: Component version of `useLocomotive`
-- `transitions/`: Component versions of transition composables.
-
-## Roadmap
-
-- [x] Make non-scroll controlled infinite marquee.
-- [x] Make hover stop marquee.
-- [ ] Button hover effects
-- [ ] Image hover effects
-- [ ] Tooltip effects
-- [ ] Vue version
-- [ ] Docs page
+<template>
+  <button @click="play()">Hello!</button>
+  <h1
+    v-split-animate="{
+      baked: true,
+      options: {
+        splitBy: 'lines',
+        animationOptions: { translate: true },
+        splitOptions: {
+          wrapping: {
+            select: 'lines',
+            wrapClass: 'inline-block overflow-hidden',
+          },
+        },
+      },
+    }"
+  >
+    Nuxt is so cool, and this module is quite awesome.
+  </h1>
+</template>
+```
 
 ## Quick Setup
 
@@ -89,6 +87,16 @@ export default defineNuxtConfig({
 ```
 
 That's it! You can now use Nugget Module in your Nuxt app ✨
+
+## Roadmap
+
+- [x] Make non-scroll controlled infinite marquee.
+- [x] Make hover stop marquee.
+- [ ] Button hover effects
+- [ ] Image hover effects
+- [ ] Tooltip effects
+- [ ] Vue version
+- [ ] Docs page
 
 ## Development
 
