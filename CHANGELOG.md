@@ -1,6 +1,47 @@
 # Changelog
 
 
+## v0.2.0
+
+[compare changes](https://github.com/stevenjpx2/nugget/compare/v0.1.9...v0.2.0)
+
+### 🚀 Enhancements
+
+- **useGenericTransition:** Create 1-2-3 transitions ([b59ff97](https://github.com/stevenjpx2/nugget/commit/b59ff97))
+- **useGenericTransition:** Simplify composable ([a7b9268](https://github.com/stevenjpx2/nugget/commit/a7b9268))
+- **docs:** Add docs website ([e5d2984](https://github.com/stevenjpx2/nugget/commit/e5d2984))
+- ⚠️  Change baked locations, add baked option to directive ([9920cc6](https://github.com/stevenjpx2/nugget/commit/9920cc6))
+
+### 🩹 Fixes
+
+- **README:** Image ([adad27e](https://github.com/stevenjpx2/nugget/commit/adad27e))
+
+### 📖 Documentation
+
+- **README:** Add docs link ([f9a4a7a](https://github.com/stevenjpx2/nugget/commit/f9a4a7a))
+- **website:** Make README as the vitepress pages ([6685423](https://github.com/stevenjpx2/nugget/commit/6685423))
+- **fix:** Dead link ([da55a42](https://github.com/stevenjpx2/nugget/commit/da55a42))
+- **index:** Add link ([169032c](https://github.com/stevenjpx2/nugget/commit/169032c))
+- **vitepress:** Complete auto-generate docs ([0801d64](https://github.com/stevenjpx2/nugget/commit/0801d64))
+- **vitepress:** Simplify route rewrite ([ea6fd14](https://github.com/stevenjpx2/nugget/commit/ea6fd14))
+- Add more ([520e295](https://github.com/stevenjpx2/nugget/commit/520e295))
+- **vitepress:** GenerateSidebar function ([bf0cf5b](https://github.com/stevenjpx2/nugget/commit/bf0cf5b))
+- **vitepress:** Add SEO ([ead0671](https://github.com/stevenjpx2/nugget/commit/ead0671))
+- **index.md:** Fix get started ([4618634](https://github.com/stevenjpx2/nugget/commit/4618634))
+- **README:** Remove redundant documentation ([bb5fc2b](https://github.com/stevenjpx2/nugget/commit/bb5fc2b))
+
+### 🏡 Chore
+
+- **README:** Add banner ([4728118](https://github.com/stevenjpx2/nugget/commit/4728118))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Change baked locations, add baked option to directive ([9920cc6](https://github.com/stevenjpx2/nugget/commit/9920cc6))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v0.1.9
 
 [compare changes](https://github.com/stevenjpx2/nugget/compare/v0.1.8...v0.1.9)
