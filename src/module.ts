@@ -3,10 +3,13 @@ import {
   addPlugin,
   createResolver,
   installModule,
-  addComponentsDir,
   addImportsDir,
+  addComponent,
 } from "@nuxt/kit";
 import { name, version } from "../package.json";
+import fg from "fast-glob";
+import { relative } from "pathe";
+import { pascalCase } from "string-ts";
 
 // Module options TypeScript interface definition
 export interface ModuleOptions {}
@@ -22,11 +25,22 @@ export default defineNuxtModule<ModuleOptions>({
   async setup() {
     const resolver = createResolver(import.meta.url);
 
-    // Do not add the extension since the `.ts` will be transpiled to `.mjs` after `npm run prepack`
-    addPlugin(resolver.resolve("./runtime/plugin"));
+    addPlugin(resolver.resolve("./functions/plugin"));
 
-    addComponentsDir({ path: resolver.resolve("./runtime/components") });
-    addImportsDir(resolver.resolve("./runtime/composables"));
+    for (const path of fg.sync(
+      resolver.resolve("./functions/**/component.vue"),
+    )) {
+      addComponent({
+        name: pascalCase(
+          relative(resolver.resolve("./functions"), path)
+            .replace("component.vue", "")
+            .replace("use", ""),
+        ),
+        filePath: path,
+      });
+    }
+
+    addImportsDir(resolver.resolve("./functions"));
 
     await installModule("nuxt-split-type", {});
     await installModule("@vueuse/nuxt", {});

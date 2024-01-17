@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, toRefs, useBendyWendyTransition, watch } from "#imports";
-import type { TransitionProps, TransitionEmits } from "./utils";
-import { callbackFactory } from "./utils";
+import type { TransitionProps, TransitionEmits } from "../utils";
+import { callbackFactory } from "../utils";
 
 const props = withDefaults(defineProps<TransitionProps>(), {
   direction: "top",

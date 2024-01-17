@@ -4,7 +4,7 @@ import {
   useConstructTransition,
   type TransitionOutput,
   type UseConstructTransitionOptions,
-} from "./construct";
+} from "../construct";
 import type { Simplify } from "../../types";
 
 export type BendyWendyOptions = Simplify<

@@ -1,9 +1,5 @@
 import { defineNuxtPlugin } from "#app";
-import {
-  vSplitAnimate,
-  vAos,
-  vFromTo,
-} from "../runtime/composables/directives";
+import { vSplitAnimate, vAos, vFromTo } from "./directives";
 
 export default defineNuxtPlugin((nuxt) => {
   nuxt.vueApp.directive("split-animate", vSplitAnimate);

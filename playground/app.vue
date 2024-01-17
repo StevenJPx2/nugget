@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { vSplitAnimate } from "../src/runtime/composables/directives";
+import { vSplitAnimate } from "../src/functions/directives";
 import { ref, useBakedTransition } from "#imports";
 import { promiseTimeout } from "@vueuse/core";
 
@@ -23,7 +23,7 @@ const onAfterEnter = async () => {
 };
 </script>
 <template>
-  <smooth-scroll>
+  <locomotive>
     <button
       class="bg-yellow-500 rounded-md grid place-content-center relative px-8 py-5 overflow-hidden"
       @mouseover="
@@ -71,7 +71,7 @@ const onAfterEnter = async () => {
           &gt;
         </button>
       </div>
-      <transition-offset
+      <transitions-offset
         class="red h-full w-full"
         :run="runTransition"
         :direction="direction"
@@ -132,7 +132,7 @@ const onAfterEnter = async () => {
         </div>
       </infinite-marquee>
     </div>
-  </smooth-scroll>
+  </locomotive>
 </template>
 
 <style>

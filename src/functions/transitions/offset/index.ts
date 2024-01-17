@@ -4,7 +4,7 @@ import {
   useConstructTransition,
   type TransitionOutput,
   type UseConstructTransitionOptions,
-} from "./construct";
+} from "../construct";
 import { watch, unrefElement, unref, type MaybeRef } from "#imports";
 
 export type OffsetOptions = Simplify<

@@ -1,5 +1,5 @@
-import type { Direction } from "../../types";
-import { type UseConstructTransitionCallbackOptions } from "../../composables/transitions/transition";
+import type { Direction } from "../types";
+import type { UseConstructTransitionCallbackOptions } from "./construct";
 
 export type TransitionProps = {
   run: boolean;
@@ -15,7 +15,7 @@ export type TransitionEmits = {
 };
 
 export const callbackFactory = (
-  emit: (evt: any) => any,
+  emit: (evt: any) => void,
 ): UseConstructTransitionCallbackOptions => ({
   onEnter() {
     emit("enter");

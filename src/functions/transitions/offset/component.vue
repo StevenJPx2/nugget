@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref, toRefs, useOffsetTransition, watch } from "#imports";
 import type { HTMLAttributes } from "vue";
-import type { TransitionEmits } from "./utils";
-import { callbackFactory } from "./utils";
+import { type TransitionEmits, callbackFactory } from "../utils";
 import type { Direction } from "../../types";
 
 const parentContainer = ref<HTMLElement | null>(null);
@@ -36,13 +35,7 @@ watch(run, (value) => {
 
 <template>
   <div ref="parentContainer">
-    <div
-      ref="mainContainer"
-      v-bind="props.mainContainerAttributes"
-    />
-    <div
-      ref="offsetContainer"
-      v-bind="props.offsetContainerAttributes"
-    />
+    <div ref="mainContainer" v-bind="props.mainContainerAttributes" />
+    <div ref="offsetContainer" v-bind="props.offsetContainerAttributes" />
   </div>
 </template>

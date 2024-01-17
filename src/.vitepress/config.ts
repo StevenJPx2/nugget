@@ -4,11 +4,16 @@ import { ogUrl, github, ogImage, releases, logo } from "./meta";
 import { version, name, description } from "../../package.json";
 import { titleCase, camelCase } from "string-ts";
 
-const refPaths = generateSidebar("src/runtime", {
-  leadingPath: "/ref",
-  leafFile: "README",
-  transformName: camelCase,
-});
+const refPaths = [
+  generateSidebar("src", {
+    leadingPath: "/ref",
+    leafFile: "README",
+    transformName: camelCase,
+    transformPath: (path) => path.replace("functions", ""),
+  }).find((item) => item.text === "functions")!,
+];
+
+refPaths[0].text = "Reference";
 
 const guidePaths = generateSidebar("src/guide", {
   leadingPath: "/guide",
@@ -48,8 +53,8 @@ export default defineConfig({
   ],
 
   rewrites: {
-    "runtime/:type+/README.md": "ref/:type+/index.md",
-    "runtime/:type+.md": "ref/:type+.md",
+    "functions/:type*/README.md": "ref/:type*/index.md",
+    "functions/:type+.md": "ref/:type+.md",
   },
   sitemap: {
     hostname: "https://nugget.stevenjohn.co",
@@ -83,12 +88,13 @@ export default defineConfig({
       {
         text: "Reference",
         // @ts-expect-error
-        items: generateSidebar("src/runtime", {
+        items: generateSidebar("src", {
           leadingPath: "/ref",
           leafFile: "README",
-          depth: 2,
-          transformName: titleCase,
-        }),
+          depth: 3,
+          transformName: camelCase,
+          transformPath: (path) => path.replace("functions", ""),
+        }).find((item) => item.text === "functions").items!,
       },
       {
         text: `v${version}`,
@@ -98,7 +104,7 @@ export default defineConfig({
 
     sidebar: {
       "/guide/": guidePaths,
-      "/ref/": [{ text: "Reference", items: refPaths }],
+      "/ref/": refPaths,
     },
 
     socialLinks: [{ icon: "github", link: github }],

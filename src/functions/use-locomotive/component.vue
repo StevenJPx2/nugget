@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from "#imports";
-import { useLocomotive } from "../composables";
+import { useLocomotive } from ".";
 import type { ILocomotiveScrollOptions } from "locomotive-scroll/dist/types/types";
 
 const props = defineProps<{
