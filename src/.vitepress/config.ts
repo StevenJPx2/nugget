@@ -1,22 +1,16 @@
 import { defineConfig } from "vitepress";
-import {
-  generateSidebar,
-  ogUrl,
-  github,
-  ogImage,
-  releases,
-  logo,
-} from "./meta";
+import { generateSidebar } from "vitepress-extras";
+import { ogUrl, github, ogImage, releases, logo } from "./meta";
 import { version, name, description } from "../../package.json";
 import { titleCase, camelCase } from "string-ts";
 
-const refPaths = generateSidebar("runtime", {
+const refPaths = generateSidebar("src/runtime", {
   leadingPath: "/ref",
   leafFile: "README",
   transformName: camelCase,
 });
 
-const guidePaths = generateSidebar("guide", {
+const guidePaths = generateSidebar("src/guide", {
   leadingPath: "/guide",
   leafFile: "README",
   transformName: titleCase,
@@ -80,7 +74,7 @@ export default defineConfig({
 
     nav: [
       // @ts-expect-error
-      generateSidebar("guide", {
+      generateSidebar("src/guide", {
         leadingPath: "/guide",
         leafFile: "README",
         depth: 1,
@@ -89,7 +83,7 @@ export default defineConfig({
       {
         text: "Reference",
         // @ts-expect-error
-        items: generateSidebar("runtime", {
+        items: generateSidebar("src/runtime", {
           leadingPath: "/ref",
           leafFile: "README",
           depth: 2,
