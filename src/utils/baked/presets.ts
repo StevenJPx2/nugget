@@ -1,9 +1,10 @@
 import "gsap";
 import type { AnimationOptions } from "./types";
+import type { StrongTweenVars } from "../use-gsap";
 
 type RequiredAnimationOptions = Required<AnimationOptions>;
 const defineTween = <
-  Obj extends Record<string, { from: gsap.TweenVars; to: gsap.TweenVars }>,
+  Obj extends Record<string, { from: StrongTweenVars; to: StrongTweenVars }>,
   T extends Exclude<keyof Obj, "DEFAULT">,
 >(
   x: Obj,
@@ -20,28 +21,8 @@ export const presetTweens = {
   ),
   translate: defineTween(
     {
-      bottom: {
-        from: { y: "200%" },
-        to: {
-          y: 0,
-          scrollTrigger: {
-            start: "top-=100% center",
-            end: "bottom center",
-          },
-        },
-      },
-      top: {
-        from: {
-          y: "-200%",
-        },
-        to: {
-          y: 0,
-          scrollTrigger: {
-            start: "top+=50% center",
-            end: "bottom center",
-          },
-        },
-      },
+      bottom: { from: { y: "200%" }, to: { y: 0 } },
+      top: { from: { y: "-200%" }, to: { y: 0 } },
       left: { from: { x: "-200%" }, to: { x: 0 } },
       right: { from: { x: "200%" }, to: { x: 0 } },
     },
@@ -89,8 +70,8 @@ export const presetTweens = {
       RequiredAnimationOptions[K],
       true
     >]: {
-      from: gsap.TweenVars;
-      to: gsap.TweenVars;
+      from: StrongTweenVars;
+      to: StrongTweenVars;
     };
   } & {
     DEFAULT: Exclude<RequiredAnimationOptions[K], true>;

@@ -1,5 +1,5 @@
 import { toRef, unref, unrefElement, watch } from "#imports";
-import type { Simplify } from "../../types";
+import type { Simplify } from "../types";
 import { type StrongTweenVars, useGsap } from "../use-gsap";
 import {
   useConstructTransition,

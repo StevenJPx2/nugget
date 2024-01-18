@@ -25,6 +25,8 @@ you do not have to break your head over.
 <!-- - [🏀 Online playground](https://stackblitz.com/github/your-org/@fdcn/nugget?file=playground%2Fapp.vue) -->
 - [📖 Documentation](https://nugget.stevenjohn.co) ![WIP](https://img.shields.io/badge/%E2%9A%A0%EF%B8%8F-WIP-red)
 
+![Nugget Preview](./src/public/nugget-preview.gif)
+
 ## Usage
 
 ```vue

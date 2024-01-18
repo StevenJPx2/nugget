@@ -2,7 +2,7 @@ import { type MaybeRefOrGetter } from "#imports";
 import {
   generateAnimationTweens,
   type UseBakedAnimationOptions,
-} from "../baked/utils";
+} from "../../utils/baked";
 import { useGsap } from ".";
 
 /**

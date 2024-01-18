@@ -1,10 +1,10 @@
-import type { Simplify } from "../../types";
+import type { Simplify } from "../types";
 import {
   type TransitionOutput,
   type UseConstructTransitionOptions,
 } from "./construct";
-import type { AnimationOptions } from "../baked/types";
-import { generateAnimationTweens } from "../baked/utils";
+import type { AnimationOptions } from "../../utils/baked/types";
+import { generateAnimationTweens } from "../../utils/baked";
 import { useGenericTransition } from "./generic";
 
 export type UseBakedTransitionOptions = Simplify<

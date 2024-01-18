@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { vSplitAnimate } from "../src/functions/directives";
+import { vSplitAnimate, vAos } from "../src/functions/directives";
 import { ref, useBakedTransition } from "#imports";
 import { promiseTimeout } from "@vueuse/core";
 
@@ -81,6 +81,19 @@ const onAfterEnter = async () => {
         @after-enter="onAfterEnter"
       />
     </div>
+    <div
+      v-aos="{
+        baked: true,
+        options: {
+          animationOptions: {
+            opacity: true,
+            translate: true,
+            blur: true,
+          },
+        },
+      }"
+      class="bg-blue-500 size-10 mx-auto opacity-0"
+    />
     <div
       :style="{
         height: '200vh',

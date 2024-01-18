@@ -1,4 +1,3 @@
-export * from "./generate-sidebar";
 /* VitePress head */
 export const ogUrl = "https://nugget.stevenjohn.co/";
 export const ogImage = `${ogUrl}/assets/nugget-banner.jpg`;

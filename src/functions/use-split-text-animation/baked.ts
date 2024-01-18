@@ -1,12 +1,12 @@
 import type { MaybeComputedElementRef } from "@vueuse/core";
-import type { Ease, Simplify } from "../../types";
+import type { Ease, Simplify } from "../types";
 import { type UseBakedAnimateOnScrollOptions } from "../use-animate-on-scroll/baked";
 import {
   useSplitTextAnimation,
   type PartialSplitTextAnimationOptions,
 } from ".";
 
-import { generateAnimationTweens } from "../baked/utils";
+import { generateAnimationTweens } from "../../utils/baked";
 
 /** Completely optional options for the `useSplitTextAnimation` composable */
 export type UseBakedSplitTextAnimationOptions = Simplify<

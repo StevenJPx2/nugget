@@ -1,9 +1,9 @@
 import { type MaybeRefOrGetter, toRef } from "#imports";
-import type { Simplify } from "../../types";
+import type { Simplify } from "../types";
 import {
   type UseBakedAnimationOptions,
   generateAnimationTweens,
-} from "../baked/utils";
+} from "../../utils/baked";
 import { useAnimateOnScroll } from ".";
 
 /** Options for `useAnimateOnScroll` */
