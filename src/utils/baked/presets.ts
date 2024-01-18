@@ -1,6 +1,5 @@
-import "gsap";
 import type { AnimationOptions } from "./types";
-import type { StrongTweenVars } from "../use-gsap";
+import type { StrongTweenVars } from "../../types";
 
 type RequiredAnimationOptions = Required<AnimationOptions>;
 const defineTween = <

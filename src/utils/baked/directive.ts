@@ -1,5 +1,5 @@
 import { directiveHooks } from "@vueuse/core";
-import type { ObjectDirective } from "nuxt/dist/app/compat/capi";
+import type { ObjectDirective } from "vue";
 
 export type DirectiveOptions<O, BO> =
   | { baked: true; options: BO }

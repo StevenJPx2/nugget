@@ -94,11 +94,12 @@ That's it! You can now use Nugget Module in your Nuxt app ✨
 
 - [x] Make non-scroll controlled infinite marquee.
 - [x] Make hover stop marquee.
+- [x] Docs page
+- [ ] Tests
 - [ ] Button hover effects
 - [ ] Image hover effects
 - [ ] Tooltip effects
 - [ ] Vue version
-- [ ] Docs page
 
 ## Development
 

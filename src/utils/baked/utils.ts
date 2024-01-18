@@ -1,4 +1,4 @@
-import type { StrongTweenVars } from "../use-gsap";
+import type { StrongTweenVars } from "../../types";
 import { presetTweens } from "./presets";
 import { type AnimationOptions } from "./types";
 

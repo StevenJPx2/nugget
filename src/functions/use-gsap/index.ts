@@ -11,9 +11,8 @@ import "gsap";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { invoke } from "@vueuse/core";
-import type { StrongTweenVars } from "./types";
+import type { StrongTweenVars } from "../../types";
 import { timeline } from "./timeline";
-export * from "./types";
 
 /** Function to activate the tween on mount
  * @param el - The element to tween

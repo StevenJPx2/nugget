@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter } from "@vueuse/core";
+import "gsap";
 
 export type Direction = "bottom" | "top" | "left" | "right";
 type EaseFunction =
@@ -27,14 +27,19 @@ export type Ease =
   | EaseFunction
   | ExpressiveEaseFunctions;
 
-export type ElementOrElementList =
-  | HTMLElement
-  | HTMLElement[]
-  | SVGElement
-  | SVGElement[];
-
-export type MaybeElementOrElementListRefOrGetter = MaybeRefOrGetter<
-  ElementOrElementList | null | undefined
->;
+type EaseOption = {
+  /** The ease of the tween
+   * @remarks
+   * - `Ease` is a custom type that allows the LSP to infer the correct string values for `ease`
+   * - You can also pass a custom `gsap.EaseFunction`
+   * */
+  ease?: Ease | gsap.EaseFunction;
+};
 
 export type Simplify<T> = { [K in keyof T]: T[K] } & {};
+
+/** Strongly typed TweenVars */
+export type StrongTweenVars = gsap.TweenVars & EaseOption;
+
+/** Strongly typed TimelineVars */
+export type StrongTimelineVars = gsap.TimelineVars & EaseOption;

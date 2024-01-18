@@ -12,7 +12,9 @@ import { relative } from "pathe";
 import { pascalCase } from "string-ts";
 
 // Module options TypeScript interface definition
-export interface ModuleOptions {}
+export interface ModuleOptions {
+  baked?: { extra?: [] };
+}
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {

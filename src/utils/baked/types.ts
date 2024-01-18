@@ -1,5 +1,4 @@
-import type { Direction } from "../types";
-import type { StrongTweenVars } from "../use-gsap";
+import type { Direction, StrongTweenVars } from "../../types";
 
 export type AnimationOptions = {
   /** Animation opacity
