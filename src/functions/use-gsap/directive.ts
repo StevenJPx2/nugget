@@ -1,8 +1,10 @@
 import { useGsap, useBakedFromTo, type UseGsapReturn } from ".";
 import { directiveHooks } from "@vueuse/core";
 import type { ObjectDirective } from "nuxt/dist/app/compat/capi";
-import type { DirectiveOptions } from "../baked/directive";
-import type { UseBakedAnimationOptions } from "../baked/types";
+import type {
+  DirectiveOptions,
+  UseBakedAnimationOptions,
+} from "../../utils/baked";
 
 export const vFromTo: ObjectDirective<
   HTMLElement,

@@ -85,6 +85,7 @@ const onAfterEnter = async () => {
       v-aos="{
         baked: true,
         options: {
+          scrollAnimationOptions: { start: 'top 60%' },
           animationOptions: {
             opacity: true,
             translate: true,

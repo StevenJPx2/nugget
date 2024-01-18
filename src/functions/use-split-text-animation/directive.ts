@@ -1,5 +1,5 @@
 import { useSplitTextAnimation, useBakedSplitTextAnimation } from ".";
-import { defineDirective } from "../baked/directive";
+import { defineDirective } from "../../utils/baked";
 
 export const vSplitAnimate = defineDirective({
   fn: useSplitTextAnimation,
