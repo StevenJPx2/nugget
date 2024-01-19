@@ -1,10 +1,8 @@
-import type { AnimationOptions } from "./types";
 import type { StrongTweenVars } from "../../types";
 
-type RequiredAnimationOptions = Required<AnimationOptions>;
 const defineTween = <
   Obj extends Record<string, { from: StrongTweenVars; to: StrongTweenVars }>,
-  T extends Exclude<keyof Obj, "DEFAULT">,
+  const T extends Exclude<keyof Obj, "DEFAULT">,
 >(
   x: Obj,
   defaultTween: T,
@@ -63,16 +61,16 @@ export const presetTweens = {
     },
     "in",
   ),
-} satisfies {
-  [K in keyof RequiredAnimationOptions]: {
-    [P in RequiredAnimationOptions[K] as Exclude<
-      RequiredAnimationOptions[K],
-      true
-    >]: {
-      from: StrongTweenVars;
-      to: StrongTweenVars;
-    };
+} satisfies Record<
+  string,
+  {
+    [x: string]:
+      | {
+          from: StrongTweenVars;
+          to: StrongTweenVars;
+        }
+      | string;
   } & {
-    DEFAULT: Exclude<RequiredAnimationOptions[K], true>;
-  };
-};
+    DEFAULT: string;
+  }
+>;

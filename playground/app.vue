@@ -18,8 +18,11 @@ const runTransition = ref(false);
 const direction = ref<"left" | "right">("left");
 const onAfterEnter = async () => {
   runTransition.value = false;
-  await promiseTimeout(500);
-  runTransition.value = true;
+};
+
+const runBendyTransition = ref(false);
+const onAfterEnterBendy = async () => {
+  runBendyTransition.value = false;
 };
 </script>
 <template>
@@ -71,7 +74,7 @@ const onAfterEnter = async () => {
           &gt;
         </button>
       </div>
-      <transitions-offset
+      <offset-transition
         class="red h-full w-full"
         :run="runTransition"
         :direction="direction"
@@ -81,6 +84,26 @@ const onAfterEnter = async () => {
         @after-enter="onAfterEnter"
       />
     </div>
+    <div :style="{ position: 'relative', width: '400px', height: '400px' }">
+      <div
+        :style="{
+          position: 'absolute',
+          display: 'flex',
+          justifyContent: 'space-between',
+          margin: 'auto',
+          zIndex: 1,
+        }"
+      >
+        <button @mouseover="runBendyTransition = true">v</button>
+      </div>
+      <bendy-wendy-transition
+        class="red h-full w-full"
+        :run="runBendyTransition"
+        @after-leave="runBendyTransition = false"
+        @after-enter="onAfterEnterBendy"
+      />
+    </div>
+
     <div
       v-aos="{
         baked: true,

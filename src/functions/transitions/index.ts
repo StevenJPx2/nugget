@@ -1,5 +1,5 @@
-export { useBendyWendyTransition } from "./bendy-wendy";
-export { useOffsetTransition } from "./offset";
-export { useConstructTransition } from "./construct";
-export { useBakedTransition } from "./baked";
-export { useGenericTransition } from "./generic";
+export { useBendyWendyTransition } from "./use-bendy-wendy-transition";
+export { useOffsetTransition } from "./use-offset-transition";
+export { useConstructTransition } from "./use-construct-transition";
+export { useBakedTransition } from "./use-baked-transition";
+export { useGenericTransition } from "./use-generic-transition";

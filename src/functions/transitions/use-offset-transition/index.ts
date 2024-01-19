@@ -1,11 +1,11 @@
 import type { MaybeComputedElementRef } from "@vueuse/core";
-import type { Direction, Simplify } from "../../types";
 import {
   useConstructTransition,
   type TransitionOutput,
   type UseConstructTransitionOptions,
-} from "../construct";
+} from "../use-construct-transition";
 import { watch, unrefElement, unref, type MaybeRef } from "#imports";
+import type { Direction, Simplify } from "../../../types";
 
 export type OffsetOptions = Simplify<
   {

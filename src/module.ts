@@ -5,16 +5,15 @@ import {
   installModule,
   addImportsDir,
   addComponent,
+  addComponentsDir,
 } from "@nuxt/kit";
 import { name, version } from "../package.json";
 import fg from "fast-glob";
-import { relative } from "pathe";
+import { relative, sep } from "pathe";
 import { pascalCase } from "string-ts";
 
 // Module options TypeScript interface definition
-export interface ModuleOptions {
-  baked?: { extra?: [] };
-}
+export interface ModuleOptions {}
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
@@ -23,7 +22,9 @@ export default defineNuxtModule<ModuleOptions>({
     configKey: name,
   },
   // Default configuration options of the Nuxt module
-  defaults: {},
+  defaults: {
+    baked: { extra: { hello: { in: { from: {}, to: {} }, DEFAULT: "in" } } },
+  },
   async setup() {
     const resolver = createResolver(import.meta.url);
 
@@ -34,7 +35,10 @@ export default defineNuxtModule<ModuleOptions>({
     )) {
       addComponent({
         name: pascalCase(
-          relative(resolver.resolve("./functions"), path)
+          relative(
+            resolver.resolve("./functions"),
+            path.split(sep).slice(-2, -1)[0],
+          )
             .replace("component.vue", "")
             .replace("use", ""),
         ),
@@ -43,6 +47,7 @@ export default defineNuxtModule<ModuleOptions>({
     }
 
     addImportsDir(resolver.resolve("./functions"));
+    addComponentsDir({ path: resolver.resolve("./components") });
 
     await installModule("nuxt-split-type", {});
     await installModule("@vueuse/nuxt", {});

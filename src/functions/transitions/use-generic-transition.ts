@@ -5,7 +5,7 @@ import {
   useConstructTransition,
   type TransitionOutput,
   type UseConstructTransitionOptions,
-} from "./construct";
+} from "./use-construct-transition";
 
 export type UseGenericTransitionOptions = Simplify<
   {

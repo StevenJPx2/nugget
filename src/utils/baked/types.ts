@@ -1,4 +1,5 @@
 import type { Direction, StrongTweenVars } from "../../types";
+import type { presetTweens } from "./presets";
 
 export type AnimationOptions = {
   /** Animation opacity
@@ -47,6 +48,12 @@ export type AnimationOptions = {
    * - `true` is the same as `in`
    * */
   blur?: "in" | "out" | true;
+};
+
+export type PresetTweens = typeof presetTweens;
+
+export type NewAnimationOptions = {
+  [K in keyof PresetTweens]: Exclude<keyof PresetTweens[K], "DEFAULT"> | true;
 };
 
 /** Options for the animation

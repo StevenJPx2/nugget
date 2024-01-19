@@ -2,20 +2,29 @@ import { defineConfig } from "vitepress";
 import { generateSidebar } from "vitepress-extras";
 import { ogUrl, github, ogImage, releases, logo } from "./meta";
 import { version, name, description } from "../../package.json";
-import { titleCase, camelCase } from "string-ts";
+import { titleCase, camelCase, pascalCase } from "string-ts";
 
 const refPaths = [
-  generateSidebar("src", {
+  ...generateSidebar({
+    rootPath: "src",
+    contentPath: "functions",
     leadingPath: "/ref",
     leafFile: "README",
     transformName: camelCase,
-    transformPath: (path) => path.replace("functions", ""),
-  }).find((item) => item.text === "functions")!,
+  }),
+  ...generateSidebar({
+    rootPath: "src",
+    contentPath: "components",
+    leadingPath: "/ref",
+    leafFile: "README",
+    transformName: pascalCase,
+  }),
 ];
 
-refPaths[0].text = "Reference";
+console.log(JSON.stringify(refPaths, null, 2));
 
-const guidePaths = generateSidebar("src/guide", {
+const guidePaths = generateSidebar({
+  rootPath: "src/guide",
   leadingPath: "/guide",
   leafFile: "README",
   transformName: titleCase,
@@ -53,8 +62,10 @@ export default defineConfig({
   ],
 
   rewrites: {
-    "functions/:type*/README.md": "ref/:type*/index.md",
-    "functions/:type+.md": "ref/:type+.md",
+    ":root(functions|components)/:type*/README.md":
+      "ref/:root(functions|components)/:type*/index.md",
+    ":root(functions|components)/:type+.md":
+      "ref/:root(functions|components)/:type+.md",
   },
   sitemap: {
     hostname: "https://nugget.stevenjohn.co",
@@ -79,7 +90,8 @@ export default defineConfig({
 
     nav: [
       // @ts-expect-error
-      generateSidebar("src/guide", {
+      generateSidebar({
+        rootPath: "src/guide",
         leadingPath: "/guide",
         leafFile: "README",
         depth: 1,
@@ -88,13 +100,7 @@ export default defineConfig({
       {
         text: "Reference",
         // @ts-expect-error
-        items: generateSidebar("src", {
-          leadingPath: "/ref",
-          leafFile: "README",
-          depth: 3,
-          transformName: camelCase,
-          transformPath: (path) => path.replace("functions", ""),
-        }).find((item) => item.text === "functions").items!,
+        items: refPaths,
       },
       {
         text: `v${version}`,
@@ -104,7 +110,7 @@ export default defineConfig({
 
     sidebar: {
       "/guide/": guidePaths,
-      "/ref/": refPaths,
+      "/ref/": [{ text: "Reference", items: refPaths }],
     },
 
     socialLinks: [{ icon: "github", link: github }],

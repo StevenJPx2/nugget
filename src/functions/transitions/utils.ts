@@ -1,5 +1,5 @@
-import type { Direction } from "../types";
-import type { UseConstructTransitionCallbackOptions } from "./construct";
+import type { Direction } from "../../types";
+import type { UseConstructTransitionCallbackOptions } from "./use-construct-transition";
 
 export type TransitionProps = {
   run: boolean;
