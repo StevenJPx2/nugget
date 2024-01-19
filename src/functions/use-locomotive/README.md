@@ -4,7 +4,7 @@ This composable adds [Locomotive Scroll][loco-href] to Vue while keeping it SSR 
 
 ::: warning
 This will not inject the basic styles that [lenis][lenis-href] (which is used in Locomotive Scroll).
-If you want to use it, wrap the root of your app in [`<SmoothScroll />`](../../components/smooth-scroll).
+If you want to use it, wrap the root of your app in [`<Locomotive />`](#component).
 :::
 
 ## Usage
@@ -38,6 +38,18 @@ Now you can use it by calling `useLocomotive`!
 ```ts
 useLocomotive();
 // running it like this will register it globally
+```
+
+## Component
+
+You have lenis styles added in this as well.
+
+### Example
+
+```vue
+<locomotive>
+  <!-- where you want smooth scroll -->
+</locomotive>
 ```
 
 [loco-href]: https://github.com/locomotivemtl/locomotive-scroll/tree/v5-beta
