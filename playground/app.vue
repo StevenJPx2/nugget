@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { vSplitAnimate, vAos } from "../src/functions/directives";
+import { vSplitAnimate, vAos } from "../src/directives";
 import { ref, useBakedTransition } from "#imports";
 import { promiseTimeout } from "@vueuse/core";
 

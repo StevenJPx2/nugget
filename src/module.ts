@@ -22,9 +22,7 @@ export default defineNuxtModule<ModuleOptions>({
     configKey: name,
   },
   // Default configuration options of the Nuxt module
-  defaults: {
-    baked: { extra: { hello: { in: { from: {}, to: {} }, DEFAULT: "in" } } },
-  },
+  defaults: {},
   async setup() {
     const resolver = createResolver(import.meta.url);
 

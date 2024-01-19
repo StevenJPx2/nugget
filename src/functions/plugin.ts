@@ -1,5 +1,7 @@
 import { defineNuxtPlugin } from "#app";
-import { vSplitAnimate, vAos, vFromTo } from "./directives";
+import { vAos } from "./use-animate-on-scroll/directive";
+import { vSplitAnimate } from "./use-split-text-animation/directive";
+import { vFromTo } from "./use-gsap/directive";
 
 export default defineNuxtPlugin((nuxt) => {
   nuxt.vueApp.directive("split-animate", vSplitAnimate);
