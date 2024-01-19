@@ -1,6 +1,38 @@
 # Changelog
 
 
+## v0.3.0
+
+[compare changes](https://github.com/stevenjpx2/nugget/compare/v0.2.0...v0.3.0)
+
+### 🚀 Enhancements
+
+- ⚠️  Simplify runtime to single folder ([55244cc](https://github.com/stevenjpx2/nugget/commit/55244cc))
+- ⚠️  Add separate components page, change naming scheme of custom transitions ([368f6a0](https://github.com/stevenjpx2/nugget/commit/368f6a0))
+
+### 🩹 Fixes
+
+- **directives:** Fix locations for baked ([ec3afcd](https://github.com/stevenjpx2/nugget/commit/ec3afcd))
+- Generic types are pushed to src ([5fe16b5](https://github.com/stevenjpx2/nugget/commit/5fe16b5))
+- Change directives location, move deps ([8bb8467](https://github.com/stevenjpx2/nugget/commit/8bb8467))
+
+### 💅 Refactors
+
+- **baked:** Move baked/ to utils ([1319f96](https://github.com/stevenjpx2/nugget/commit/1319f96))
+
+### 📖 Documentation
+
+- Add vitepress-extras ([e20fa6c](https://github.com/stevenjpx2/nugget/commit/e20fa6c))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Simplify runtime to single folder ([55244cc](https://github.com/stevenjpx2/nugget/commit/55244cc))
+- ⚠️  Add separate components page, change naming scheme of custom transitions ([368f6a0](https://github.com/stevenjpx2/nugget/commit/368f6a0))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v0.2.0
 
 [compare changes](https://github.com/stevenjpx2/nugget/compare/v0.1.9...v0.2.0)
