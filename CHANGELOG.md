@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v0.3.1
+
+[compare changes](https://github.com/stevenjpx2/nugget/compare/v0.3.0...v0.3.1)
+
+### 🩹 Fixes
+
+- Move all working code to runtime/ fixes ([#4](https://github.com/stevenjpx2/nugget/pull/4))
+
+### 📖 Documentation
+
+- **useLocomotive:** Add component ([1044f7b](https://github.com/stevenjpx2/nugget/commit/1044f7b))
+- **useBendyWendyTransition, useOffsetTransition:** Add component, composable ([f870c50](https://github.com/stevenjpx2/nugget/commit/f870c50))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v0.3.0
 
 [compare changes](https://github.com/stevenjpx2/nugget/compare/v0.2.0...v0.3.0)
