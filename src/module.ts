@@ -24,17 +24,18 @@ export default defineNuxtModule<ModuleOptions>({
   // Default configuration options of the Nuxt module
   defaults: {},
   async setup() {
-    const resolver = createResolver(import.meta.url);
+    const { resolve } = createResolver(import.meta.url);
+    const resolveRuntime = (...path: string[]) => resolve("./runtime", ...path);
 
-    addPlugin(resolver.resolve("./functions/plugin"));
+    addPlugin(resolveRuntime("./functions/plugin"));
 
     for (const path of fg.sync(
-      resolver.resolve("./functions/**/component.vue"),
+      resolveRuntime("./functions/**/component.vue"),
     )) {
       addComponent({
         name: pascalCase(
           relative(
-            resolver.resolve("./functions"),
+            resolveRuntime("./functions"),
             path.split(sep).slice(-2, -1)[0],
           )
             .replace("component.vue", "")
@@ -44,8 +45,8 @@ export default defineNuxtModule<ModuleOptions>({
       });
     }
 
-    addImportsDir(resolver.resolve("./functions"));
-    addComponentsDir({ path: resolver.resolve("./components") });
+    addImportsDir(resolveRuntime("./functions"));
+    addComponentsDir({ path: resolveRuntime("./components") });
 
     await installModule("nuxt-split-type", {});
     await installModule("@vueuse/nuxt", {});
