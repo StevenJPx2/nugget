@@ -6,14 +6,14 @@ import { titleCase, camelCase, pascalCase } from "string-ts";
 
 const refPaths = [
   ...generateSidebar({
-    rootPath: "src",
+    rootPath: "src/runtime",
     contentPath: "functions",
     leadingPath: "/ref",
     leafFile: "README",
     transformName: camelCase,
   }),
   ...generateSidebar({
-    rootPath: "src",
+    rootPath: "src/runtime",
     contentPath: "components",
     leadingPath: "/ref",
     leafFile: "README",
@@ -62,9 +62,9 @@ export default defineConfig({
   ],
 
   rewrites: {
-    ":root(functions|components)/:type*/README.md":
+    "runtime/:root(functions|components)/:type*/README.md":
       "ref/:root(functions|components)/:type*/index.md",
-    ":root(functions|components)/:type+.md":
+    "runtime/:root(functions|components)/:type+.md":
       "ref/:root(functions|components)/:type+.md",
   },
   sitemap: {
