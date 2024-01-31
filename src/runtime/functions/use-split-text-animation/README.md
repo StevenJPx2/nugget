@@ -44,9 +44,12 @@ Can also be imported as `vSplitAnimate`.
 
 ```vue
 <div
-  v-aos="{
+  v-split-animate="{
     baked: true,
-    options: { splitBy: 'lines', translate: true, scale: true },
+    options: {
+      splitBy: 'lines',
+      animationOptions: { translate: true, scale: true },
+    },
   }"
 />
 ```
