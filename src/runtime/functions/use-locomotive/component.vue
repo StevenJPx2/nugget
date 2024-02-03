@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from "#imports";
+import { ref, watch } from "#imports";
 import { useLocomotive } from ".";
 import type { ILocomotiveScrollOptions } from "locomotive-scroll/dist/types/types";
 
@@ -9,17 +9,32 @@ const props = defineProps<{
    */
   options?: ILocomotiveScrollOptions;
 }>();
-const slotRef = ref<HTMLElement>();
+const wrapperRef = ref<HTMLElement>();
+const contentRef = ref<HTMLElement>();
 
-useLocomotive({
-  ...props.options,
-  lenisOptions: { content: slotRef.value, ...props.options?.lenisOptions },
-});
+watch(
+  () => [wrapperRef.value, contentRef.value] as const,
+  ([wrapper, content]) => {
+    if (!wrapper || !content) return;
+
+    useLocomotive({
+      ...props.options,
+      lenisOptions: {
+        wrapper,
+        content,
+        ...props.options?.lenisOptions,
+      },
+    });
+  },
+  { flush: "post", immediate: true },
+);
 </script>
 
 <template>
-  <div>
-    <slot ref="slotRef" />
+  <div ref="wrapperRef">
+    <div ref="contentRef">
+      <slot />
+    </div>
   </div>
 </template>
 
@@ -27,6 +42,18 @@ useLocomotive({
 html.lenis {
   height: auto;
 }
+
+.lenis {
+  overflow: hidden;
+  position: relative;
+  max-height: 100vh;
+}
+
+.lenis > * {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
 .lenis.lenis-smooth {
   scroll-behavior: auto;
 }

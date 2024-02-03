@@ -26,8 +26,14 @@ export function useLocomotive(
       ...options,
       lenisOptions: { wrapper: window, ...options.lenisOptions },
     });
+
+    console.log("LocomotiveScroll", {
+      wrapper: window,
+      ...options.lenisOptions,
+    });
   };
 
+  update();
   tryOnMounted(update);
 
   tryOnScopeDispose(() => {

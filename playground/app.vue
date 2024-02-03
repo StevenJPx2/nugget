@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { vSplitAnimate, vAos } from "../src/directives";
+import { vSplitAnimate, vAos } from "../src/runtime/directives";
 import { ref, useBakedTransition } from "#imports";
-import { promiseTimeout } from "@vueuse/core";
 
 const stingEffectContainer = ref<HTMLDivElement | null>(null);
 
