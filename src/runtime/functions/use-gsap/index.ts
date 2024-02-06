@@ -6,6 +6,7 @@ import {
   until,
   type Ref,
   toRef,
+  toValue,
 } from "#imports";
 import "gsap";
 import gsap from "gsap";
@@ -53,8 +54,9 @@ export function useGsap(plugins: object[] = [ScrollTrigger]) {
       target: MaybeRefOrGetter<gsap.TweenTarget>,
       vars: StrongTweenVars,
     ) => {
+      const el = toValue(target);
       const tween = ref<gsap.core.Tween>();
-      activationFn(target, tween, (el) => {
+      tryOnMounted(() => {
         if (!el) return;
         tween.value = gsap.set(el, vars);
       });

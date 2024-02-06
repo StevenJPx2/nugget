@@ -43,13 +43,13 @@ html.lenis {
   height: auto;
 }
 
-.lenis {
+:not(html).lenis {
   overflow: hidden;
   position: relative;
   max-height: 100vh;
 }
 
-.lenis > * {
+:not(html).lenis > * {
   overflow-y: scroll;
   overflow-x: hidden;
 }

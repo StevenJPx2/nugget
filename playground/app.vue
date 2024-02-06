@@ -25,7 +25,7 @@ const onAfterEnterBendy = async () => {
 };
 </script>
 <template>
-  <locomotive>
+  <locomotive :options="{ lenisOptions: { wrapper: undefined } }">
     <button
       class="bg-yellow-500 rounded-md grid place-content-center relative px-8 py-5 overflow-hidden"
       @mouseover="

@@ -7,6 +7,10 @@ This will not inject the basic styles that [lenis][lenis-href] (which is used in
 If you want to use it, wrap the root of your app in [`<Locomotive />`](#component).
 :::
 
+::: info
+If you need this on the entire page, you need to [do this](#on-the-entire-page)
+:::
+
 ## Usage
 
 First install `locomotive-scroll`:
@@ -51,6 +55,18 @@ You have lenis styles added in this as well.
   <!-- where you want smooth scroll -->
 </locomotive>
 ```
+
+
+#### On the entire page
+If you need the wrapper to be the HTML element, you'll need to do this:
+
+```vue
+<locomotive :options="{ lenisOptions: { wrapper: undefined } }">
+  <!-- where you want smooth scroll -->
+</locomotive>
+```
+
+This will remove having the main div in the component being the wrapper and default it to the window. This will remove any unnecessary behavior.
 
 [loco-href]: https://github.com/locomotivemtl/locomotive-scroll/tree/v5-beta
 [lenis-href]: https://github.com/studio-freight/lenis

@@ -11,6 +11,7 @@ import {
   watch,
   watchEffect,
 } from "#imports";
+import { type UseInfiniteMarqueeOptions, useInfiniteMarquee } from ".";
 
 // Most of this credit goes to:
 // https://stackoverflow.com/questions/71165923/how-do-i-make-an-infinite-marquee-with-js#answer-71167758
@@ -18,31 +19,12 @@ import {
 const loopContainerParent = ref<HTMLElement | null>(null);
 const loopContainer = computed(() => loopContainerParent.value?.children[0]);
 
-const props = withDefaults(
-  defineProps<{
-    /** The speed of the marquee
-     * @default 0.05
-     */
-    speed?: number;
-    /** The gap between the repeated elements
-     * @default "0rem"
-     */
-    gap?: string;
-    /** The direction of the marquee
-     * @default "right"
-     */
-    direction?: "left" | "right";
-    /** Whether the marquee should pause on hover
-     * @default undefined
-     */
-    pauseOnHover?: boolean;
-    /** The acceleration of the marquee
-     * @default 0.05
-     */
-    acceleration?: number;
-  }>(),
-  { speed: 0.05, gap: "0rem", direction: "right", acceleration: 0.05 },
-);
+const props = withDefaults(defineProps<UseInfiniteMarqueeOptions>(), {
+  speed: 0.05,
+  gap: "0rem",
+  direction: "right",
+  acceleration: 0.05,
+});
 
 const isHovering = ref(false);
 const lerpVals = ref({ current: 0, target: 0 });

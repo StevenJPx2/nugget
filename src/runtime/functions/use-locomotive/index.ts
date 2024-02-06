@@ -1,7 +1,9 @@
 import { ref, tryOnMounted, tryOnScopeDispose, type Ref } from "#imports";
 import { defaultWindow } from "@vueuse/core";
-import type LocomotiveScroll from "locomotive-scroll";
-import type { ILocomotiveScrollOptions } from "locomotive-scroll/dist/types/types";
+import type {
+  ILocomotiveScrollOptions,
+  default as LocomotiveScroll,
+} from "./types";
 
 /** Internal Composable to use `LocomotiveScroll`
  * @param options - The options to pass to `LocomotiveScroll`
@@ -21,15 +23,11 @@ export function useLocomotive(
 
   const update = async () => {
     if (!window) return;
+    // @ts-expect-error typing from the package is incorrect
     const LocomotiveScroll = await import("locomotive-scroll");
     ls.value = new LocomotiveScroll.default({
       ...options,
       lenisOptions: { wrapper: window, ...options.lenisOptions },
-    });
-
-    console.log("LocomotiveScroll", {
-      wrapper: window,
-      ...options.lenisOptions,
     });
   };
 

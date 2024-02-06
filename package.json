@@ -31,29 +31,29 @@
     "docs:preview": "vitepress preview src"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.9.3",
-    "gsap": "^3.12.4",
+    "@nuxt/kit": "^3.10.0",
+    "fast-glob": "^3.3.2",
+    "gsap": "^3.12.5",
     "nuxt-split-type": "^0.1.7",
     "pathe": "^1.1.2",
-    "string-ts": "^2.0.0",
-    "fast-glob": "^3.3.2"
+    "string-ts": "^2.0.0"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
     "@nuxt/eslint-config": "^0.2.0",
     "@nuxt/module-builder": "^0.5.5",
-    "@nuxt/schema": "^3.9.3",
-    "@nuxt/test-utils": "^3.10.0",
-    "@types/node": "^18.19.8",
+    "@nuxt/schema": "^3.10.0",
+    "@nuxt/test-utils": "^3.11.0",
+    "@types/node": "^18.19.14",
     "@vueuse/core": "^10.7.2",
     "@vueuse/nuxt": "^10.7.2",
     "changelogen": "^0.5.5",
     "eslint": "^8.56.0",
     "locomotive-scroll": "beta",
-    "nuxt": "^3.9.3",
+    "nuxt": "^3.10.1",
     "typescript": "^5.3.3",
-    "vitepress": "^1.0.0-rc.39",
+    "vitepress": "^1.0.0-rc.41",
     "vitepress-extras": "^0.1.2",
-    "vitest": "^0.33.0"
+    "vitest": "^1.2.2"
   }
 }
