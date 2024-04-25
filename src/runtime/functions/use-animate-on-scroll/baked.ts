@@ -1,15 +1,16 @@
 import { type MaybeRefOrGetter, toRef } from "#imports";
-import type { Simplify } from "../types";
+import { useAnimateOnScroll } from ".";
+import type { Simplify } from "../../types";
 import {
   type UseBakedAnimationOptions,
   generateAnimationTweens,
 } from "../../utils/baked";
-import { useAnimateOnScroll } from ".";
 
 /** Options for `useAnimateOnScroll` */
 export type UseBakedAnimateOnScrollOptions = Simplify<
   Partial<UseBakedAnimationOptions> & {
-    /** Determines whether the animation should be triggered on scroll
+    /**
+     * Determines whether the animation should be triggered on scroll
      * @default true
      * @remarks You can also directly pass `gsap.ScrollTrigger` options
      * */
@@ -19,18 +20,15 @@ export type UseBakedAnimateOnScrollOptions = Simplify<
 
 export function useBakedAnimateOnScroll(
   el: MaybeRefOrGetter<gsap.DOMTarget | undefined>,
-  options: UseBakedAnimateOnScrollOptions = {},
-) {
-  const {
+  {
     animationOptions = {},
-    tweenValues = {},
     scrollAnimationOptions = true,
-  } = options;
+  }: UseBakedAnimateOnScrollOptions = {},
+) {
+  const tweens = generateAnimationTweens(animationOptions);
 
-  const { from, to } = generateAnimationTweens(animationOptions);
   useAnimateOnScroll(toRef(el), {
-    from,
-    to: { ...to, ...tweenValues },
+    tweens,
     scrollAnimationOptions,
   });
 }

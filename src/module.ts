@@ -1,36 +1,39 @@
 import {
-  defineNuxtModule,
-  addPlugin,
-  createResolver,
-  installModule,
-  addImportsDir,
   addComponent,
   addComponentsDir,
+  addImportsDir,
+  addPlugin,
   addTypeTemplate,
+  createResolver,
+  defineNuxtModule,
+  installModule,
 } from "@nuxt/kit";
-import { name, version } from "../package.json";
 import fg from "fast-glob";
 import { relative, sep } from "pathe";
 import { pascalCase } from "string-ts";
+import { name, version } from "../package.json";
 
 // Module options TypeScript interface definition
 export interface ModuleOptions {
   baked?: {
-    extra?: {
-      tweens?: Record<
-        string,
-        {
-          [x: string]: {
-            from: {
-              [x: string]: string | number;
+    extra?: Record<
+      string,
+      {
+        tweens?: Record<
+          string,
+          {
+            [x: string]: {
+              from: {
+                [x: string]: string | number;
+              };
+              to: {
+                [x: string]: string | number;
+              };
             };
-            to: {
-              [x: string]: string | number;
-            };
-          };
-        }
-      >;
-    };
+          }
+        >;
+      }
+    >;
   };
 }
 
@@ -42,9 +45,10 @@ export default defineNuxtModule<ModuleOptions>({
   },
   // Default configuration options of the Nuxt module
   defaults: {},
-  async setup() {
+  async setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url);
-    const resolveRuntime = (...path: string[]) => resolve("./runtime", ...path);
+    const resolveRuntime = (...path: string[]) =>
+      resolve(nuxt.options.srcDir, "./runtime", ...path);
 
     addPlugin(resolveRuntime("./functions/plugin"));
     addTypeTemplate({

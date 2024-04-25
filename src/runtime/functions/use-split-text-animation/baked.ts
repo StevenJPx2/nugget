@@ -1,16 +1,17 @@
 import type { MaybeComputedElementRef } from "@vueuse/core";
-import type { Ease, Simplify } from "../types";
-import { type UseBakedAnimateOnScrollOptions } from "../use-animate-on-scroll/baked";
 import {
-  useSplitTextAnimation,
   type PartialSplitTextAnimationOptions,
+  useSplitTextAnimation,
 } from ".";
+import type { Ease, Simplify } from "../../types";
+import type { UseBakedAnimateOnScrollOptions } from "../use-animate-on-scroll/baked";
 
+import { mergeTweens } from "../../utils";
 import { generateAnimationTweens } from "../../utils/baked";
 
 /** Completely optional options for the `useSplitTextAnimation` composable */
 export type UseBakedSplitTextAnimationOptions = Simplify<
-  Omit<UseBakedAnimateOnScrollOptions, "tweenValues"> &
+  UseBakedAnimateOnScrollOptions &
     PartialSplitTextAnimationOptions & {
       /** Animation duration in seconds
        * @default 2s
@@ -58,10 +59,8 @@ export type UseBakedSplitTextAnimationOptions = Simplify<
  */
 export function useBakedSplitTextAnimation(
   el: MaybeComputedElementRef,
-  options: UseBakedSplitTextAnimationOptions = {},
-) {
-  let { stagger } = options;
-  const {
+  {
+    stagger,
     splitBy = "lines",
     splitOptions,
     duration = 1,
@@ -69,9 +68,9 @@ export function useBakedSplitTextAnimation(
     delay = 0,
     scrollAnimationOptions = true,
     animationOptions = { opacity: true, blur: true },
-  } = options;
-
-  const { from, to } = generateAnimationTweens(animationOptions);
+  }: UseBakedSplitTextAnimationOptions = {},
+) {
+  const animationTweens = generateAnimationTweens(animationOptions);
 
   if (splitBy === "lines") {
     stagger ??= 0.2;
@@ -81,17 +80,17 @@ export function useBakedSplitTextAnimation(
     stagger ??= 0.05;
   }
 
+  const tweens = mergeTweens(animationTweens, {
+    duration: [undefined, duration],
+    ease: [undefined, ease],
+    delay: [undefined, delay],
+    stagger: [undefined, stagger],
+  });
+
   useSplitTextAnimation(el, {
     splitOptions,
     splitBy,
-    from,
-    to: {
-      ...to,
-      duration,
-      stagger,
-      ease,
-      delay,
-    },
+    tweens,
     scrollAnimationOptions,
   });
 }

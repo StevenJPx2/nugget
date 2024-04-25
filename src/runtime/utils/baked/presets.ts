@@ -1,76 +1,66 @@
-import type { StrongTweenVars } from "../../types";
+import type { FromToTweens } from "../../types";
 
 const defineTween = <
-  Obj extends Record<string, { from: StrongTweenVars; to: StrongTweenVars }>,
-  const T extends Exclude<keyof Obj, "DEFAULT">,
+  Obj extends Record<string, FromToTweens>,
+  const T extends keyof Obj,
 >(
-  x: Obj,
+  tweens: Obj,
   defaultTween: T,
-) => ({ ...x, DEFAULT: defaultTween });
+) => ({ tweens, defaultTween });
 
-export const presetTweens = {
+export const defaultPresets = {
   opacity: defineTween(
     {
-      in: { from: { autoAlpha: 0 }, to: { autoAlpha: 1 } },
-      out: { from: { autoAlpha: 1 }, to: { autoAlpha: 0 } },
+      in: { autoAlpha: [0, 1] },
+      out: { autoAlpha: [1, 0] },
     },
     "in",
   ),
   translate: defineTween(
     {
-      bottom: { from: { y: "200%" }, to: { y: 0 } },
-      top: { from: { y: "-200%" }, to: { y: 0 } },
-      left: { from: { x: "-200%" }, to: { x: 0 } },
-      right: { from: { x: "200%" }, to: { x: 0 } },
+      bottom: { y: ["200%", 0] },
+      top: { y: ["-200%", 0] },
+      left: { x: ["-200%", 0] },
+      right: { x: ["200%", 0] },
     },
     "bottom",
   ),
   skew: defineTween(
     {
-      bottom: { from: { skewY: 10 }, to: { skewY: 0 } },
-      top: { from: { skewY: -10 }, to: { skewY: 0 } },
-      left: { from: { skewX: -10 }, to: { skewX: 0 } },
-      right: { from: { skewX: 10 }, to: { skewX: 0 } },
+      bottom: { skewY: [10, 0] },
+      top: { skewY: [-10, 0] },
+      left: { skewX: [-10, 0] },
+      right: { skewX: [10, 0] },
     },
     "bottom",
   ),
   scale: defineTween(
     {
-      in: { from: { scale: 0 }, to: { scale: 1 } },
-      out: { from: { scale: 1 }, to: { scale: 0 } },
+      in: { scale: [0, 1] },
+      out: { scale: [1, 0] },
     },
     "in",
   ),
   rotate: defineTween(
     {
-      left: {
-        from: { rotation: 15, transformOrigin: "top left" },
-        to: { rotation: 0 },
-      },
-      right: {
-        from: { rotation: -15, transformOrigin: "top right" },
-        to: { rotation: 0 },
-      },
+      left: { rotation: [15, 0], transformOrigin: ["top left", undefined] },
+      right: { rotation: [-15, 0], transformOrigin: ["top right", undefined] },
     },
     "left",
   ),
   blur: defineTween(
     {
-      in: { from: { filter: "blur(10px)" }, to: { filter: "blur(0px)" } },
-      out: { from: { filter: "blur(0px)" }, to: { filter: "blur(10px)" } },
+      in: { filter: ["blur(10px)", "blur(0px)"] },
+      out: { filter: ["blur(0px)", "blur(10px)"] },
     },
     "in",
   ),
 } satisfies Record<
   string,
   {
-    [x: string]:
-      | {
-          from: StrongTweenVars;
-          to: StrongTweenVars;
-        }
-      | string;
-  } & {
-    DEFAULT: string;
+    tweens: {
+      [x: string]: FromToTweens;
+    };
+    defaultTween: string;
   }
 >;

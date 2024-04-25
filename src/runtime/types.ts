@@ -43,3 +43,23 @@ export type StrongTweenVars = gsap.TweenVars & EaseOption;
 
 /** Strongly typed TimelineVars */
 export type StrongTimelineVars = gsap.TimelineVars & EaseOption;
+
+/**
+ * Tweens defined in a simpler format:
+ * instead of:
+ * ```jsx
+ *  {
+ *    from: { translateX: 0 },
+ *    to: { translateX: 10 }
+ *  }
+ * ```
+ * it will be:
+ * ```jsx
+ *  {
+ *    translateX: [0, 10]
+ *  }
+ * ```
+ * */
+export type FromToTweens = {
+  [P in keyof StrongTweenVars]: [StrongTweenVars[P], StrongTweenVars[P]];
+};
