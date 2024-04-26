@@ -2,11 +2,18 @@ import type { FromToTweens } from "../../types";
 
 export type TweenObj<
   Obj extends Record<string, FromToTweens>,
-  T extends keyof Obj = keyof Obj,
+  T extends keyof Obj & string = keyof Obj & string,
 > = {
   tweens: Obj;
   defaultTween: T;
 };
+
+export type DefaultPresetsGeneric = Record<
+  string,
+  TweenObj<{
+    [x: string]: FromToTweens;
+  }>
+>;
 
 const defineTween = <
   Obj extends Record<string, FromToTweens>,
@@ -63,9 +70,4 @@ export const defaultPresets = {
     },
     "in",
   ),
-} as const satisfies Record<
-  string,
-  TweenObj<{
-    [x: string]: FromToTweens;
-  }>
->;
+} as const satisfies DefaultPresetsGeneric;

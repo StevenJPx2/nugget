@@ -1,6 +1,6 @@
 import type { FromToTweens } from "../../types";
-import { defaultPresets } from "./presets";
-import type { AnimationOptions, DefaultPresets } from "./types";
+import { type DefaultPresetsGeneric, defaultPresets } from "./presets";
+import type { AnimationOptions } from "./types";
 
 /** Generates the baked animation tweens
  * @param animationOptions - The animation options
@@ -12,21 +12,25 @@ export function generateAnimationTweens(
 ): FromToTweens {
   const allTweens: FromToTweens = {};
 
-  Object.entries(animationOptions)
-    .filter(([, val]) => !!val)
-    .map(([key, value]) => {
-      const { tweens, defaultTween } =
-        defaultPresets[key as keyof DefaultPresets];
-      let tweenKey: string;
-      if (typeof value === "boolean") {
-        tweenKey = defaultTween;
-      } else {
-        tweenKey = value;
-      }
+  for (const key in animationOptions) {
+    const value = animationOptions[key as keyof AnimationOptions];
 
-      allTweens[key] = tweens[tweenKey as never];
-    });
+    if (!value) continue;
 
+    const defPres: DefaultPresetsGeneric = defaultPresets;
+
+    const { tweens, defaultTween } = defPres[key];
+    let presetTweenKey: string;
+    if (typeof value === "boolean") {
+      presetTweenKey = defaultTween;
+    } else {
+      presetTweenKey = value;
+    }
+
+    for (const tweenKey in tweens[presetTweenKey]) {
+      allTweens[tweenKey] = tweens[presetTweenKey][tweenKey];
+    }
+  }
   return allTweens;
 }
 

@@ -1,10 +1,10 @@
-import {
+import type {
   ILenisScrollToOptions,
   ILocomotiveScrollOptions,
   lenisTargetScrollTo,
 } from "./types";
 
-export { ILocomotiveScrollOptions };
+export type { ILocomotiveScrollOptions };
 /**
  * Locomotive Scroll
  *

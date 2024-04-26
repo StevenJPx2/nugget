@@ -47,8 +47,7 @@ export default defineNuxtModule<ModuleOptions>({
   defaults: {},
   async setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url);
-    const resolveRuntime = (...path: string[]) =>
-      resolve(nuxt.options.srcDir, "./runtime", ...path);
+    const resolveRuntime = (...path: string[]) => resolve("./runtime", ...path);
 
     addPlugin(resolveRuntime("./functions/plugin"));
     addTypeTemplate({
