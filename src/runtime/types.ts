@@ -63,3 +63,18 @@ export type StrongTimelineVars = gsap.TimelineVars & EaseOption;
 export type FromToTweens = {
   [P in keyof StrongTweenVars]: [StrongTweenVars[P], StrongTweenVars[P]];
 };
+
+export type TweenObj<
+  Obj extends Record<string, FromToTweens>,
+  T extends keyof Obj & string = keyof Obj & string,
+> = {
+  tweens: Obj;
+  defaultTween: T;
+};
+
+export type PresetsGeneric = Record<
+  string,
+  TweenObj<{
+    [x: string]: FromToTweens;
+  }>
+>;

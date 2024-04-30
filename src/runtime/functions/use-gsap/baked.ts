@@ -1,9 +1,10 @@
-import { type MaybeRefOrGetter } from "#imports";
-import {
-  generateAnimationTweens,
-  type UseBakedAnimationOptions,
-} from "../../utils/baked";
+import { type MaybeRefOrGetter, nuggetBakedPresets } from "#imports";
 import { useGsap } from ".";
+import {
+  type UseBakedAnimationOptions,
+  generateAnimationTweens,
+} from "../../baked";
+import { transformFromToTweens } from "../../utils";
 
 /**
  * Animates an element with baked animation options to make it easier to animate repetitive animations
@@ -42,7 +43,9 @@ export function useBakedFromTo(
   options: UseBakedAnimationOptions,
 ) {
   const { animationOptions, tweenValues } = options;
-  const { from, to } = generateAnimationTweens(animationOptions);
+  const { from, to } = transformFromToTweens(
+    generateAnimationTweens(animationOptions, nuggetBakedPresets),
+  );
 
   const { fromTo } = useGsap();
 

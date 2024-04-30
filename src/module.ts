@@ -1,8 +1,10 @@
 import {
   addComponent,
   addComponentsDir,
+  addImports,
   addImportsDir,
   addPlugin,
+  addTemplate,
   addTypeTemplate,
   createResolver,
   defineNuxtModule,
@@ -10,30 +12,16 @@ import {
 } from "@nuxt/kit";
 import fg from "fast-glob";
 import { relative, sep } from "pathe";
-import { pascalCase } from "string-ts";
+import { camelCase, pascalCase } from "string-ts";
 import { name, version } from "../package.json";
+import { defaultPresets } from "./runtime/baked";
+import type { PresetsGeneric } from "./runtime/types";
 
 // Module options TypeScript interface definition
 export interface ModuleOptions {
-  baked?: {
-    extra?: Record<
-      string,
-      {
-        tweens?: Record<
-          string,
-          {
-            [x: string]: {
-              from: {
-                [x: string]: string | number;
-              };
-              to: {
-                [x: string]: string | number;
-              };
-            };
-          }
-        >;
-      }
-    >;
+  baked: {
+    defaults?: PresetsGeneric;
+    custom?: PresetsGeneric;
   };
 }
 
@@ -44,15 +32,49 @@ export default defineNuxtModule<ModuleOptions>({
     configKey: "nugget",
   },
   // Default configuration options of the Nuxt module
-  defaults: {},
+  defaults: {
+    baked: {
+      defaults: defaultPresets,
+      custom: {},
+    },
+  },
   async setup(options, nuxt) {
+    const allBakedPresets = {
+      ...options.baked.defaults,
+      ...options.baked.custom,
+    };
+
     const { resolve } = createResolver(import.meta.url);
     const resolveRuntime = (...path: string[]) => resolve("./runtime", ...path);
 
     addPlugin(resolveRuntime("./functions/plugin"));
+
     addTypeTemplate({
       filename: "types/locomotive-scroll.d.ts",
       src: resolveRuntime("./functions/use-locomotive/types/index.d.ts"),
+    });
+
+    addTypeTemplate({
+      filename: "types/nugget.d.ts",
+      getContents: () => {
+        let content = "export type BakedPresets = {\n";
+        for (const key in allBakedPresets) {
+          const tweens = Object.keys(allBakedPresets[key].tweens);
+          content += `\t${camelCase(key)}?: true | ${tweens
+            .map((tween) => `'${tween}'`)
+            .join(" | ")};\n`;
+        }
+        content += "}";
+        return content;
+      },
+    });
+
+    addTemplate({
+      filename: "nugget/presets.mjs",
+      write: true,
+      getContents: () => {
+        return `export default ${JSON.stringify(allBakedPresets, null, 2)}`;
+      },
     });
 
     for (const path of fg.sync(
@@ -70,6 +92,14 @@ export default defineNuxtModule<ModuleOptions>({
         filePath: path,
       });
     }
+
+    addImports([
+      {
+        name: "default",
+        as: "nuggetBakedPresets",
+        from: "#build/nugget/presets",
+      },
+    ]);
 
     addImportsDir(resolveRuntime("./functions"));
     addComponentsDir({ path: resolveRuntime("./components") });

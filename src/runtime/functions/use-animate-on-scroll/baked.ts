@@ -1,10 +1,10 @@
-import { type MaybeRefOrGetter, toRef } from "#imports";
+import { type MaybeRefOrGetter, nuggetBakedPresets, toRef } from "#imports";
 import { useAnimateOnScroll } from ".";
-import type { Simplify } from "../../types";
 import {
   type UseBakedAnimationOptions,
   generateAnimationTweens,
-} from "../../utils/baked";
+} from "../../baked";
+import type { Simplify } from "../../types";
 
 /** Options for `useAnimateOnScroll` */
 export type UseBakedAnimateOnScrollOptions = Simplify<
@@ -25,7 +25,7 @@ export function useBakedAnimateOnScroll(
     scrollAnimationOptions = true,
   }: UseBakedAnimateOnScrollOptions = {},
 ) {
-  const tweens = generateAnimationTweens(animationOptions);
+  const tweens = generateAnimationTweens(animationOptions, nuggetBakedPresets);
 
   useAnimateOnScroll(toRef(el), {
     tweens,
