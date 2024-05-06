@@ -131,19 +131,7 @@ const onAfterEnterBendy = async () => {
       }"
     >
       <h1
-        v-text-animate="{
-          baked: true,
-          options: {
-            splitBy: 'lines',
-            animationOptions: { translate: true },
-            splitOptions: {
-              wrapping: {
-                select: 'lines',
-                wrapClass: 'inline-block overflow-hidden',
-              },
-            },
-          },
-        }"
+        v-text-animate-baked-lines="['opacity', 'blur']"
         :style="{
           fontSize: '25vw',
           textAlign: 'left',
