@@ -1,24 +1,22 @@
 import {
   computed,
+  defineComponent,
+  h,
   ref,
-  toRef,
-  toValue,
-  tryOnMounted,
+  useElementHover,
   useElementSize,
   useElementVisibility,
   useRafFn,
   useWindowScroll,
   useWindowSize,
   watch,
-  watchEffect,
-  type MaybeRef,
+  watchPostEffect,
 } from "#imports";
-import type { MaybeComputedElementRef } from "@vueuse/core";
 
 // Most of this credit goes to:
 // https://stackoverflow.com/questions/71165923/how-do-i-make-an-infinite-marquee-with-js#answer-71167758
 
-export type UseInfiniteMarqueeOptions = {
+export type CreateInfiniteMarqueeOptions = {
   /**
    * The speed of the marquee
    * @default 0.05
@@ -46,9 +44,8 @@ export type UseInfiniteMarqueeOptions = {
   acceleration?: number;
 };
 
-export const useInfiniteMarquee = (
-  container: MaybeRef<HTMLElement>,
-  options: UseInfiniteMarqueeOptions = {},
+export const createInfiniteMarquee = (
+  options: CreateInfiniteMarqueeOptions = {},
 ) => {
   const {
     speed = 0.05,
@@ -56,16 +53,18 @@ export const useInfiniteMarquee = (
     direction = "right",
     acceleration = 0.05,
   } = options;
-  const loopContainerParent = toRef(container);
-  const loopObjects = computed(() => loopContainerParent.value?.children[0]);
 
-  const isHovering = ref(false);
+  const parent = ref<HTMLElement>();
+  const child = ref<HTMLElement>();
+
   const lerpVals = ref({ current: 0, target: 0 });
   const interpolationFactor = 0.1;
   const directionConstant: -1 | 1 = direction === "left" ? -1 : 1;
-  const leftPercent = `calc(${directionConstant * -100}% - ${gap})`;
-  const isTargetVisible = useElementVisibility(container);
-  const { width: containerWidth } = useElementSize(loopContainer);
+  const left = `calc(${directionConstant * -100}% - ${gap})`;
+  const isHovering =
+    options.pauseOnHover === false ? ref(false) : useElementHover(parent);
+  const isTargetVisible = useElementVisibility(parent);
+  const { width: containerWidth } = useElementSize(child);
 
   const x = ref(0);
 
@@ -101,23 +100,53 @@ export const useInfiniteMarquee = (
     { immediate: false },
   );
 
-  tryOnMounted(() => {
-    loopObjects.value.parentElement?.appendChild(
-      document.createElement("div", {
-        style: { transform: `translateX(${x})` },
-      }),
-    );
-  });
-
   watch(windowY, () => {
     lerpVals.value.target += acceleration * 5;
   });
 
-  watchEffect(() => {
+  watchPostEffect(() => {
     if ((!isTargetVisible.value || isHovering.value) && isRafActive.value) {
       pauseRaf();
     } else {
       resumeRaf();
     }
+  });
+
+  return defineComponent({
+    setup(_, { slots }) {
+      return () =>
+        h(
+          "div",
+          {
+            ref: parent,
+            style: { overflow: "hidden" },
+          },
+          h(
+            "div",
+            {
+              ref: child,
+              style: {
+                transform: `translateX(${x.value}%)`,
+                display: "inline-flex",
+                "white-space": "nowrap",
+                position: "relative",
+              },
+            },
+            [
+              h(
+                "div",
+                {
+                  style: {
+                    position: "absolute",
+                    left,
+                  },
+                },
+                slots.default?.(),
+              ),
+              slots.default?.(),
+            ],
+          ),
+        );
+    },
   });
 };

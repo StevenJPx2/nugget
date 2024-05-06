@@ -1,17 +1,16 @@
-import {
-  ref,
-  type MaybeRefOrGetter,
-  tryOnScopeDispose,
-  tryOnMounted,
-  until,
-  type Ref,
-  toRef,
-  toValue,
-} from "#imports";
+import { invoke } from "@vueuse/core";
 import "gsap";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import { invoke } from "@vueuse/core";
+import {
+  type MaybeRefOrGetter,
+  type Ref,
+  ref,
+  toRef,
+  tryOnMounted,
+  tryOnScopeDispose,
+  until,
+} from "#imports";
 import type { StrongTweenVars } from "../../types";
 import { timeline } from "./timeline";
 
@@ -54,9 +53,8 @@ export function useGsap(plugins: object[] = [ScrollTrigger]) {
       target: MaybeRefOrGetter<gsap.TweenTarget>,
       vars: StrongTweenVars,
     ) => {
-      const el = toValue(target);
       const tween = ref<gsap.core.Tween>();
-      tryOnMounted(() => {
+      activationFn(target, tween, (el) => {
         if (!el) return;
         tween.value = gsap.set(el, vars);
       });

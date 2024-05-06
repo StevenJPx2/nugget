@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { vSplitAnimate, vAos } from "../src/runtime/directives";
-import { ref, useBakedTransition } from "#imports";
+import { vTextAnimate, vAos } from "../src/runtime/directives";
+import { ref, useBakedTransition, useGsap } from "#imports";
+
+const hi = ref<HTMLElement>();
+const { set } = useGsap();
+set(hi, { x: 100 });
 
 const stingEffectContainer = ref<HTMLDivElement | null>(null);
 
@@ -26,6 +30,7 @@ const onAfterEnterBendy = async () => {
 </script>
 <template>
   <locomotive :options="{ lenisOptions: { wrapper: undefined } }">
+    <div ref="hi">hello</div>
     <button
       class="bg-yellow-500 rounded-md grid place-content-center relative px-8 py-5 overflow-hidden"
       @mouseover="
@@ -126,7 +131,7 @@ const onAfterEnterBendy = async () => {
       }"
     >
       <h1
-        v-split-animate="{
+        v-text-animate="{
           baked: true,
           options: {
             splitBy: 'lines',

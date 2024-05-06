@@ -87,7 +87,8 @@ export default defineNuxtModule<ModuleOptions>({
             path.split(sep).slice(-2, -1)[0],
           )
             .replace("component.vue", "")
-            .replace("use", ""),
+            .replace(/use/, "")
+            .replace(/create/, ""),
         ),
         filePath: path,
       });

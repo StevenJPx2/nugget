@@ -1,5 +1,5 @@
 import { useAnimateOnScroll, useBakedAnimateOnScroll } from ".";
-import { defineDirective } from "../../utils/baked";
+import { defineDirective } from "../../baked";
 
 export const vAos = defineDirective({
   fn: useAnimateOnScroll,
