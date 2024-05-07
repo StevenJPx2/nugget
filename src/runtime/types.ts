@@ -1,4 +1,5 @@
 import "gsap";
+import type { AnimationOptions } from "./baked/types";
 
 export type Direction = "bottom" | "top" | "left" | "right";
 type EaseFunction =
@@ -78,3 +79,13 @@ export type PresetsGeneric = Record<
     [x: string]: FromToTweens;
   }>
 >;
+
+export type BakedPresetsArray = (keyof {
+  [P in keyof AnimationOptions as
+    | P
+    | (AnimationOptions[P] extends infer V
+        ? V extends string
+          ? `${P}:${V}`
+          : never
+        : never)]: true;
+})[];

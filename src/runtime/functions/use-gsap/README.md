@@ -52,7 +52,7 @@ Can also be imported as `vFromTo`.
 ```vue
 <div
   v-from-to="{
-    options: { from: { x: 0 }, to: { x: 10 } },
+    options: { x: [0, 10] },
   }"
 />
 ```
@@ -63,10 +63,25 @@ Can also be imported as `vFromTo`.
 <div
   v-from-to="{
     baked: true,
-    options: { translate: true, scale: true },
+    options: {
+      animationOptions: { translate: true, scale: true },
+    },
   }"
 />
 ```
+
+```vue
+<div
+  v-from-to-baked="{
+    animationOptions: { translate: true, scale: true },
+  }"
+/>
+```
+
+```vue
+<div v-from-to-baked-animate="['translate', 'scale:out']" />
+```
+
 
 ## Example
 

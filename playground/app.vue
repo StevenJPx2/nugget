@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { vTextAnimate, vAos } from "../src/runtime/directives";
 import { ref, useBakedTransition, useGsap } from "#imports";
 
 const hi = ref<HTMLElement>();

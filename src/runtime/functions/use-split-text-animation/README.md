@@ -19,22 +19,23 @@ With [`baked`](../baked) animations.
 
 ```ts
 const container = ref<HTMLElement>();
-useBakedSplitTextAnimation(container, { translate: true, opacity: true });
+useBakedSplitTextAnimation(container, {
+  animationOptions: { translate: true, opacity: true },
+});
 ```
 
 ## Directive
 
-Can also be imported as `vSplitAnimate`.
+Can also be imported as `vTextAnimate`.
 
 ### Unbaked
 
 ```vue
 <div
-  v-split-animate="{
+  v-text-animate="{
     options: {
       splitBy: 'lines',
-      from: { x: 0 },
-      to: { x: 10 },
+      tweens: { x: [0, 10] },
     },
   }"
 />
@@ -44,7 +45,7 @@ Can also be imported as `vSplitAnimate`.
 
 ```vue
 <div
-  v-split-animate="{
+  v-text-animate="{
     baked: true,
     options: {
       splitBy: 'lines',
@@ -53,3 +54,18 @@ Can also be imported as `vSplitAnimate`.
   }"
 />
 ```
+
+```vue
+<div
+  v-text-animate-baked="{
+    splitBy: 'lines',
+    animationOptions: { translate: true, scale: true },
+  }"
+/>
+```
+
+```vue
+<div v-text-animate-baked-lines="['translate', 'scale:out']" />
+```
+
+

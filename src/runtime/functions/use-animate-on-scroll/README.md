@@ -30,7 +30,7 @@ Can also be imported as `vAos`.
 ```vue
 <div
   v-aos="{
-    options: { from: { x: 0 }, to: { x: 10 } },
+    options: { tweens: { x: [0, 10] } },
   }"
 />
 ```
@@ -41,7 +41,21 @@ Can also be imported as `vAos`.
 <div
   v-aos="{
     baked: true,
-    options: { translate: true, scale: true },
+    options: {
+      animationOptions: { translate: true, scale: true },
+    },
   }"
 />
+```
+
+```vue
+<div
+  v-aos-baked="{
+    animationOptions: { translate: true, scale: true },
+  }"
+/>
+```
+
+```vue
+<div v-aos-baked-animate="['translate', 'scale:out']" />
 ```
