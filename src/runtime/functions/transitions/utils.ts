@@ -14,8 +14,18 @@ export type TransitionEmits = {
   beforeLeave: [];
 };
 
+type EmitFunctions = {
+  [P in keyof TransitionEmits]: (event: P, ...args: TransitionEmits[P]) => void;
+};
+
+type UnionToIntersection<U> = (
+  U extends unknown ? (arg: U) => 0 : never
+) extends (arg: infer I) => 0
+  ? I
+  : never;
+
 export const callbackFactory = (
-  emit: (evt: any) => void,
+  emit: UnionToIntersection<EmitFunctions[keyof EmitFunctions]>,
 ): UseConstructTransitionCallbackOptions => ({
   onEnter() {
     emit("enter");

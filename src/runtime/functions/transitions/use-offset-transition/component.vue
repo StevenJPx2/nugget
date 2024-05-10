@@ -2,7 +2,7 @@
 import { ref, toRefs, useOffsetTransition, watch } from "#imports";
 import type { HTMLAttributes } from "vue";
 import { type TransitionEmits, callbackFactory } from "../utils";
-import type { Direction } from "../../types";
+import type { Direction } from "../../../types";
 
 const parentContainer = ref<HTMLElement | null>(null);
 const mainContainer = ref<HTMLElement | null>(null);

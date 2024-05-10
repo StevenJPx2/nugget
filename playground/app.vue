@@ -29,7 +29,9 @@ const onAfterEnterBendy = async () => {
 </script>
 <template>
   <locomotive :options="{ lenisOptions: { wrapper: undefined } }">
-    <div ref="hi">hello</div>
+    <div ref="hi">
+      hello
+    </div>
     <button
       class="bg-yellow-500 rounded-md grid place-content-center relative px-8 py-5 overflow-hidden"
       @mouseover="
@@ -97,7 +99,9 @@ const onAfterEnterBendy = async () => {
           zIndex: 1,
         }"
       >
-        <button @mouseover="runBendyTransition = true">v</button>
+        <button @mouseover="runBendyTransition = true">
+          v
+        </button>
       </div>
       <bendy-wendy-transition
         class="red h-full w-full"
@@ -156,7 +160,12 @@ const onAfterEnterBendy = async () => {
         :acceleration="0"
       >
         <div :style="{ display: 'inline-flex', gap: '2rem' }">
-          <p v-for="i in 20" :key="i">Nuxt module playground!</p>
+          <p
+            v-for="i in 20"
+            :key="i"
+          >
+            Nuxt module playground!
+          </p>
         </div>
       </infinite-marquee>
     </div>

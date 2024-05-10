@@ -1,8 +1,11 @@
 import { directiveHooks } from "@vueuse/core";
 import type { ObjectDirective } from "vue";
 import { type UseGsapReturn, useBakedFromTo, useGsap } from ".";
-import type { DirectiveOptions, UseBakedAnimationOptions } from "../../baked";
-import type { BakedPresetsArray } from "../../types";
+import type {
+  BakedPresetsArray,
+  DirectiveOptions,
+  UseBakedAnimationOptions,
+} from "../../baked";
 import { directiveObj, transformBakedArrayToObject } from "../../utils";
 
 export const vFromTo: ObjectDirective<

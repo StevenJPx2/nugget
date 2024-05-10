@@ -1,7 +1,8 @@
-import {
+import type {
   ILenisScrollToOptions,
-  ILocomotiveScrollOptions,
-  lenisTargetScrollTo,
+  lenisTargetScrollTo} from "./types";
+import {
+  ILocomotiveScrollOptions
 } from "./types";
 
 export { ILocomotiveScrollOptions };

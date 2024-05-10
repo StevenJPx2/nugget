@@ -1,4 +1,4 @@
-import ScrollElement from './core/ScrollElement';
+import type ScrollElement from './core/ScrollElement';
 export interface IModular {
     el: HTMLElement;
     events: any;

@@ -5,7 +5,7 @@ import type { AnimationOptions } from "./types";
  * @param animationOptions - The animation options
  * @remarks
  * This is **NOT** unopinionated
- * */
+  */
 export function generateAnimationTweens(
   animationOptions: AnimationOptions,
   presets: PresetsGeneric,

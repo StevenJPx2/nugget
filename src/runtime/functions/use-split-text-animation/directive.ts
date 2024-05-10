@@ -1,10 +1,10 @@
+import type { UseSplitTextOptions as _ } from "nuxt-split-type";
 import {
   type UseBakedSplitTextAnimationOptions,
   useBakedSplitTextAnimation,
   useSplitTextAnimation,
 } from ".";
-import { defineDirective } from "../../baked";
-import type { BakedPresetsArray } from "../../types";
+import { type BakedPresetsArray, defineDirective } from "../../baked";
 import { directiveObj, transformBakedArrayToObject } from "../../utils";
 
 export const vTextAnimate = defineDirective({

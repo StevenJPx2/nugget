@@ -40,7 +40,9 @@ This exposes `fromTo` with [`baked`](../baked) animations.
 
 ```ts
 const container = ref<HTMLElement>();
-useBakedFromTo(container, { translate: true, scale: true });
+useBakedFromTo(container, {
+  animationOptions: { translate: true, scale: true },
+});
 ```
 
 ## Directive

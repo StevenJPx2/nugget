@@ -4,38 +4,36 @@ import {
   type PartialSplitTextAnimationOptions,
   useSplitTextAnimation,
 } from ".";
-import type { Ease, Simplify } from "../../types";
+import type { Ease } from "../../types";
 import type { UseBakedAnimateOnScrollOptions } from "../use-animate-on-scroll/baked";
 
 import { generateAnimationTweens } from "../../baked";
 import { mergeTweens } from "../../utils";
 
 /** Completely optional options for the `useSplitTextAnimation` composable */
-export type UseBakedSplitTextAnimationOptions = Simplify<
-  UseBakedAnimateOnScrollOptions &
-    PartialSplitTextAnimationOptions & {
-      /** Animation duration in seconds
-       * @default 2s
-       * */
-      duration?: number;
-      /** Animation stagger in seconds
-       * @remarks
-       * - If left undefined, stagger is defined by how the text is split
-       * - `lines` has a default of `0.2s`
-       * - `words` has a default of `0.1s`
-       * - `chars` has a default of `0.05s`
-       * */
-      stagger?: number;
-      /** Ease function
-       * @default "expo.inOut"
-       * */
-      ease?: Ease;
-      /** Animation delay in seconds
-       * @default 0s
-       * */
-      delay?: number;
-    }
->;
+export type UseBakedSplitTextAnimationOptions = UseBakedAnimateOnScrollOptions &
+  PartialSplitTextAnimationOptions & {
+    /** Animation duration in seconds
+     * @default 2s
+     */
+    duration?: number;
+    /** Animation stagger in seconds
+     * @remarks
+     * - If left undefined, stagger is defined by how the text is split
+     * - `lines` has a default of `0.2s`
+     * - `words` has a default of `0.1s`
+     * - `chars` has a default of `0.05s`
+     */
+    stagger?: number;
+    /** Ease function
+     * @default "expo.inOut"
+     */
+    ease?: Ease;
+    /** Animation delay in seconds
+     * @default 0s
+     */
+    delay?: number;
+  };
 
 /**
  * Animates a text split by chars, words or lines

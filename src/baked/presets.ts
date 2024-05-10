@@ -1,4 +1,5 @@
 import type { FromToTweens, PresetsGeneric } from "../types";
+export type { PresetsGeneric } from "../types";
 
 const defineTween = <
   Obj extends Record<string, FromToTweens>,

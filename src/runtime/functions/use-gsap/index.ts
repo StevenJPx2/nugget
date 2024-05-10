@@ -1,5 +1,4 @@
 import { invoke } from "@vueuse/core";
-import "gsap";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import {
@@ -16,8 +15,9 @@ import { timeline } from "./timeline";
 
 /** Function to activate the tween on mount
  * @param el - The element to tween
+ * @param tween - The gsap tween object that is being updated
  * @param updateFactory - The update function to run on mount
- * */
+ */
 const activationFn = (
   el: MaybeRefOrGetter<gsap.TweenTarget | undefined>,
   tween: Ref<gsap.core.Tween | undefined>,
@@ -39,7 +39,7 @@ const activationFn = (
  * - This is a composable to make it easier to use gsap with Vue
  * - It also allows the LSP to infer the correct types for `gsap`
  * - It registers `ScrollTrigger` by default
- * */
+ */
 export function useGsap(plugins: object[] = [ScrollTrigger]) {
   tryOnMounted(() => {
     gsap.registerPlugin(...plugins);
@@ -52,7 +52,7 @@ export function useGsap(plugins: object[] = [ScrollTrigger]) {
     set: (
       target: MaybeRefOrGetter<gsap.TweenTarget>,
       vars: StrongTweenVars,
-    ) => {
+    ): Ref<gsap.core.Tween | undefined> => {
       const tween = ref<gsap.core.Tween>();
       activationFn(target, tween, (el) => {
         if (!el) return;
@@ -64,7 +64,7 @@ export function useGsap(plugins: object[] = [ScrollTrigger]) {
     fromTo: (
       target: MaybeRefOrGetter<gsap.TweenTarget | undefined>,
       options: { from: StrongTweenVars; to: StrongTweenVars },
-    ) => {
+    ): Ref<gsap.core.Tween | undefined> => {
       const tween = ref<gsap.core.Tween>();
       activationFn(target, tween, (el) => {
         if (!el) return;
@@ -73,7 +73,10 @@ export function useGsap(plugins: object[] = [ScrollTrigger]) {
       return tween;
     },
 
-    to: (target: MaybeRefOrGetter<gsap.TweenTarget>, vars: StrongTweenVars) => {
+    to: (
+      target: MaybeRefOrGetter<gsap.TweenTarget>,
+      vars: StrongTweenVars,
+    ): Ref<gsap.core.Tween | undefined> => {
       const tween = ref<gsap.core.Tween>();
       activationFn(target, tween, (el) => {
         if (!el) return;
@@ -85,7 +88,7 @@ export function useGsap(plugins: object[] = [ScrollTrigger]) {
     from: (
       target: MaybeRefOrGetter<gsap.TweenTarget>,
       vars: StrongTweenVars,
-    ) => {
+    ): Ref<gsap.core.Tween | undefined> => {
       const tween = ref<gsap.core.Tween>();
       activationFn(target, tween, (el) => {
         if (!el) return;

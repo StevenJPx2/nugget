@@ -1,10 +1,10 @@
 import { type MaybeRefOrGetter, toValue } from "#imports";
-import type { FromToTweens, Simplify } from "../../types";
+import type { FromToTweens } from "../../types";
 import { transformFromToTweens } from "../../utils";
 import { useGsap } from "../use-gsap";
 
 /** Options for `useAnimateOnScroll` */
-export type UseAnimateOnScrollOptions = Simplify<{
+export type UseAnimateOnScrollOptions = {
   /**
    * Tweens defined in a simpler format:
    * instead of:
@@ -26,15 +26,15 @@ export type UseAnimateOnScrollOptions = Simplify<{
    *  [propertyName]: [from, to]
    * }
    * ```
-   * */
+   */
   tweens: FromToTweens;
 
   /** Determines whether the animation should be triggered on scroll
    * @default true
    * @remarks You can also directly pass `gsap.ScrollTrigger` options
-   * */
+   */
   scrollAnimationOptions?: boolean | gsap.AnimationVars["scrollTrigger"];
-}>;
+};
 
 export function useAnimateOnScroll(
   el: MaybeRefOrGetter<gsap.DOMTarget | undefined>,

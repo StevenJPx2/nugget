@@ -1,18 +1,18 @@
 import "gsap";
-import { useGsap } from "../use-gsap";
+import type { MaybeComputedElementRef } from "@vueuse/core";
+import { concat, pascalCase } from "string-ts";
+import type { ShallowRef } from "vue";
 import {
+  type MaybeRef,
+  type Ref,
   readonly,
   ref,
-  watch,
-  type MaybeRef,
-  unrefElement,
   unref,
-  type Ref,
+  unrefElement,
+  watch,
 } from "#imports";
-import type { ShallowRef } from "vue";
-import type { MaybeComputedElementRef } from "@vueuse/core";
-import type { Direction, Simplify } from "../../types";
-import { concat, pascalCase } from "string-ts";
+import type { Direction } from "../../types";
+import { useGsap } from "../use-gsap";
 
 export type UseConstructTransitionCallbackOptions = {
   /** Callback when the enter animation is about to start */
@@ -34,14 +34,12 @@ export type PlayState =
     ? Uncapitalize<K>
     : never;
 
-export type UseConstructTransitionOptions = Simplify<
-  {
-    /** The element to animate */
-    parentContainer: MaybeComputedElementRef;
-    /** Direction to animate transition in */
-    direction?: MaybeRef<Direction | undefined>;
-  } & UseConstructTransitionCallbackOptions
->;
+export type UseConstructTransitionOptions = {
+  /** The element to animate */
+  parentContainer: MaybeComputedElementRef;
+  /** Direction to animate transition in */
+  direction?: MaybeRef<Direction | undefined>;
+} & UseConstructTransitionCallbackOptions;
 
 export type TransitionOutput = {
   state: Readonly<Ref<PlayState>>;
@@ -51,12 +49,10 @@ export type TransitionOutput = {
   stop: () => void;
 };
 
-export type UseConstructTransitionOutput = Simplify<
-  TransitionOutput & {
-    enterTl: ShallowRef<gsap.core.Timeline | undefined>;
-    leaveTl: ShallowRef<gsap.core.Timeline | undefined>;
-  }
->;
+export type UseConstructTransitionOutput = TransitionOutput & {
+  enterTl: ShallowRef<gsap.core.Timeline | undefined>;
+  leaveTl: ShallowRef<gsap.core.Timeline | undefined>;
+};
 
 export function useConstructTransition(
   options: UseConstructTransitionOptions,

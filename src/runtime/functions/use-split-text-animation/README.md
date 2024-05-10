@@ -8,8 +8,7 @@ Automatically enable animate on scroll for the attached element.
 const container = ref<HTMLElement>();
 useSplitTextAnimation(container, {
   splityBy: "lines",
-  from: { y: -10, autoAlpha: 0 },
-  to: { y: 0, autoAlpha: 1 },
+  tweens: { y: [-10, 0], autoAlpha: [0, 1] },
 });
 ```
 

@@ -12,8 +12,8 @@
  *
  * - {@link https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API}
  */
-import { IIOOptions } from '../types';
-import ScrollElement from './ScrollElement';
+import type { IIOOptions } from '../types';
+import type ScrollElement from './ScrollElement';
 export default class IO {
     scrollElements: ScrollElement[];
     private rootMargin;

@@ -1,8 +1,8 @@
+import { camelCase, pascalCase, titleCase } from "string-ts";
 import { defineConfig } from "vitepress";
 import { generateSidebar } from "vitepress-extras";
-import { ogUrl, github, ogImage, releases, logo } from "./meta";
-import { version, name, description } from "../../package.json";
-import { titleCase, camelCase, pascalCase } from "string-ts";
+import { description, name, version } from "../../package.json";
+import { github, logo, ogImage, ogUrl, releases } from "./meta";
 
 const refPaths = [
   ...generateSidebar({
@@ -81,7 +81,7 @@ export default defineConfig({
     footer: {
       message: "Released under the MIT License.",
       copyright:
-        "Copyright © 2024-PRESENT Steven John.<br> Made with ❤️  from 🇮🇳",
+        "Copyright © 2024-PRESENT Steven John.<br> Made with ❤  from 🇮",
     },
 
     search: {
@@ -89,7 +89,7 @@ export default defineConfig({
     },
 
     nav: [
-      // @ts-expect-error
+      // @ts-expect-error NavItem is close to sidebar item
       generateSidebar({
         rootPath: "src/guide",
         leadingPath: "/guide",
@@ -99,7 +99,7 @@ export default defineConfig({
       })[0],
       {
         text: "Reference",
-        // @ts-expect-error
+        // @ts-expect-error NavItem is close to sidebar item
         items: refPaths,
       },
       {

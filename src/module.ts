@@ -14,8 +14,8 @@ import fg from "fast-glob";
 import { relative, sep } from "pathe";
 import { camelCase, pascalCase } from "string-ts";
 import { name, version } from "../package.json";
-import { defaultPresets } from "./runtime/baked";
-import type { PresetsGeneric } from "./runtime/types";
+import { defaultPresets } from "./baked/presets";
+import type { PresetsGeneric } from "./types";
 
 // Module options TypeScript interface definition
 export interface ModuleOptions {
@@ -38,7 +38,7 @@ export default defineNuxtModule<ModuleOptions>({
       custom: {},
     },
   },
-  async setup(options, nuxt) {
+  async setup(options) {
     const allBakedPresets = {
       ...options.baked.defaults,
       ...options.baked.custom,

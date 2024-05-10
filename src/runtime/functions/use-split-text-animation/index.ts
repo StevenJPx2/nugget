@@ -1,6 +1,6 @@
 import type { MaybeComputedElementRef } from "@vueuse/core";
+import type { UseSplitTextOptions } from "nuxt-split-type";
 import { useSplitText } from "#imports";
-import type { Simplify } from "../../types";
 import {
   type UseAnimateOnScrollOptions,
   useAnimateOnScroll,
@@ -9,16 +9,15 @@ import {
 export type PartialSplitTextAnimationOptions = {
   /** Defines how the text should be split
    * @default "lines"
-   * */
+   */
   splitBy?: "chars" | "words" | "lines";
   /** Additional options for the `useSplitText` composable */
-  splitOptions?: Omit<Partial<Parameters<typeof useSplitText>[1]>, "splitBy">;
+  splitOptions?: Omit<Partial<UseSplitTextOptions>, "splitBy">;
 };
 
 /** Completely optional options for the `useSplitTextAnimation` composable */
-export type UseSplitTextAnimationOptions = Simplify<
-  UseAnimateOnScrollOptions & PartialSplitTextAnimationOptions
->;
+export type UseSplitTextAnimationOptions = UseAnimateOnScrollOptions &
+  PartialSplitTextAnimationOptions;
 
 /**
  * Animates a text split by chars, words or lines

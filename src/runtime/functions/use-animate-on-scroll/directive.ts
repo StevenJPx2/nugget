@@ -3,8 +3,7 @@ import {
   useAnimateOnScroll,
   useBakedAnimateOnScroll,
 } from ".";
-import { defineDirective } from "../../baked";
-import type { BakedPresetsArray } from "../../types";
+import { type BakedPresetsArray, defineDirective } from "../../baked";
 import { directiveObj, transformBakedArrayToObject } from "../../utils";
 
 export const vAos = defineDirective({

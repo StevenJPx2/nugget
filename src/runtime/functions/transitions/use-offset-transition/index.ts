@@ -1,22 +1,20 @@
 import type { MaybeComputedElementRef } from "@vueuse/core";
+import { type MaybeRef, unref, unrefElement, watch } from "#imports";
+import type { Direction } from "../../../types";
 import {
-  useConstructTransition,
   type TransitionOutput,
   type UseConstructTransitionOptions,
+  useConstructTransition,
 } from "../use-construct-transition";
-import { watch, unrefElement, unref, type MaybeRef } from "#imports";
-import type { Direction, Simplify } from "../../../types";
 
-export type OffsetOptions = Simplify<
-  {
-    /** Container for the initial animation */
-    mainContainer: MaybeComputedElementRef;
-    /** Container for the offset animation */
-    offsetContainer: MaybeComputedElementRef;
-    /** Direction to animate transition in */
-    direction: MaybeRef<Direction | undefined>;
-  } & UseConstructTransitionOptions
->;
+export type OffsetOptions = {
+  /** Container for the initial animation */
+  mainContainer: MaybeComputedElementRef;
+  /** Container for the offset animation */
+  offsetContainer: MaybeComputedElementRef;
+  /** Direction to animate transition in */
+  direction: MaybeRef<Direction | undefined>;
+} & UseConstructTransitionOptions;
 
 export function useOffsetTransition(options: OffsetOptions): TransitionOutput {
   const { mainContainer, offsetContainer, direction, ...constructOptions } =

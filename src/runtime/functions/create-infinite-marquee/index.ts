@@ -1,3 +1,4 @@
+import type { DefineComponent } from "vue";
 import {
   computed,
   defineComponent,
@@ -46,7 +47,7 @@ export type CreateInfiniteMarqueeOptions = {
 
 export const createInfiniteMarquee = (
   options: CreateInfiniteMarqueeOptions = {},
-) => {
+): DefineComponent => {
   const {
     speed = 0.05,
     gap = "0rem",

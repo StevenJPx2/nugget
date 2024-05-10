@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, watch } from "#imports";
 import { useLocomotive } from ".";
-import type { ILocomotiveScrollOptions } from "locomotive-scroll/dist/types/types";
+import type { ILocomotiveScrollOptions } from "./types";
 
 const props = defineProps<{
   /** The options to pass to LocomotiveScroll

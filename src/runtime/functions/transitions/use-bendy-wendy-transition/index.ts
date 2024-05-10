@@ -1,20 +1,17 @@
-import { unrefElement, type MaybeComputedElementRef } from "@vueuse/core";
-import { watch, unref } from "#imports";
+import { type MaybeComputedElementRef, unrefElement } from "@vueuse/core";
+import { unref, watch } from "#imports";
 import {
-  useConstructTransition,
   type TransitionOutput,
   type UseConstructTransitionOptions,
+  useConstructTransition,
 } from "../use-construct-transition";
-import type { Simplify } from "../../../types";
 
-export type BendyWendyOptions = Simplify<
-  {
-    /** The SVG to animate */
-    svg: MaybeComputedElementRef<SVGElement | null | undefined>;
-    /** The path to animate */
-    path: MaybeComputedElementRef<SVGPathElement | null | undefined>;
-  } & Omit<UseConstructTransitionOptions, "parentContainer">
->;
+export type BendyWendyOptions = {
+  /** The SVG to animate */
+  svg: MaybeComputedElementRef<SVGElement | null | undefined>;
+  /** The path to animate */
+  path: MaybeComputedElementRef<SVGPathElement | null | undefined>;
+} & Omit<UseConstructTransitionOptions, "parentContainer">;
 
 /**
  * Composable to create bendy wendy transitions

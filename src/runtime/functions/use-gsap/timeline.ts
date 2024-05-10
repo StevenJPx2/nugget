@@ -1,14 +1,13 @@
-import "gsap";
+import type { EventHookOn } from "@vueuse/core";
 import { gsap } from "gsap";
+import type { ShallowRef } from "vue";
 import {
+  createEventHook,
   shallowRef,
   tryOnMounted,
   watchPostEffect,
-  createEventHook,
 } from "#imports";
-import type { EventHookOn } from "@vueuse/core";
-import type { ShallowRef } from "vue";
-import type { StrongTimelineVars } from "./types";
+import type { StrongTimelineVars } from "../../types";
 
 export type TimelineReturn = {
   tl: ShallowRef<gsap.core.Timeline | undefined>;

@@ -32,7 +32,7 @@ type EaseOption = {
    * @remarks
    * - `Ease` is a custom type that allows the LSP to infer the correct string values for `ease`
    * - You can also pass a custom `gsap.EaseFunction`
-   * */
+    */
   ease?: Ease | gsap.EaseFunction;
 };
 

@@ -1,22 +1,21 @@
 import { toRef, unref, unrefElement, watch } from "#imports";
-import type { Simplify, StrongTweenVars } from "../../types";
+import type { StrongTweenVars } from "../../types";
 import { useGsap } from "../use-gsap";
 import {
-  useConstructTransition,
   type TransitionOutput,
   type UseConstructTransitionOptions,
+  useConstructTransition,
 } from "./use-construct-transition";
 
-export type UseGenericTransitionOptions = Simplify<
-  {
-    /** The initial state of the element */
-    initial: StrongTweenVars;
-    /** The entered state of the element */
-    enter: StrongTweenVars;
-    /** The exiting state of the element */
-    exit: StrongTweenVars;
-  } & UseConstructTransitionOptions
->;
+export type UseGenericTransitionOptions = {
+  /** The initial state of the element */
+  initial: StrongTweenVars;
+  /** The entered state of the element */
+  enter: StrongTweenVars;
+  /** The exiting state of the element */
+  exit: StrongTweenVars;
+} & UseConstructTransitionOptions;
+
 /**
  * Composable to create generic transitions
  * @remarks

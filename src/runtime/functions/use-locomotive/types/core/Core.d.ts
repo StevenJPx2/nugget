@@ -1,8 +1,8 @@
 /**
  * Integrates Lenis with Locomotive's built-in animation system
  */
-import { CoreOptions, IScrollElementCallbacksValues } from '../types';
-import ScrollElement from './ScrollElement';
+import type { CoreOptions, IScrollElementCallbacksValues } from '../types';
+import type ScrollElement from './ScrollElement';
 export default class Core {
     private $scrollContainer;
     private modularInstance?;

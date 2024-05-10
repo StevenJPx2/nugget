@@ -1,5 +1,5 @@
-import { ref, tryOnMounted, tryOnScopeDispose, type Ref } from "#imports";
 import { defaultWindow } from "@vueuse/core";
+import { type Ref, ref, tryOnMounted, tryOnScopeDispose } from "#imports";
 import type {
   ILocomotiveScrollOptions,
   default as LocomotiveScroll,
