@@ -1,6 +1,48 @@
 # Changelog
 
 
+## v1.0.0-beta.0
+
+[compare changes](https://github.com/stevenjpx2/nugget/compare/v0.3.1...v1.0.0-beta.0)
+
+### 🚀 Enhancements
+
+- ⚠️  Revitalize baked format ([39b5220](https://github.com/stevenjpx2/nugget/commit/39b5220))
+- Finish new baked format ([b65c469](https://github.com/stevenjpx2/nugget/commit/b65c469))
+- Finish custom bakes in config ([#2](https://github.com/stevenjpx2/nugget/pull/2))
+- **createInfiniteMarquee:** Create composable ([804411a](https://github.com/stevenjpx2/nugget/commit/804411a))
+- **directives:** Add new directives ([#6](https://github.com/stevenjpx2/nugget/pull/6))
+
+### 🩹 Fixes
+
+- **useLocomotive:** Have locomotive scroll in wrapper than in window ([2d72538](https://github.com/stevenjpx2/nugget/commit/2d72538))
+- **useLocomotive, useInfiniteMarquee:** Locomotive types, infinite marquee implies child ([52c7fdb](https://github.com/stevenjpx2/nugget/commit/52c7fdb))
+
+### 💅 Refactors
+
+- More typesafety, multiple build type fixes ([b290a91](https://github.com/stevenjpx2/nugget/commit/b290a91))
+
+### 📖 Documentation
+
+- Update path ([91fceb5](https://github.com/stevenjpx2/nugget/commit/91fceb5))
+- **roadmap:** Update roadmap ([bdcf1f8](https://github.com/stevenjpx2/nugget/commit/bdcf1f8))
+- **directives:** Reorganize directives and update docs ([8964563](https://github.com/stevenjpx2/nugget/commit/8964563))
+
+### 🏡 Chore
+
+- **release:** V0.3.1 ([7dd4a4b](https://github.com/stevenjpx2/nugget/commit/7dd4a4b))
+- Create FUNDING.yml ([73d35c5](https://github.com/stevenjpx2/nugget/commit/73d35c5))
+- Update issue templates ([4696542](https://github.com/stevenjpx2/nugget/commit/4696542))
+- **baked:** Types ([e84a397](https://github.com/stevenjpx2/nugget/commit/e84a397))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Revitalize baked format ([39b5220](https://github.com/stevenjpx2/nugget/commit/39b5220))
+
+### ❤️ Contributors
+
+- Steven John ([@StevenJPx2](http://github.com/StevenJPx2))
+
 ## v0.3.1
 
 [compare changes](https://github.com/stevenjpx2/nugget/compare/v0.3.0...v0.3.1)
