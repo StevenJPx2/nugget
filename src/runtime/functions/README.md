@@ -1,10 +1,11 @@
-# Composables
+# Functions
 
 ## Low-level
 
 - [`useGsap`](./use-gsap/): Exposes [gsap][gsap-href] functions. This is internally used in all the other animation composables.
 - [`useLocomotive`](./use-locomotive/): Exposes [Locomotive Scroll][locomotive-href] for smooth scroll and parallax effects. Use `<Locomotive />` for CSS styles.
 - [`useConstructTransition`](./transitions/): Used for creating transitions.
+- [`createInfiniteMarquee`](./create-infinite-marquee/): Returns a component that you can wrap the content you want the marquee for.
 
 ## Mid-level
 

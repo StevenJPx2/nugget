@@ -1,27 +1,18 @@
-import { camelCase, pascalCase, titleCase } from "string-ts";
+import { camelCase, titleCase } from "string-ts";
 import { defineConfig } from "vitepress";
 import { generateSidebar } from "vitepress-extras";
 import { description, name, version } from "../../package.json";
 import { github, logo, ogImage, ogUrl, releases } from "./meta";
 
-const refPaths = [
-  ...generateSidebar({
-    rootPath: "src/runtime",
-    contentPath: "functions",
-    leadingPath: "/ref",
-    leafFile: "README",
-    transformName: camelCase,
-  }),
-  ...generateSidebar({
-    rootPath: "src/runtime",
-    contentPath: "components",
-    leadingPath: "/ref",
-    leafFile: "README",
-    transformName: pascalCase,
-  }),
-];
-
-console.log(JSON.stringify(refPaths, null, 2));
+const functionPaths = generateSidebar({
+  rootPath: "src/runtime",
+  contentPath: "functions",
+  leadingPath: "/",
+  leafFile: "README",
+  transformName: (fileName) =>
+    fileName !== "functions" ? camelCase(fileName) : "Functions",
+});
+console.log(JSON.stringify(functionPaths, null, 2));
 
 const guidePaths = generateSidebar({
   rootPath: "src/guide",
@@ -62,10 +53,8 @@ export default defineConfig({
   ],
 
   rewrites: {
-    "runtime/:root(functions|components)/:type*/README.md":
-      "ref/:root(functions|components)/:type*/index.md",
-    "runtime/:root(functions|components)/:type+.md":
-      "ref/:root(functions|components)/:type+.md",
+    "runtime/functions/:type*/README.md": "functions/:type*/index.md",
+    "runtime/functions/:type+.md": "functions/:type+.md",
   },
   sitemap: {
     hostname: "https://nugget.stevenjohn.co",
@@ -95,13 +84,12 @@ export default defineConfig({
         leadingPath: "/guide",
         leafFile: "README",
         depth: 1,
-        transformName: titleCase,
+        transformName: (fileName) =>
+          fileName === "" ? "Guide" : titleCase(fileName),
       })[0],
-      {
-        text: "Reference",
-        // @ts-expect-error NavItem is close to sidebar item
-        items: refPaths,
-      },
+
+      { text: "Functions", link: "/functions/" },
+
       {
         text: `v${version}`,
         link: releases,
@@ -110,7 +98,7 @@ export default defineConfig({
 
     sidebar: {
       "/guide/": guidePaths,
-      "/ref/": [{ text: "Reference", items: refPaths }],
+      "/functions/": functionPaths,
     },
 
     socialLinks: [{ icon: "github", link: github }],

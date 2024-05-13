@@ -19,10 +19,10 @@ If set to `true`, it will enable its default state, or you can set to animate a 
 
 ## Composables
 
-- [useBakedFromTo](/ref/functions/use-gsap/#baked)
-- [useBakedAnimateOnScroll](/ref/functions/use-animate-on-scroll/#baked)
-- [useBakedSplitTextAnimation](/ref/functions/use-split-text-animation/#baked)
-- [useBakedTransition](/ref/functions/transitions/#baked)
+- [useBakedFromTo](/functions/use-gsap/#baked)
+- [useBakedAnimateOnScroll](/functions/use-animate-on-scroll/#baked)
+- [useBakedSplitTextAnimation](/functions/use-split-text-animation/#baked)
+- [useBakedTransition](/functions/transitions/#baked)
 
 ## Example
 
