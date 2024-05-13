@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v1.0.0-beta.1
+
+[compare changes](https://github.com/stevenjpx2/nugget/compare/v1.0.0-beta.0...v1.0.0-beta.1)
+
+### 🩹 Fixes
+
+- **docs:** Links ([c658ff4](https://github.com/stevenjpx2/nugget/commit/c658ff4))
+- **baked:** Remove export for presets ([d210352](https://github.com/stevenjpx2/nugget/commit/d210352))
+
+### 📖 Documentation
+
+- Update README.md ([2854977](https://github.com/stevenjpx2/nugget/commit/2854977))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v1.0.0-beta.0
 
 [compare changes](https://github.com/stevenjpx2/nugget/compare/v0.3.1...v1.0.0-beta.0)
