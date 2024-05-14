@@ -17,7 +17,9 @@ With [`baked`](../baked) animations.
 
 ```ts
 const container = ref<HTMLElement>();
-useBakedAnimateOnScroll(container, { translate: true, opacity: true });
+useBakedAnimateOnScroll(container, {
+  animationOptions: { translate: true, opacity: true },
+});
 ```
 
 ## Directive

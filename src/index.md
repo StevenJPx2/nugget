@@ -13,8 +13,8 @@ hero:
       text: Get started
       link: /guide/1.get-started
     - theme: alt
-      text: Reference
-      link: /ref/composables
+      text: Functions
+      link: /Functions
 
 features:
   - icon: 🚀
