@@ -1,6 +1,8 @@
 import type { BakedPresets } from "#build/types/nugget";
 import type { StrongTweenVars } from "../types";
 
+export type { BakedPresets };
+
 export type AnimationOptions = BakedPresets;
 
 /**
@@ -13,7 +15,7 @@ export type UseBakedAnimationOptions = {
   /**
    * Options for the animation
    */
-  animationOptions: AnimationOptions;
+  animationOptions: BakedPresets | BakedPresetsArray;
 
   /**
    * Tween values for `gsap.to()`

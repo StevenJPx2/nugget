@@ -56,4 +56,4 @@ export const defaultPresets = {
     },
     "in",
   ),
-} as const satisfies PresetsGeneric;
+} satisfies PresetsGeneric;

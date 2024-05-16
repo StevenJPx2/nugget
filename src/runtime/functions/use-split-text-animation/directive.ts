@@ -4,8 +4,8 @@ import {
   useBakedSplitTextAnimation,
   useSplitTextAnimation,
 } from ".";
-import { type BakedPresetsArray, defineDirective } from "../../baked";
-import { directiveObj, transformBakedArrayToObject } from "../../utils";
+import { defineDirective } from "../../baked";
+import { directiveObj } from "../../utils";
 
 export const vTextAnimate = defineDirective({
   fn: useSplitTextAnimation,
@@ -17,29 +17,29 @@ export const vTextAnimateBaked =
     useBakedSplitTextAnimation(el, binding.value);
   });
 
-export const vTextAnimateBakedLines = directiveObj<BakedPresetsArray>(
-  (el, binding) => {
-    useBakedSplitTextAnimation(el, {
-      splitBy: "lines",
-      animationOptions: transformBakedArrayToObject(binding.value),
-    });
-  },
-);
+export const vTextAnimateBakedLines = directiveObj<
+  UseBakedSplitTextAnimationOptions["animationOptions"]
+>((el, binding) => {
+  useBakedSplitTextAnimation(el, {
+    splitBy: "lines",
+    animationOptions: binding.value,
+  });
+});
 
-export const vTextAnimateBakedWords = directiveObj<BakedPresetsArray>(
-  (el, binding) => {
-    useBakedSplitTextAnimation(el, {
-      splitBy: "words",
-      animationOptions: transformBakedArrayToObject(binding.value),
-    });
-  },
-);
+export const vTextAnimateBakedWords = directiveObj<
+  UseBakedSplitTextAnimationOptions["animationOptions"]
+>((el, binding) => {
+  useBakedSplitTextAnimation(el, {
+    splitBy: "words",
+    animationOptions: binding.value,
+  });
+});
 
-export const vTextAnimateBakedChars = directiveObj<BakedPresetsArray>(
-  (el, binding) => {
-    useBakedSplitTextAnimation(el, {
-      splitBy: "chars",
-      animationOptions: transformBakedArrayToObject(binding.value),
-    });
-  },
-);
+export const vTextAnimateBakedChars = directiveObj<
+  UseBakedSplitTextAnimationOptions["animationOptions"]
+>((el, binding) => {
+  useBakedSplitTextAnimation(el, {
+    splitBy: "chars",
+    animationOptions: binding.value,
+  });
+});

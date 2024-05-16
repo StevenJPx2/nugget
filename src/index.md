@@ -14,7 +14,7 @@ hero:
       link: /guide/1.get-started
     - theme: alt
       text: Functions
-      link: /Functions
+      link: /functions
 
 features:
   - icon: 🚀

@@ -4,6 +4,7 @@ import {
   type UseBakedAnimationOptions,
   generateAnimationTweens,
 } from "../../baked";
+import { generateTweenValues, mergeTweens } from "../../utils";
 
 /** Options for `useAnimateOnScroll` */
 export type UseBakedAnimateOnScrollOptions =
@@ -20,10 +21,14 @@ export function useBakedAnimateOnScroll(
   el: MaybeRefOrGetter<gsap.DOMTarget | undefined>,
   {
     animationOptions = {},
+    tweenValues,
     scrollAnimationOptions = true,
   }: UseBakedAnimateOnScrollOptions = {},
 ) {
-  const tweens = generateAnimationTweens(animationOptions, nuggetBakedPresets);
+  const tweens = mergeTweens(
+    generateAnimationTweens(animationOptions, nuggetBakedPresets),
+    generateTweenValues(tweenValues),
+  );
 
   useAnimateOnScroll(toRef(el), {
     tweens,

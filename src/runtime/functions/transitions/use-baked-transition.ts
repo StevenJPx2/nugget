@@ -1,6 +1,6 @@
 import { nuggetBakedPresets } from "#imports";
 import { generateAnimationTweens } from "../../baked";
-import type { AnimationOptions } from "../../baked/types";
+import type { UseBakedAnimationOptions } from "../../baked/types";
 import { transformFromToTweens } from "../../utils";
 import type {
   TransitionOutput,
@@ -10,7 +10,7 @@ import { useGenericTransition } from "./use-generic-transition";
 
 export type UseBakedTransitionOptions = {
   /** Options for the baked transition */
-  animationOptions: AnimationOptions;
+  animationOptions: UseBakedAnimationOptions["animationOptions"];
 } & UseConstructTransitionOptions;
 
 /**
@@ -27,6 +27,7 @@ export function useBakedTransition(
   const { from, to } = transformFromToTweens(
     generateAnimationTweens(animationOptions, nuggetBakedPresets),
   );
+
   const output = useGenericTransition({
     initial: from,
     enter: { ...to, duration: 0.6, ease: "expo.out" },

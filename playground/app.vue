@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { ref, useBakedTransition, useGsap } from "#imports";
+import {
+  ref,
+  useBakedTransition,
+  useGsap,
+  vAos,
+  vTextAnimateBaked,
+} from "#imports";
 
 const hi = ref<HTMLElement>();
 const { set } = useGsap();
@@ -9,11 +15,7 @@ const stingEffectContainer = ref<HTMLDivElement | null>(null);
 
 const { play, stop } = useBakedTransition({
   parentContainer: stingEffectContainer,
-  animationOptions: {
-    translate: true,
-    scale: "in",
-    skew: "bottom",
-  },
+  animationOptions: ["translate", "skew:bottom", "scale:in", "rotate"],
 });
 
 const runTransition = ref(false);
@@ -29,9 +31,7 @@ const onAfterEnterBendy = async () => {
 </script>
 <template>
   <locomotive :options="{ lenisOptions: { wrapper: undefined } }">
-    <div ref="hi">
-      hello
-    </div>
+    <div ref="hi">hello</div>
     <button
       class="bg-yellow-500 rounded-md grid place-content-center relative px-8 py-5 overflow-hidden"
       @mouseover="
@@ -99,9 +99,7 @@ const onAfterEnterBendy = async () => {
           zIndex: 1,
         }"
       >
-        <button @mouseover="runBendyTransition = true">
-          v
-        </button>
+        <button @mouseover="runBendyTransition = true">v</button>
       </div>
       <bendy-wendy-transition
         class="red h-full w-full"
@@ -116,11 +114,8 @@ const onAfterEnterBendy = async () => {
         baked: true,
         options: {
           scrollAnimationOptions: { start: 'top 60%' },
-          animationOptions: {
-            opacity: true,
-            translate: true,
-            blur: true,
-          },
+          tweenValues: { duration: 0.3 },
+          animationOptions: ['opacity', 'translate', 'blur'],
         },
       }"
       class="bg-blue-500 size-10 mx-auto opacity-0"
@@ -134,7 +129,15 @@ const onAfterEnterBendy = async () => {
       }"
     >
       <h1
-        v-text-animate-baked-lines="['opacity', 'blur']"
+        v-text-animate-baked="{
+          animationOptions: ['translate', 'rotate'],
+          splitOptions: {
+            wrapping: {
+              select: 'lines',
+              wrapClass: 'overflow-hidden inline-flex',
+            },
+          },
+        }"
         :style="{
           fontSize: '25vw',
           textAlign: 'left',
@@ -160,12 +163,7 @@ const onAfterEnterBendy = async () => {
         :acceleration="0"
       >
         <div :style="{ display: 'inline-flex', gap: '2rem' }">
-          <p
-            v-for="i in 20"
-            :key="i"
-          >
-            Nuxt module playground!
-          </p>
+          <p v-for="i in 20" :key="i">Nuxt module playground!</p>
         </div>
       </infinite-marquee>
     </div>

@@ -3,8 +3,8 @@ import {
   useAnimateOnScroll,
   useBakedAnimateOnScroll,
 } from ".";
-import { type BakedPresetsArray, defineDirective } from "../../baked";
-import { directiveObj, transformBakedArrayToObject } from "../../utils";
+import { defineDirective } from "../../baked";
+import { directiveObj } from "../../utils";
 
 export const vAos = defineDirective({
   fn: useAnimateOnScroll,
@@ -17,10 +17,10 @@ export const vAosBaked = directiveObj<UseBakedAnimateOnScrollOptions>(
   },
 );
 
-export const vAosBakedAnimate = directiveObj<BakedPresetsArray>(
-  (el, binding) => {
-    useBakedAnimateOnScroll(el, {
-      animationOptions: transformBakedArrayToObject(binding.value),
-    });
-  },
-);
+export const vAosBakedAnimate = directiveObj<
+  UseBakedAnimateOnScrollOptions["animationOptions"]
+>((el, binding) => {
+  useBakedAnimateOnScroll(el, {
+    animationOptions: binding.value,
+  });
+});

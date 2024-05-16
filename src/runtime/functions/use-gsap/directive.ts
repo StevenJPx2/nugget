@@ -1,12 +1,8 @@
 import { directiveHooks } from "@vueuse/core";
 import type { ObjectDirective } from "vue";
 import { type UseGsapReturn, useBakedFromTo, useGsap } from ".";
-import type {
-  BakedPresetsArray,
-  DirectiveOptions,
-  UseBakedAnimationOptions,
-} from "../../baked";
-import { directiveObj, transformBakedArrayToObject } from "../../utils";
+import type { DirectiveOptions, UseBakedAnimationOptions } from "../../baked";
+import { directiveObj } from "../../utils";
 
 export const vFromTo: ObjectDirective<
   HTMLElement,
@@ -30,10 +26,10 @@ export const vFromToBaked = directiveObj<UseBakedAnimationOptions>(
   },
 );
 
-export const vFromToBakedAnimate = directiveObj<BakedPresetsArray>(
-  (el, binding) => {
-    useBakedFromTo(el, {
-      animationOptions: transformBakedArrayToObject(binding.value),
-    });
-  },
-);
+export const vFromToBakedAnimate = directiveObj<
+  UseBakedAnimationOptions["animationOptions"]
+>((el, binding) => {
+  useBakedFromTo(el, {
+    animationOptions: binding.value,
+  });
+});
