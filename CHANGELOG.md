@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v1.0.0-beta.2
+
+[compare changes](https://github.com/stevenjpx2/nugget/compare/v1.0.0-beta.1...v1.0.0-beta.2)
+
+### 🚀 Enhancements
+
+- Add BakedPresetsArray to all baked functions, fix rotate crash ([2de8b20](https://github.com/stevenjpx2/nugget/commit/2de8b20))
+
+### 🩹 Fixes
+
+- **docs:** Correct configuration ([d53e11f](https://github.com/stevenjpx2/nugget/commit/d53e11f))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v1.0.0-beta.1
 
 [compare changes](https://github.com/stevenjpx2/nugget/compare/v1.0.0-beta.0...v1.0.0-beta.1)
