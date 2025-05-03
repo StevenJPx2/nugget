@@ -32,7 +32,7 @@ export function generateAnimationTweens(
     for (const tweenKey in tweens[presetTweenKey]) {
       allTweens[tweenKey] = tweens[presetTweenKey][tweenKey].map(
         (v) => v ?? undefined,
-      ) as [any, any];
+      ) as [unknown, unknown];
     }
   }
 

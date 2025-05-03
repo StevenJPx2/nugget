@@ -1,9 +1,6 @@
 import { defaultWindow } from "@vueuse/core";
 import { type Ref, ref, tryOnMounted, tryOnScopeDispose } from "#imports";
-import type {
-  ILocomotiveScrollOptions,
-  default as LocomotiveScroll,
-} from "./types";
+import type * as types from "locomotive-scroll";
 
 /** Internal Composable to use `LocomotiveScroll`
  * @param options - The options to pass to `LocomotiveScroll`
@@ -13,17 +10,16 @@ import type {
  * - It is not recommended to use this composable directly because the component injects necessary CSS.
  */
 export function useLocomotive(
-  options: ILocomotiveScrollOptions = {},
-): Ref<LocomotiveScroll | undefined> {
+  options: types.ILocomotiveScrollOptions = {},
+): Ref<types.default | undefined> {
   const window = defaultWindow;
 
   if (!window) return ref(undefined);
 
-  const ls = ref<LocomotiveScroll>();
+  const ls = ref<types.default>();
 
   const update = async () => {
     if (!window) return;
-    // @ts-expect-error typing from the package is incorrect
     const LocomotiveScroll = await import("locomotive-scroll");
     ls.value = new LocomotiveScroll.default({
       ...options,

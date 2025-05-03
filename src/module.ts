@@ -50,11 +50,6 @@ export default defineNuxtModule<ModuleOptions>({
     addPlugin(resolveRuntime("./functions/plugin"));
 
     addTypeTemplate({
-      filename: "types/locomotive-scroll.d.ts",
-      src: resolveRuntime("./functions/use-locomotive/types/index.d.ts"),
-    });
-
-    addTypeTemplate({
       filename: "types/nugget.d.ts",
       getContents: () => {
         let content = "export type BakedPresets = {\n";
