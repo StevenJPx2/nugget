@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v1.0.0
+
+[compare changes](https://github.com/stevenjpx2/nugget/compare/v1.0.0-beta.2...v1.0.0)
+
+### 🩹 Fixes
+
+- Incompatibility with nuxt build ([4a4ce0d](https://github.com/stevenjpx2/nugget/commit/4a4ce0d))
+- **locomotive:** Type issues, depend on locomotive-scroll ([ba1554d](https://github.com/stevenjpx2/nugget/commit/ba1554d))
+
+### 📦 Build
+
+- Externalize tinyglobby ([96bcbb0](https://github.com/stevenjpx2/nugget/commit/96bcbb0))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v1.0.0-beta.2
 
 [compare changes](https://github.com/stevenjpx2/nugget/compare/v1.0.0-beta.1...v1.0.0-beta.2)
