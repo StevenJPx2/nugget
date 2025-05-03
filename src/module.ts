@@ -10,7 +10,7 @@ import {
   defineNuxtModule,
   installModule,
 } from "@nuxt/kit";
-import fg from "fast-glob";
+import { glob } from "tinyglobby";
 import { relative, sep } from "pathe";
 import { camelCase, pascalCase } from "string-ts";
 import { name, version } from "../package.json";
@@ -77,9 +77,12 @@ export default defineNuxtModule<ModuleOptions>({
       },
     });
 
-    for (const path of fg.sync(
+    const components = await glob(
       resolveRuntime("./functions/**/component.vue"),
-    )) {
+      { absolute: true },
+    );
+
+    for (const path of components) {
       addComponent({
         name: pascalCase(
           relative(

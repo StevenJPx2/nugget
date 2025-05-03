@@ -13,7 +13,8 @@ import {
 import type { StrongTweenVars } from "../../types";
 import { timeline } from "./timeline";
 
-/** Function to activate the tween on mount
+/**
+ * Function to activate the tween on mount
  * @param el - The element to tween
  * @param tween - The gsap tween object that is being updated
  * @param updateFactory - The update function to run on mount

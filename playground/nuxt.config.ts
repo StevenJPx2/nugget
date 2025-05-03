@@ -1,5 +1,6 @@
 export default defineNuxtConfig({
   modules: ["../src/module", "@nuxtjs/tailwindcss"],
+
   nugget: {
     baked: {
       custom: {
@@ -17,6 +18,7 @@ export default defineNuxtConfig({
       },
     },
   },
+
   devtools: {
     enabled: true,
 
@@ -24,4 +26,6 @@ export default defineNuxtConfig({
       enabled: true,
     },
   },
+
+  compatibilityDate: "2025-03-19",
 });

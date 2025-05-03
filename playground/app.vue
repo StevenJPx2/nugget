@@ -156,12 +156,7 @@ const onAfterEnterBendy = async () => {
         fontFamily: 'sans-serif',
       }"
     >
-      <infinite-marquee
-        gap="2rem"
-        :pause-on-hover="true"
-        :speed="0.07"
-        :acceleration="0"
-      >
+      <infinite-marquee gap="2rem" :pause-on-hover="true" :speed="0.07">
         <div :style="{ display: 'inline-flex', gap: '2rem' }">
           <p v-for="i in 20" :key="i">Nuxt module playground!</p>
         </div>
