@@ -41,7 +41,7 @@ export type UseBakedSplitTextAnimationOptions = UseBakedAnimateOnScrollOptions &
  * @param options - The animation options
  * @remarks
  * - Made so that it works with a basic but nice effect out of the box
- * - Uses the `useSplitText` composable to split the text
+ * - Uses GSAP's `SplitText` (through `useSplitText`) to split the text
  * - Uses the `useBakedAnimation` composable for the animation
  * @example
  * ```ts

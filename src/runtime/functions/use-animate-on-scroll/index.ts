@@ -1,6 +1,10 @@
 import { type MaybeRefOrGetter, toValue } from "#imports";
 import type { FromToTweens } from "../../types";
-import { transformFromToTweens } from "../../utils";
+import {
+  type ScrollAnimationOptions,
+  resolveScrollTrigger,
+  transformFromToTweens,
+} from "../../utils";
 import { useGsap } from "../use-gsap";
 
 /** Options for `useAnimateOnScroll` */
@@ -33,44 +37,25 @@ export type UseAnimateOnScrollOptions = {
    * @default true
    * @remarks You can also directly pass `gsap.ScrollTrigger` options
    */
-  scrollAnimationOptions?: boolean | gsap.AnimationVars["scrollTrigger"];
+  scrollAnimationOptions?: ScrollAnimationOptions;
 };
 
 export function useAnimateOnScroll(
   el: MaybeRefOrGetter<gsap.DOMTarget | undefined>,
   options: UseAnimateOnScrollOptions,
 ) {
-  const unrefEl = toValue(el);
-  const { tweens } = options;
-  const { from, to } = transformFromToTweens(tweens);
-
-  let scrollTrigger: gsap.AnimationVars["scrollTrigger"] = undefined;
-
-  if (options.scrollAnimationOptions) {
-    scrollTrigger = {
-      trigger: unrefEl,
-      start: "top 80%",
-    };
-    if (options.scrollAnimationOptions instanceof Object) {
-      scrollTrigger = {
-        trigger: unrefEl,
-        ...options.scrollAnimationOptions,
-      };
-    }
-
-    scrollTrigger = {
-      ...scrollTrigger,
-      ...(to.scrollTrigger ?? {}),
-    };
-  }
-
+  const { from, to } = transformFromToTweens(options.tweens);
   const { fromTo } = useGsap();
 
   fromTo(el, {
     from,
     to: {
       ...to,
-      scrollTrigger,
+      scrollTrigger: resolveScrollTrigger(
+        toValue(el),
+        options.scrollAnimationOptions,
+        to,
+      ),
     },
   });
 }

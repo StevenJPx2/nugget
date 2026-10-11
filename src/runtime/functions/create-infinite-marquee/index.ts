@@ -1,13 +1,14 @@
+import gsap from "gsap";
 import type { DefineComponent } from "vue";
 import {
   computed,
   defineComponent,
   h,
   ref,
+  tryOnScopeDispose,
   useElementHover,
   useElementSize,
   useElementVisibility,
-  useRafFn,
   useWindowScroll,
   useWindowSize,
   watch,
@@ -72,46 +73,50 @@ export const createInfiniteMarquee = (
   const { width: windowWidth } = useWindowSize();
   const { y: windowY } = useWindowScroll();
 
-  const lerp = (lerpVals: { current: number; target: number }) =>
-    lerpVals.current * (1 - interpolationFactor) +
-    lerpVals.target * interpolationFactor;
+  const lerp = (lerpVals: { current: number; target: number }, ratio = 1) => {
+    const factor = 1 - (1 - interpolationFactor) ** ratio;
+    return lerpVals.current * (1 - factor) + lerpVals.target * factor;
+  };
 
   const target = computed(
     () =>
       ((containerWidth.value - windowWidth.value) / containerWidth.value) * 100,
   );
 
-  const {
-    pause: pauseRaf,
-    resume: resumeRaf,
-    isActive: isRafActive,
-  } = useRafFn(
-    () => {
-      const lerpValsConstant = lerpVals.value;
-      lerpValsConstant.target += speed;
-      lerpValsConstant.current = lerp(lerpValsConstant);
+  // Speeds are tuned per 60fps frame, so scale them by gsap's delta ratio
+  // to keep the marquee at the same pace on any refresh rate.
+  const tick = () => {
+    const ratio = gsap.ticker.deltaRatio(60);
+    const lerpValsConstant = lerpVals.value;
+    lerpValsConstant.target += speed * ratio;
+    lerpValsConstant.current = lerp(lerpValsConstant, ratio);
 
-      if (lerpValsConstant.target > target.value) {
-        lerpValsConstant.current -= lerpValsConstant.target;
-        lerpValsConstant.target = 0;
-      }
+    if (lerpValsConstant.target > target.value) {
+      lerpValsConstant.current -= lerpValsConstant.target;
+      lerpValsConstant.target = 0;
+    }
 
-      x.value = lerpValsConstant.current * directionConstant;
-    },
-    { immediate: false },
-  );
+    x.value = lerpValsConstant.current * directionConstant;
+  };
+
+  let isTicking = false;
+  const setTicking = (value: boolean) => {
+    if (value === isTicking) return;
+
+    isTicking = value;
+    if (value) gsap.ticker.add(tick);
+    else gsap.ticker.remove(tick);
+  };
 
   watch(windowY, () => {
     lerpVals.value.target += acceleration * 5;
   });
 
   watchPostEffect(() => {
-    if ((!isTargetVisible.value || isHovering.value) && isRafActive.value) {
-      pauseRaf();
-    } else {
-      resumeRaf();
-    }
+    setTicking(isTargetVisible.value && !isHovering.value);
   });
+
+  tryOnScopeDispose(() => setTicking(false));
 
   return defineComponent({
     setup(_, { slots }) {

@@ -7,8 +7,8 @@ export function transformFromToTweens(tweens: FromToTweens) {
   for (const tweenName in tweens) {
     const [fromVal, toVal] = tweens[tweenName];
 
-    from[tweenName] = fromVal;
-    to[tweenName] = toVal;
+    if (fromVal !== undefined) from[tweenName] = fromVal;
+    if (toVal !== undefined) to[tweenName] = toVal;
   }
 
   return { from, to };

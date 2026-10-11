@@ -29,8 +29,9 @@ const onAfterEnterBendy = async () => {
   runBendyTransition.value = false;
 };
 </script>
+
 <template>
-  <locomotive :options="{ lenisOptions: { wrapper: undefined } }">
+  <smooth-scroll :options="{ smooth: 1, effects: true }">
     <div ref="hi">hello</div>
     <button
       class="bg-yellow-500 rounded-md grid place-content-center relative px-8 py-5 overflow-hidden"
@@ -131,12 +132,7 @@ const onAfterEnterBendy = async () => {
       <h1
         v-text-animate-baked="{
           animationOptions: ['translate', 'rotate'],
-          splitOptions: {
-            wrapping: {
-              select: 'lines',
-              wrapClass: 'overflow-hidden inline-flex',
-            },
-          },
+          splitOptions: { mask: 'lines' },
         }"
         :style="{
           fontSize: '25vw',
@@ -162,7 +158,7 @@ const onAfterEnterBendy = async () => {
         </div>
       </infinite-marquee>
     </div>
-  </locomotive>
+  </smooth-scroll>
 </template>
 
 <style>

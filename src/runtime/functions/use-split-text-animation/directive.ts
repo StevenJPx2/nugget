@@ -1,4 +1,3 @@
-import type { UseSplitTextOptions as _ } from "nuxt-split-type";
 import {
   type UseBakedSplitTextAnimationOptions,
   useBakedSplitTextAnimation,

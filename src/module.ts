@@ -11,7 +11,7 @@ import {
   installModule,
 } from "@nuxt/kit";
 import { glob } from "tinyglobby";
-import { relative, sep } from "pathe";
+import { basename, dirname } from "pathe";
 import { camelCase, pascalCase } from "string-ts";
 import { name, version } from "../package.json";
 import { defaultPresets } from "./baked/presets";
@@ -77,17 +77,12 @@ export default defineNuxtModule<ModuleOptions>({
       { absolute: true },
     );
 
+    // Each component is named after its folder: `use-smooth-scroll` -> `SmoothScroll`
     for (const path of components) {
+      const folder = basename(dirname(path));
+
       addComponent({
-        name: pascalCase(
-          relative(
-            resolveRuntime("./functions"),
-            path.split(sep).slice(-2, -1)[0],
-          )
-            .replace("component.vue", "")
-            .replace(/use/, "")
-            .replace(/create/, ""),
-        ),
+        name: pascalCase(folder.replace(/^(use|create)-/, "")),
         filePath: path,
       });
     }
@@ -103,7 +98,6 @@ export default defineNuxtModule<ModuleOptions>({
     addImportsDir(resolveRuntime("./functions"));
     addComponentsDir({ path: resolveRuntime("./components") });
 
-    await installModule("nuxt-split-type", {});
     await installModule("@vueuse/nuxt", {});
   },
 });

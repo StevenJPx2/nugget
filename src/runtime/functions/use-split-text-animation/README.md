@@ -1,13 +1,14 @@
 # `useSplitTextAnimation`
 
-Automatically enable animate on scroll for the attached element.
+Automatically enable animate on scroll for the attached element. The text is split with GSAP's SplitText (see [`useSplitText`](../use-split-text/)), and lines re-split on resize and font load by default.
 
 ## Usage
 
 ```ts
 const container = ref<HTMLElement>();
 useSplitTextAnimation(container, {
-  splityBy: "lines",
+  splitBy: "lines",
+  splitOptions: { mask: "lines" },
   tweens: { y: [-10, 0], autoAlpha: [0, 1] },
 });
 ```

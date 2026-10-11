@@ -1,18 +1,20 @@
 import type { MaybeComputedElementRef } from "@vueuse/core";
-import type { UseSplitTextOptions } from "nuxt-split-type";
-import { useSplitText } from "#imports";
-import {
-  type UseAnimateOnScrollOptions,
-  useAnimateOnScroll,
-} from "../use-animate-on-scroll";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { unrefElement } from "#imports";
+import { resolveScrollTrigger, transformFromToTweens } from "../../utils";
+import type { UseAnimateOnScrollOptions } from "../use-animate-on-scroll";
+import { type UseSplitTextOptions, useSplitText } from "../use-split-text";
 
 export type PartialSplitTextAnimationOptions = {
-  /** Defines how the text should be split
+  /** Defines which split pieces are animated
    * @default "lines"
    */
   splitBy?: "chars" | "words" | "lines";
-  /** Additional options for the `useSplitText` composable */
-  splitOptions?: Omit<Partial<UseSplitTextOptions>, "splitBy">;
+  /** Additional `SplitText` vars, such as `mask` or `autoSplit`
+   * @remarks `autoSplit` defaults to `true` when animating lines, so fonts and resizes re-split them
+   */
+  splitOptions?: Omit<UseSplitTextOptions, "onSplit">;
 };
 
 /** Completely optional options for the `useSplitTextAnimation` composable */
@@ -24,36 +26,42 @@ export type UseSplitTextAnimationOptions = UseAnimateOnScrollOptions &
  * @param el - The element or ref to animate
  * @param options - The animation options
  * @remarks
- * - Uses the `useSplitText` composable to split the text
- * - Uses the `useAnimateOnScroll` composable for the animation
+ * - Uses GSAP's `SplitText` through `useSplitText`
+ * - The tween is created in `onSplit`, so re-splits swap it seamlessly
  * @example
  * ```ts
  * const refEl = ref<HTMLElement>();
- * const options = {
- *  splitBy: "chars",
- *  duration: 0.5,
- *  stagger: 0.2,
- *  ease: "none",
- *  delay: 0,
- * };
- * useSplitTextAnimation(refEl, options);
+ * useSplitTextAnimation(refEl, {
+ *   splitBy: "chars",
+ *   tweens: { y: ["100%", 0], stagger: [undefined, 0.05] },
+ * });
  * ```
  */
 export function useSplitTextAnimation(
   el: MaybeComputedElementRef,
   options: UseSplitTextAnimationOptions,
 ) {
-  const {
-    splitBy = "lines",
-    splitOptions,
-    ...animateOnScrollOptions
-  } = options;
-  const splitEl = useSplitText(el, {
-    splitBy,
-    ...splitOptions,
-  });
+  const { splitBy = "lines", splitOptions, tweens } = options;
+  const { from, to } = transformFromToTweens(tweens);
+  const type = splitOptions?.type ?? splitBy;
 
-  useAnimateOnScroll(splitEl[splitBy], animateOnScrollOptions);
+  useSplitText(el, {
+    autoSplit: splitBy === "lines",
+    ...splitOptions,
+    type: type.includes(splitBy) ? type : `${type}, ${splitBy}`,
+    onSplit: (self) => {
+      gsap.registerPlugin(ScrollTrigger);
+
+      return gsap.fromTo(self[splitBy], { ...from }, {
+        ...to,
+        scrollTrigger: resolveScrollTrigger(
+          unrefElement(el),
+          options.scrollAnimationOptions,
+          to,
+        ),
+      });
+    },
+  });
 }
 
 export * from "./baked";
