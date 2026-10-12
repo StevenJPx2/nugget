@@ -1,4 +1,3 @@
-import type { MaybeComputedElementRef } from "@vueuse/core";
 import { nuggetBakedPresets } from "#imports";
 import {
   type PartialSplitTextAnimationOptions,
@@ -6,6 +5,7 @@ import {
 } from ".";
 import type { Ease } from "../../types";
 import type { UseBakedAnimateOnScrollOptions } from "../use-animate-on-scroll/baked";
+import type { MaybeSplitTextTarget } from "../use-split-text";
 
 import { generateAnimationTweens } from "../../baked";
 import { mergeTweens } from "../../utils";
@@ -57,7 +57,7 @@ export type UseBakedSplitTextAnimationOptions = UseBakedAnimateOnScrollOptions &
  * ```
  */
 export function useBakedSplitTextAnimation(
-  el: MaybeComputedElementRef,
+  el: MaybeSplitTextTarget,
   {
     stagger,
     splitBy = "lines",

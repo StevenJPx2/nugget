@@ -1,10 +1,13 @@
-import type { MaybeComputedElementRef } from "@vueuse/core";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { unrefElement } from "#imports";
 import { resolveScrollTrigger, transformFromToTweens } from "../../utils";
 import type { UseAnimateOnScrollOptions } from "../use-animate-on-scroll";
-import { type UseSplitTextOptions, useSplitText } from "../use-split-text";
+import {
+  type MaybeSplitTextTarget,
+  type UseSplitTextOptions,
+  resolveSplitTextTarget,
+  useSplitText,
+} from "../use-split-text";
 
 export type PartialSplitTextAnimationOptions = {
   /** Defines which split pieces are animated
@@ -38,7 +41,7 @@ export type UseSplitTextAnimationOptions = UseAnimateOnScrollOptions &
  * ```
  */
 export function useSplitTextAnimation(
-  el: MaybeComputedElementRef,
+  el: MaybeSplitTextTarget,
   options: UseSplitTextAnimationOptions,
 ) {
   const { splitBy = "lines", splitOptions, tweens } = options;
@@ -55,7 +58,7 @@ export function useSplitTextAnimation(
       return gsap.fromTo(self[splitBy], { ...from }, {
         ...to,
         scrollTrigger: resolveScrollTrigger(
-          unrefElement(el),
+          resolveSplitTextTarget(el),
           options.scrollAnimationOptions,
           to,
         ),

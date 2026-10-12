@@ -23,4 +23,12 @@ useSplitText(paragraph, {
 });
 ```
 
+Use `when` to wait until an element or font is ready before splitting:
+
+```ts
+const fontsReady = ref(false);
+document.fonts.ready.then(() => (fontsReady.value = true));
+useSplitText(title, { type: "chars", when: fontsReady });
+```
+
 [split-href]: https://gsap.com/docs/v3/Plugins/SplitText/

@@ -1,5 +1,5 @@
 import gsap from "gsap";
-import type { DefineComponent } from "vue";
+import { cloneVNode, type DefineComponent } from "vue";
 import {
   computed,
   defineComponent,
@@ -120,8 +120,10 @@ export const createInfiniteMarquee = (
 
   return defineComponent({
     setup(_, { slots }) {
-      return () =>
-        h(
+      return () => {
+        const content = slots.default?.() ?? [];
+
+        return h(
           "div",
           {
             ref: parent,
@@ -147,12 +149,13 @@ export const createInfiniteMarquee = (
                     left,
                   },
                 },
-                slots.default?.(),
+                content.map((vnode) => cloneVNode(vnode)),
               ),
-              slots.default?.(),
+              ...content,
             ],
           ),
         );
+      };
     },
   });
 };
