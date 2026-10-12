@@ -1,5 +1,5 @@
 import gsap from "gsap";
-import { cloneVNode, type DefineComponent } from "vue";
+import type { DefineComponent, VNode } from "vue";
 import {
   computed,
   defineComponent,
@@ -149,7 +149,10 @@ export const createInfiniteMarquee = (
                     left,
                   },
                 },
-                content.map((vnode) => cloneVNode(vnode)),
+                // Reuse the host app's Vue so the repeated copy renders identically
+                content.map((vnode) =>
+                  h(vnode.type as string, vnode.props, vnode.children as string),
+                ),
               ),
               ...content,
             ],

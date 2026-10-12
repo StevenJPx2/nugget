@@ -1,5 +1,5 @@
-import { type MaybeComputedElementRef, unrefElement } from "@vueuse/core";
-import { unref, watch } from "#imports";
+import type { MaybeComputedElementRef } from "@vueuse/core";
+import { unref, unrefElement, watch } from "#imports";
 import {
   type TransitionOutput,
   type UseConstructTransitionOptions,

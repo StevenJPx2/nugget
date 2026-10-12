@@ -1,4 +1,3 @@
-import { invoke } from "@vueuse/core";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import {
@@ -25,10 +24,11 @@ const activationFn = (
   updateFactory: (el: gsap.TweenTarget | undefined) => void,
 ) => {
   const refEl = toRef(el);
-  invoke(async () => {
+  // Fire and forget: the tween is activated once the element resolves
+  void (async () => {
     const val = await until(refEl).toMatch((v) => v !== undefined);
     updateFactory(val);
-  });
+  })();
 
   tryOnScopeDispose(() => tween.value?.kill());
 };
