@@ -55,6 +55,10 @@ export function useSplitTextAnimation(
     onSplit: (self) => {
       gsap.registerPlugin(ScrollTrigger);
 
+      // A staggered tween only renders each piece's `from` state when its own turn starts,
+      // so later lines would sit visible, then snap hidden one by one. Hide them all now.
+      gsap.set(self[splitBy], { ...from });
+
       return gsap.fromTo(self[splitBy], { ...from }, {
         ...to,
         scrollTrigger: resolveScrollTrigger(
