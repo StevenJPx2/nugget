@@ -1,5 +1,5 @@
 import gsap from "gsap";
-import type { DefineComponent, VNode } from "vue";
+import type { DefineComponent } from "vue";
 import {
   computed,
   defineComponent,

@@ -46,7 +46,7 @@ export type UseSplitTextOptions = Omit<SplitText.Vars, "onSplit" | "type"> & {
    * Runs every time the text is split, including re-splits from `autoSplit`
    * @remarks Return a tween or timeline so SplitText reverts and time-syncs it on re-split
    */
-  onSplit?: (self: SplitText) => gsap.core.Animation | void;
+  onSplit?: (self: SplitText) => gsap.core.Animation | undefined;
 };
 
 export type UseSplitTextReturn = {
@@ -80,7 +80,7 @@ export function useSplitText(
   const lines = shallowRef<Element[]>();
   const masks = shallowRef<Element[]>();
 
-  let animation: gsap.core.Animation | void;
+  let animation: gsap.core.Animation | undefined;
 
   whenever(
     () =>
