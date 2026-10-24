@@ -9,6 +9,8 @@ Make Nugget work with any animation framework, let plugins observe and change ev
 | Move out of the Web repo into its own repository | Done |
 | Bun workspace monorepo, Nuxt module in `packages/nuxt` | Done |
 | Declare `tinyglobby`, `@vueuse/nuxt`, `@vueuse/core` as runtime dependencies | Done |
+| Dev toolchain on Nuxt 4.6, Vite 8 and Nuxt DevTools v4 | Done |
+| Devtools spike: GSAP-only waterfall with pause, replay, seek, speed and hover highlighting in Nuxt DevTools | Done |
 
 ## Architecture
 
@@ -44,7 +46,7 @@ sequenceDiagram
 | `@fdcn/nugget-core` | Driver interface, drivers as subpath exports (`/drivers/gsap`, `/drivers/anime`, `/drivers/motion`, `/drivers/waapi`), animation list, hooks, presets, step lists. No Vue or Nuxt |
 | `@fdcn/nugget-vue` | Composables, directives, components |
 | `@fdcn/nugget` | Nuxt module: auto-imports, presets template, `provider` option, devtools mounting in dev |
-| `@fdcn/nugget-devtools` | `nuggetDevframe` definition, page script, panel app, channel protocol, save-to-source node side |
+| `@fdcn/nugget-devtools` | `nuggetDevframe` definition, page script, panel app, channel protocol, save-to-source node side, and a Nuxt module (`@fdcn/nugget-devtools/nuxt`) that `@fdcn/nugget` installs in dev once the package is published |
 
 ## Drivers
 
@@ -132,9 +134,12 @@ flowchart LR
 
 | Concern | Decision |
 |---|---|
+| Mounting in Nuxt | `addVitePlugin(createPluginFromDevframe(nuggetDevframe, { dock: { groupId: "nuxt", category: "modules" } }))` puts the tab in the Nuxt group |
+| Requirements | Nuxt 4.5+ (Vite 8) with `@nuxt/devtools` v4 set through package-manager `overrides` |
 | Panel to page | devframe in-page channel. Records are plain data; handles and elements stay in the page |
 | Source of truth | The page script owns the shared state |
-| Page script loading | Dock `clientScript` with `eager: true`. Live progress only while a panel is connected |
+| Page script loading | A client plugin in the app's own bundle, so it shares the app's GSAP and Nugget instances. Live progress only while a panel is connected |
+| Data source | Core hooks. Until core exists, the page script wraps `gsap.to`, `from`, `fromTo` and `timeline`, and skips GSAP plugin tweens on plain objects |
 | Scroll-scrubbed animations | Progress shown, time seeking disabled |
 | Production | Devtools, source tagging and save-to-source are installed only in dev |
 
@@ -176,9 +181,9 @@ flowchart LR
 2. Add tests that pin the behaviour of each composable and directive in `packages/nuxt/test`.
 3. Create `packages/core`: driver interface, handle, animation list, hooks, GSAP driver. Route every part in `packages/nuxt/src/runtime` through `core.create()`.
 4. Add rebuild-and-restore-progress to core, tested on GSAP including staggers and re-split text.
-5. Spike `packages/devtools`: a page script publishing records and a panel listing them. Mount it in `playground` through Nuxt DevTools v4 and in a plain Vite app through `viteDevframeHub`. Settle the exact Nuxt mount call.
+5. Switch the page script's data source to core hooks, and mount `nuggetDevframe` in a plain Vite app through `viteDevframeHub`.
 6. Spike source tagging and one save-to-source round trip for `useAnimateOnScroll` and `v-aos`.
-7. Devtools v1: waterfall, controls, live editing, save to source, hover highlighting, floating dock.
+7. Devtools v1: live editing, save to source and the floating dock, on top of the waterfall and controls.
 8. Split `packages/vue` from `packages/nuxt`.
 9. Motion, anime.js and Web Animations API drivers, each passing the rebuild tests.
 10. Reduced-motion and test-helper plugins.
@@ -194,6 +199,6 @@ flowchart LR
 
 | Risk | Mitigation |
 |---|---|
-| Nuxt DevTools v4 is beta, `@vitejs/devtools-kit` is 0.8, devframe's hub client API is marked experimental | Pin exact versions; the step 5 spike runs before any UI work |
+| Nuxt DevTools v4 is beta, `@vitejs/devtools-kit` is 0.8, devframe's hub client API is marked experimental | Pin exact versions; the playground runs Nuxt DevTools v4, so breakage shows up during development |
 | Rebuilding mid-play lands at a slightly different point per framework | Shared rebuild tests per driver |
 | Source tagging misses unusual call patterns | Untagged animations are read-only in the editor and can still be copied as code |
