@@ -176,6 +176,7 @@ type AnimationRecord = {
 | States | One `PlayState` per animation |
 | Errors | Missing abilities, unknown presets and unknown eases throw in development. Provider failures reject `finished` |
 | Translation | Providers turn shared property and ease names into framework terms; core owns the shared names and presets |
+| Effect | Not in shipped code. Scopes own resources, `PlayState` models states, and `finished` is the only promise, so apps take no Effect dependency |
 
 ## Providers
 
@@ -354,9 +355,3 @@ flowchart LR
 | Rebuilding mid-play lands at a slightly different point per provider | Shared rebuild tests per provider |
 | Source tagging misses unusual call patterns | Untagged animations are read-only in the editor and can still be copied as code |
 | Apps mix Nugget with direct framework calls | `useGsap` and `handle.raw` stay available; those animations stay outside devtools and plugins |
-
-## Open questions
-
-| Question | Recommendation |
-|---|---|
-| Use Effect in core for async work, resources and errors? | No. It would be a production dependency of every app using Nugget. Scopes cover resource ownership, `PlayState` covers states, and `finished` is the only promise |
