@@ -1,58 +1,23 @@
 {
-  "name": "@fdcn/nugget",
-  "version": "1.0.0",
-  "description": "A Nuxt module that enchances your animations ✨",
-  "repository": "stevenjpx2/nugget",
-  "license": "MIT",
+  "name": "nugget-monorepo",
+  "private": true,
   "type": "module",
-  "exports": {
-    ".": {
-      "import": "./dist/module.mjs"
-    }
-  },
-  "files": [
-    "dist"
+  "workspaces": [
+    "packages/*",
+    "playground"
   ],
   "scripts": {
-    "prepack": "nuxt-module-build prepare && nuxt-module-build build",
-    "dev": "nuxi dev playground",
-    "dev:build": "nuxi build playground",
-    "dev:prepare": "bun run prepack --stub && nuxi prepare playground",
-    "build": "bun run lint && bun run test && bun run prepack",
-    "release": "bun run build && changelogen --release && npm publish && git push --follow-tags",
-    "lint": "eslint .",
-    "test": "vitest run",
-    "test:watch": "vitest watch",
-    "docs:dev": "vitepress dev src",
-    "docs:build": "vitepress build src",
-    "docs:preview": "vitepress preview src"
-  },
-  "dependencies": {
-    "@nuxt/kit": "^4.0.3",
-    "gsap": "^3.13.0",
-    "pathe": "^2.0.3",
-    "string-ts": "^2.2.1"
-  },
-  "devDependencies": {
-    "@nuxt/devtools": "latest",
-    "@nuxt/eslint": "1.3.0",
-    "@nuxt/eslint-config": "^1.8.0",
-    "@nuxt/module-builder": "^1.0.2",
-    "@nuxt/schema": "^4.0.3",
-    "@nuxt/test-utils": "^3.19.2",
-    "@types/node": "^24.3.0",
-    "@vueuse/core": "^13.6.0",
-    "@vueuse/nuxt": "^13.6.0",
-    "changelogen": "^0.6.2",
-    "eslint": "^9.33.0",
-    "hotscript": "^1.0.13",
-    "nuxt": "^4.0.3",
-    "tinyglobby": "^0.2.14",
-    "typescript": "^5.9.2",
-    "unbuild": "^3.6.1",
-    "vitepress": "^1.6.4",
-    "vitepress-extras": "^0.1.3",
-    "vitest": "^3.2.4"
+    "dev": "bun run --filter nugget-playground dev",
+    "dev:build": "bun run --filter nugget-playground build",
+    "dev:prepare": "bun run --filter @fdcn/nugget dev:prepare && bun run --filter nugget-playground prepare",
+    "build": "bun run --filter @fdcn/nugget build",
+    "lint": "bun run --filter @fdcn/nugget lint",
+    "test": "bun run --filter @fdcn/nugget test",
+    "test:watch": "bun run --filter @fdcn/nugget test:watch",
+    "release": "bun run --filter @fdcn/nugget release",
+    "docs:dev": "bun run --filter @fdcn/nugget docs:dev",
+    "docs:build": "bun run --filter @fdcn/nugget docs:build",
+    "docs:preview": "bun run --filter @fdcn/nugget docs:preview"
   },
   "trustedDependencies": [
     "@parcel/watcher",

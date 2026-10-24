@@ -1,13 +1,14 @@
 {
   "private": true,
-  "name": "my-module-playground",
+  "name": "nugget-playground",
   "type": "module",
   "scripts": {
     "dev": "nuxi dev",
     "build": "nuxi build",
-    "generate": "nuxi generate"
+    "generate": "nuxi generate",
+    "prepare": "nuxi prepare"
   },
   "devDependencies": {
-    "nuxt": "^3.10.1"
+    "nuxt": "^4.0.3"
   }
 }

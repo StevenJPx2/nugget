@@ -1,0 +1,3 @@
+[install]
+# One shared node_modules, so the playground and the module resolve the same Vue and Nuxt
+linker = "hoisted"

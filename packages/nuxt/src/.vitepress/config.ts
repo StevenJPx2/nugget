@@ -63,7 +63,7 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     logo,
     editLink: {
-      pattern: `${github}/edit/main/src/:path`,
+      pattern: `${github}/edit/main/packages/nuxt/src/:path`,
       text: "Suggest changes to this page",
     },
 
