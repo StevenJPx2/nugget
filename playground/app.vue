@@ -34,7 +34,7 @@ const onAfterEnterBendy = async () => {
   <smooth-scroll :options="{ smooth: 1, effects: true }">
     <div ref="hi">hello</div>
     <button
-      class="bg-yellow-500 rounded-md grid place-content-center relative px-8 py-5 overflow-hidden"
+      class="sting-button"
       @mouseover="
         stop();
         play();
@@ -46,9 +46,9 @@ const onAfterEnterBendy = async () => {
     >
       <div
         ref="stingEffectContainer"
-        class="rounded-lg bg-red-500 pointer-events-none absolute inset-0 border-4 border-yellow-500"
+        class="sting-effect"
       />
-      <span class="inline-block text-white z-[1] pointer-events-none">
+      <span class="sting-label">
         hover over me!
       </span>
     </button>
@@ -81,7 +81,7 @@ const onAfterEnterBendy = async () => {
         </button>
       </div>
       <offset-transition
-        class="red h-full w-full"
+        class="red fill"
         :run="runTransition"
         :direction="direction"
         :main-container-attributes="{ style: { background: 'red' } }"
@@ -103,7 +103,7 @@ const onAfterEnterBendy = async () => {
         <button @mouseover="runBendyTransition = true">v</button>
       </div>
       <bendy-wendy-transition
-        class="red h-full w-full"
+        class="red fill"
         :run="runBendyTransition"
         @after-leave="runBendyTransition = false"
         @after-enter="onAfterEnterBendy"
@@ -119,7 +119,7 @@ const onAfterEnterBendy = async () => {
           animationOptions: ['opacity', 'translate', 'blur'],
         },
       }"
-      class="bg-blue-500 size-10 mx-auto opacity-0"
+      class="aos-box"
     />
     <div
       :style="{
@@ -163,7 +163,48 @@ const onAfterEnterBendy = async () => {
 
 <style>
 button {
-  @apply bg-yellow-500 grid place-content-center relative px-8 py-5 overflow-hidden;
-  @apply m-5 shadow-md;
+  display: grid;
+  place-content: center;
+  position: relative;
+  overflow: hidden;
+  margin: 1.25rem;
+  padding: 1.25rem 2rem;
+  background: #eab308;
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.sting-button {
+  border-radius: 0.375rem;
+}
+
+.sting-effect {
+  position: absolute;
+  inset: 0;
+  border: 4px solid #eab308;
+  border-radius: 0.5rem;
+  background: #ef4444;
+  pointer-events: none;
+}
+
+.sting-label {
+  display: inline-block;
+  z-index: 1;
+  color: white;
+  pointer-events: none;
+}
+
+.fill {
+  width: 100%;
+  height: 100%;
+}
+
+.aos-box {
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-inline: auto;
+  background: #3b82f6;
+  opacity: 0;
 }
 </style>
