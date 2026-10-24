@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "bun run --filter nugget-playground dev",
     "dev:build": "bun run --filter nugget-playground build",
-    "dev:prepare": "bun run --filter @fdcn/nugget dev:prepare && bun run --filter nugget-playground prepare",
+    "dev:prepare": "bun run --filter @fdcn/nugget dev:prepare && bun run --filter @fdcn/nugget-devtools dev:prepare && bun run --filter nugget-playground dev:prepare",
     "build": "bun run --filter @fdcn/nugget build",
     "lint": "bun run --filter @fdcn/nugget lint",
     "test": "bun run --filter @fdcn/nugget test",
@@ -18,6 +18,9 @@
     "docs:dev": "bun run --filter @fdcn/nugget docs:dev",
     "docs:build": "bun run --filter @fdcn/nugget docs:build",
     "docs:preview": "bun run --filter @fdcn/nugget docs:preview"
+  },
+  "overrides": {
+    "@nuxt/devtools": "4.0.0-beta.7"
   },
   "trustedDependencies": [
     "@parcel/watcher",

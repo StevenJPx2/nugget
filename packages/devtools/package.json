@@ -1,0 +1,30 @@
+{
+  "name": "@fdcn/nugget-devtools",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Nugget devtools: a waterfall of running animations with playback controls, built on devframe",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./nuxt": "./src/nuxt.ts",
+    "./page-script": "./src/page-script.ts"
+  },
+  "scripts": {
+    "build": "vite build",
+    "dev:prepare": "vite build"
+  },
+  "peerDependencies": {
+    "gsap": "^3.13.0"
+  },
+  "dependencies": {
+    "@nuxt/kit": "^4.6.2",
+    "@vitejs/devtools-kit": "0.8.0",
+    "devframe": "1.2.6"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.10",
+    "vite": "^8.3.5",
+    "vue": "^3.5.44"
+  }
+}
