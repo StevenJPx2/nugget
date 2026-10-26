@@ -13,6 +13,9 @@ Make Nugget work with any animation framework through provider plugins, let plug
 | Devtools spike: GSAP-only waterfall with pause, replay, seek, speed and hover highlighting in Nuxt DevTools | Done |
 | Devtools spike: inspector that edits duration, delay, stagger, repeat, yoyo, ease and from/to values of a running GSAP tween, with reset; edits last until reload | Done |
 | Devtools spike: ease editor with a curve gallery, in/out/in-out, knobs for power, back, elastic and steps, and draggable bezier handles (GSAP CustomEase, registered by the devtools in dev) | Done |
+| Devtools: play or scrub a single timeline step; hint when an element has no size | Done |
+| Devtools: copy a prompt for a coding agent from the inspector (one animation or a timeline's steps) or the header (every edit), naming each animation's component and file | Done |
+| Devtools built into `@fdcn/nugget`: dev only, skipped without Nuxt DevTools v4, `nugget.devtools: false` turns them off, nothing in production builds | Done |
 
 ## Architecture
 
@@ -31,7 +34,7 @@ flowchart TB
 | `@fdcn/nugget-core` | `createNugget`, scopes, registry, hooks, presets, rebuild, `defineNuggetPlugin`, `defineNuggetConfig`, built-in providers (`/providers/gsap`, `/providers/motion`, `/providers/anime`, `/providers/waapi`, `/providers/lenis`) and built-in hook plugins (`/plugins`: `reducedMotion`, test helpers). No Vue, Nuxt or animation framework |
 | `@fdcn/nugget-vue` | Composables, directives, components; one core scope per component |
 | `@fdcn/nugget` | Nuxt module: auto-imports, presets, loading `nugget.config.ts`, devtools in dev. Re-exports core's `/config`, `/providers/*` and `/plugins`, so a Nuxt app installs only this package |
-| `@fdcn/nugget-devtools` | `nuggetDevframe`, page script, panel, channel protocol, save-to-source node side, and `@fdcn/nugget-devtools/nuxt`, which `@fdcn/nugget` installs in dev once the package is published |
+| Devtools | Built into `@fdcn/nugget`: `src/devtools.ts` (devframe definition, dev only), `src/runtime/devtools/` (page script, GSAP edits, channel protocol) and `devtools-panel/` (built into `dist/devtools-panel`). They move to a framework-neutral `@fdcn/nugget-devtools` when a plain Vite app needs them (step 5), along with the save-to-source node side |
 
 ## Configuration
 
@@ -330,7 +333,7 @@ flowchart LR
 | Safety | Writes go through devframe's authenticated RPC, only inside the workspace root, only to tagged call sites, with a diff preview before each write |
 | Hosts without a node side | Save is disabled and "Copy as code" remains |
 
-Until core exists, the spike edits GSAP tweens in place (`packages/devtools/src/gsap-edit.ts`): it renders the tween back to where its start values were recorded, changes `vars` (and every per-target copy of a staggered tween), invalidates, and restores progress. This keeps the app's and ScrollTrigger's references valid. An edit is keyed by GSAP's object rather than a source location, so it is lost when the component remounts.
+Until core exists, the devtools edit GSAP tweens in place (`packages/nuxt/src/runtime/devtools/gsap-edit.ts`): it renders the tween back to where its start values were recorded, changes `vars` (and every per-target copy of a staggered tween), invalidates, and restores progress. This keeps the app's and ScrollTrigger's references valid. An edit is keyed by GSAP's object rather than a source location, so it is lost when the component remounts.
 
 ## Order of work
 

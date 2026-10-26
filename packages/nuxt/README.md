@@ -90,6 +90,39 @@ export default defineNuxtConfig({
 
 That's it! You can now use Nugget Module in your Nuxt app ✨
 
+## Devtools
+
+During development, Nugget adds a **Nugget** tab to Nuxt DevTools.
+
+![Nugget devtools: hovering a button plays a transition, which appears in the waterfall; editing its ease in the inspector replays it, and the app uses the edit](./src/public/devtools-demo.gif)
+
+- **Waterfall:** every GSAP animation the app creates, with timeline steps and live progress. Hover a row to highlight its element on the page.
+- **Playback:** pause, replay or scrub any animation or a single timeline step. Pause everything, or slow it all down to 0.1×.
+- **Live editing:** click a row to change its duration, delay, stagger, repeat, values and ease. The page updates straight away. The ease editor has a gallery of curves, knobs for power, back, elastic and steps, and draggable bezier handles.
+- **Copy prompt:** turn your edits into a prompt for your coding agent. It names the component and file each animation comes from and lists every change. Copy one animation's edits from the inspector, or all of them from the header when nothing is selected.
+
+Edits last until the page reloads; the prompt is how they reach your code.
+
+The devtools need Nuxt 4.5 or later and Nuxt DevTools v4, which is in beta. Nugget skips them otherwise. To try Nuxt DevTools v4, pin it in your `package.json`. This is `overrides` for npm and Bun, and `pnpm.overrides` for pnpm:
+
+```json
+{
+  "overrides": {
+    "@nuxt/devtools": "4.0.0-beta.7"
+  }
+}
+```
+
+They're never part of production builds. To turn them off in development:
+
+```ts
+export default defineNuxtConfig({
+  nugget: { devtools: false },
+});
+```
+
+Custom curves from the ease editor are GSAP [CustomEase](https://gsap.com/docs/v3/Eases/CustomEase/) eases. The devtools register CustomEase during development; to keep a custom curve, register it in your app too.
+
 ## Roadmap
 
 - [x] Make non-scroll controlled infinite marquee.
