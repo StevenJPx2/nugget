@@ -1,6 +1,47 @@
 # Changelog
 
 
+## v1.1.0
+
+[compare changes](https://github.com/StevenJPx2/nugget/compare/v1.0.0...v1.1.0)
+
+### 🚀 Enhancements
+
+- Use native GSAP text splitting and smooth scrolling ([3529141](https://github.com/StevenJPx2/nugget/commit/3529141))
+- **devtools:** Show Nugget animations in Nuxt DevTools v4 ([010010f](https://github.com/StevenJPx2/nugget/commit/010010f))
+- **devtools:** Inspector with live GSAP edits, icon buttons and scrubbers ([de910a2](https://github.com/StevenJPx2/nugget/commit/de910a2))
+- **devtools:** Ease editor with curve gallery, knobs and bezier handles ([477fd3e](https://github.com/StevenJPx2/nugget/commit/477fd3e))
+- **devtools:** Copy a prompt that has a coding agent apply devtools edits in code ([dae95a2](https://github.com/StevenJPx2/nugget/commit/dae95a2))
+- Build the devtools into @fdcn/nugget, dev only ([a35db85](https://github.com/StevenJPx2/nugget/commit/a35db85))
+
+### 🩹 Fixes
+
+- Prepare module types before building from a fresh clone ([537c7f3](https://github.com/StevenJPx2/nugget/commit/537c7f3))
+- Render GSAP marquee safely during SSR ([441406b](https://github.com/StevenJPx2/nugget/commit/441406b))
+- Import Vue APIs from the host app to avoid a duplicate runtime ([68a1a05](https://github.com/StevenJPx2/nugget/commit/68a1a05))
+- Hide every split line before its staggered animation starts ([db35e43](https://github.com/StevenJPx2/nugget/commit/db35e43))
+- Resolve lint errors that block the release build ([1879c9f](https://github.com/StevenJPx2/nugget/commit/1879c9f))
+- Declare runtime dependencies the published module imports ([ef94d4f](https://github.com/StevenJPx2/nugget/commit/ef94d4f))
+- **devtools:** Play timeline steps on their own and flag targets with no size ([78d168a](https://github.com/StevenJPx2/nugget/commit/78d168a))
+
+### 📖 Documentation
+
+- Plan providers, plugins and devtools ([94f56d7](https://github.com/StevenJPx2/nugget/commit/94f56d7))
+- **plan:** Record the devtools mounting and page script decisions ([62bad9f](https://github.com/StevenJPx2/nugget/commit/62bad9f))
+- **plan:** Provider plugins in nugget.config.ts and the core design ([2ac8d2e](https://github.com/StevenJPx2/nugget/commit/2ac8d2e))
+- **plan:** Keep Effect out of shipped code ([4c5c2a1](https://github.com/StevenJPx2/nugget/commit/4c5c2a1))
+- Devtools demo and README section ([81d2e00](https://github.com/StevenJPx2/nugget/commit/81d2e00))
+
+### 🏡 Chore
+
+- **playground:** Replace Tailwind with plain CSS ([073a797](https://github.com/StevenJPx2/nugget/commit/073a797))
+- Convert to a Bun workspace monorepo ([c14c07c](https://github.com/StevenJPx2/nugget/commit/c14c07c))
+- Update caniuse-lite browser data ([c05d8b2](https://github.com/StevenJPx2/nugget/commit/c05d8b2))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v1.0.0
 
 [compare changes](https://github.com/stevenjpx2/nugget/compare/v1.0.0-beta.2...v1.0.0)
