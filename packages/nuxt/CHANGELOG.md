@@ -1,6 +1,35 @@
 # Changelog
 
 
+## v1.2.0
+
+[compare changes](https://github.com/StevenJPx2/nugget/compare/v1.1.0...v1.2.0)
+
+### 🚀 Enhancements
+
+- **devtools:** Inspect page elements and keep animation rows stable during replay ([c0365df](https://github.com/StevenJPx2/nugget/commit/c0365df))
+
+### 🩹 Fixes
+
+- **devtools:** Give Nugget its own dock button so Nuxt DevTools can't take its selection ([9d83e0c](https://github.com/StevenJPx2/nugget/commit/9d83e0c))
+- **devtools:** Omit absent staggers from source hints ([12a2191](https://github.com/StevenJPx2/nugget/commit/12a2191))
+
+### 📖 Documentation
+
+- Plan the provider-neutral runtime and DevTools boundary ([f6f42eb](https://github.com/StevenJPx2/nugget/commit/f6f42eb))
+
+### 📦 Build
+
+- Generate Vue component declarations without skipping SFCs ([753e93b](https://github.com/StevenJPx2/nugget/commit/753e93b))
+
+### 🏡 Chore
+
+- Describe the project for stevenjohn.co's resume ([3c62bcf](https://github.com/StevenJPx2/nugget/commit/3c62bcf))
+
+### ❤️ Contributors
+
+- Steven John ([@StevenJPx2](https://github.com/StevenJPx2))
+
 ## v1.1.0
 
 [compare changes](https://github.com/StevenJPx2/nugget/compare/v1.0.0...v1.1.0)
