@@ -1,6 +1,6 @@
 import gsap from "gsap";
 import { defineNuxtPlugin, useRuntimeConfig } from "#app";
-import { startNuggetPageScript } from "../page-script";
+import { startNuggetPageScript } from "./page-script";
 
 export default defineNuxtPlugin({
   name: "nugget:devtools-page-script",

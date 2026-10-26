@@ -1,4 +1,4 @@
-import type { EditableValue, EditRecord } from "../src/protocol";
+import type { EditableValue, EditRecord } from "../src/runtime/devtools/protocol";
 
 const TIMING = ["duration", "delay", "ease", "stagger", "repeat", "yoyo"] as const;
 

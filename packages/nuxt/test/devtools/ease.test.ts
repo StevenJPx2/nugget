@@ -1,5 +1,5 @@
-import { expect, test } from "bun:test";
-import { easeFunction, format, parse } from "../panel/ease";
+import { expect, test } from "vitest";
+import { easeFunction, format, parse } from "../../devtools-panel/ease";
 
 const cases: [string, string][] = [
   ["none", "none"],

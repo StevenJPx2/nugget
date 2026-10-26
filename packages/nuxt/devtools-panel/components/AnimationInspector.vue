@@ -6,11 +6,11 @@ import type {
   AnimationRow,
   ControlAction,
   EditableValue,
-} from "../../src/protocol";
+} from "../../src/runtime/devtools/protocol";
 import CopyPromptButton from "./CopyPromptButton.vue";
 import EaseEditor from "./EaseEditor.vue";
 import IconButton from "./IconButton.vue";
-import Scrubber from "./Scrubber.vue";
+import ProgressScrubber from "./ProgressScrubber.vue";
 
 const props = defineProps<{
   detail: AnimationDetail;
@@ -77,7 +77,7 @@ function commitValue(side: "from" | "to", key: string, event: Event) {
         @click="emit('control', row.active ? 'pause' : 'play')"
       />
       <IconButton icon="replay" label="Replay" @click="emit('control', 'restart')" />
-      <Scrubber :model-value="row.progress" label="Progress" @update:model-value="emit('seek', $event)" />
+      <ProgressScrubber :model-value="row.progress" label="Progress" @update:model-value="emit('seek', $event)" />
       <span class="percent">{{ Math.round(row.progress * 100) }}%</span>
     </div>
 
@@ -92,22 +92,22 @@ function commitValue(side: "from" | "to", key: string, event: Event) {
       <div class="grid">
         <label>
           <span>Duration</span>
-          <input type="number" min="0" step="0.05" :value="detail.duration" @change="commitNumber('duration', $event)" />
+          <input type="number" min="0" step="0.05" :value="detail.duration" @change="commitNumber('duration', $event)" >
         </label>
         <label>
           <span>Delay</span>
-          <input type="number" min="0" step="0.05" :value="detail.delay" @change="commitNumber('delay', $event)" />
+          <input type="number" min="0" step="0.05" :value="detail.delay" @change="commitNumber('delay', $event)" >
         </label>
         <label v-if="detail.stagger !== null">
           <span>Stagger</span>
-          <input type="number" step="0.01" :value="detail.stagger" @change="commitNumber('stagger', $event)" />
+          <input type="number" step="0.01" :value="detail.stagger" @change="commitNumber('stagger', $event)" >
         </label>
         <label>
           <span>Repeat</span>
-          <input type="number" min="-1" step="1" :value="detail.repeat" title="-1 repeats forever" @change="commitNumber('repeat', $event)" />
+          <input type="number" min="-1" step="1" :value="detail.repeat" title="-1 repeats forever" @change="commitNumber('repeat', $event)" >
         </label>
         <label class="check">
-          <input type="checkbox" :checked="detail.yoyo" @change="edit({ yoyo: ($event.target as HTMLInputElement).checked })" />
+          <input type="checkbox" :checked="detail.yoyo" @change="edit({ yoyo: ($event.target as HTMLInputElement).checked })" >
           <span>Yoyo</span>
         </label>
       </div>
@@ -133,7 +133,7 @@ function commitValue(side: "from" | "to", key: string, event: Event) {
                 :value="value.from ?? ''"
                 spellcheck="false"
                 @change="commitValue('from', value.key, $event)"
-              />
+              >
               <span v-else class="muted" title="Recorded from the element when the animation starts">current</span>
             </td>
             <td>
@@ -142,7 +142,7 @@ function commitValue(side: "from" | "to", key: string, event: Event) {
                 :value="value.to ?? ''"
                 spellcheck="false"
                 @change="commitValue('to', value.key, $event)"
-              />
+              >
               <span v-else class="muted" title="The element's own value">current</span>
             </td>
           </tr>
@@ -157,7 +157,7 @@ function commitValue(side: "from" | "to", key: string, event: Event) {
 
     <footer>
       <label class="check">
-        <input v-model="replayOnEdit" type="checkbox" />
+        <input v-model="replayOnEdit" type="checkbox" >
         <span>Replay after each change</span>
       </label>
       <div v-if="editCount" class="footer-actions">

@@ -1,6 +1,6 @@
-import { expect, test } from "bun:test";
-import { buildPrompt, changesOf } from "../panel/prompt";
-import type { EditRecord } from "../src/protocol";
+import { expect, test } from "vitest";
+import { buildPrompt, changesOf } from "../../devtools-panel/prompt";
+import type { EditRecord } from "../../src/runtime/devtools/protocol";
 
 const aosBox: EditRecord = {
   id: "a12",
@@ -57,7 +57,7 @@ test("lists only what changed", () => {
 
 test("one edit gives a prompt for that animation", () => {
   const prompt = buildPrompt([aosBox])!;
-  expect(prompt).toStartWith("I tuned an animation in the Nugget devtools on page `/`.");
+  expect(prompt.startsWith("I tuned an animation in the Nugget devtools on page `/`.")).toBe(true);
   expect(prompt).toContain('`fromTo(div.aos-box, { autoAlpha: 0, y: "200%" }, { autoAlpha: 1, y: 0, duration: 0.3 })`');
   expect(prompt).toContain("Rendered by <App> (/repo/playground/app.vue)");
   expect(prompt).toContain("gsap.registerPlugin(CustomEase)");

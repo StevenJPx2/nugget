@@ -9,13 +9,13 @@ import {
   NUGGET_CHANNEL,
   type NuggetChannelProtocol,
   type NuggetState,
-} from "../src/protocol";
+} from "../src/runtime/devtools/protocol";
 import { buildPrompt, copyText } from "./prompt";
 import CopyPromptButton from "./components/CopyPromptButton.vue";
 import IconButton from "./components/IconButton.vue";
-import Inspector from "./components/Inspector.vue";
-import Scrubber from "./components/Scrubber.vue";
-import Segmented from "./components/Segmented.vue";
+import AnimationInspector from "./components/AnimationInspector.vue";
+import ProgressScrubber from "./components/ProgressScrubber.vue";
+import SegmentedControl from "./components/SegmentedControl.vue";
 
 const channel = connectPanelChannel<NuggetChannelProtocol>({
   name: NUGGET_CHANNEL,
@@ -176,14 +176,14 @@ onBeforeUnmount(() => window.removeEventListener("keydown", onKey));
       >
         {{ state?.paused ? "Resume all" : "Pause all" }}
       </IconButton>
-      <Segmented
+      <SegmentedControl
         :model-value="state?.speed ?? 1"
         :options="SPEEDS"
         label="Global speed"
         @update:model-value="setGlobal({ speed: $event })"
       />
-      <Segmented v-model="windowSeconds" :options="WINDOWS" label="Time window" />
-      <label class="toggle"><input v-model="showNested" type="checkbox" /> Steps</label>
+      <SegmentedControl v-model="windowSeconds" :options="WINDOWS" label="Time window" />
+      <label class="toggle"><input v-model="showNested" type="checkbox" > Steps</label>
       <button type="button" class="text-button" @click="channel.call('clearFinished')">Clear finished</button>
     </header>
 
@@ -239,12 +239,12 @@ onBeforeUnmount(() => window.removeEventListener("keydown", onKey));
               @click="control(row.id, row.active ? 'pause' : 'play')"
             />
             <IconButton icon="replay" label="Replay" @click="control(row.id, 'restart')" />
-            <Scrubber :model-value="row.progress" label="Seek" @update:model-value="seek(row.id, $event)" />
+            <ProgressScrubber :model-value="row.progress" label="Seek" @update:model-value="seek(row.id, $event)" />
           </div>
         </div>
       </section>
 
-      <Inspector
+      <AnimationInspector
         v-if="detail"
         :key="detail.id"
         :detail="detail"

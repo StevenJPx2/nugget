@@ -15,6 +15,7 @@ import { basename, dirname } from "pathe";
 import { camelCase, pascalCase } from "string-ts";
 import { name, version } from "../package.json";
 import { defaultPresets } from "./baked/presets";
+import { setupDevtools } from "./devtools";
 import type { PresetsGeneric } from "./types";
 
 // Module options TypeScript interface definition
@@ -23,6 +24,12 @@ export interface ModuleOptions {
     defaults?: PresetsGeneric;
     custom?: PresetsGeneric;
   };
+  /**
+   * Adds a Nugget tab to Nuxt DevTools in dev, with a waterfall of animations, playback controls
+   * and live editing. Needs Nuxt DevTools v4. Never part of production builds
+   * @default true
+   */
+  devtools?: boolean;
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -37,15 +44,19 @@ export default defineNuxtModule<ModuleOptions>({
       defaults: defaultPresets,
       custom: {},
     },
+    devtools: true,
   },
-  async setup(options) {
+  async setup(options, nuxt) {
     const allBakedPresets = {
       ...options.baked.defaults,
       ...options.baked.custom,
     };
 
-    const { resolve } = createResolver(import.meta.url);
+    const resolver = createResolver(import.meta.url);
+    const { resolve } = resolver;
     const resolveRuntime = (...path: string[]) => resolve("./runtime", ...path);
+
+    if (nuxt.options.dev && options.devtools) await setupDevtools(nuxt, resolver);
 
     addPlugin(resolveRuntime("./functions/plugin"));
 

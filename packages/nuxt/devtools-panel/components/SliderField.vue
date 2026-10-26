@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import Scrubber from "./Scrubber.vue";
+import ProgressScrubber from "./ProgressScrubber.vue";
 
 const props = defineProps<{ label: string; modelValue: number; min: number; max: number; step: number }>();
 const emit = defineEmits<{ "update:modelValue": [value: number]; commit: [value: number] }>();
@@ -27,7 +27,7 @@ function typed(event: Event) {
 <template>
   <div class="slider-field">
     <span class="name">{{ label }}</span>
-    <Scrubber
+    <ProgressScrubber
       :model-value="fraction"
       :label="label"
       :key-step="step / span"
@@ -41,7 +41,7 @@ function typed(event: Event) {
       :value="modelValue"
       :aria-label="label"
       @change="typed"
-    />
+    >
   </div>
 </template>
 

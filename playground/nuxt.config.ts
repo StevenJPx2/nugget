@@ -1,5 +1,5 @@
 export default defineNuxtConfig({
-  modules: ["../packages/nuxt/src/module", "@fdcn/nugget-devtools/nuxt"],
+  modules: ["../packages/nuxt/src/module"],
 
   nugget: {
     baked: {

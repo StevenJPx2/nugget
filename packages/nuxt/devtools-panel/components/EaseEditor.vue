@@ -17,7 +17,7 @@ import {
 } from "../ease";
 import EaseCurve from "./EaseCurve.vue";
 import IconButton from "./IconButton.vue";
-import Segmented from "./Segmented.vue";
+import SegmentedControl from "./SegmentedControl.vue";
 import SliderField from "./SliderField.vue";
 
 const props = defineProps<{ modelValue: string; duration: number }>();
@@ -128,7 +128,7 @@ function typed(event: Event) {
     />
 
     <div class="row">
-      <Segmented
+      <SegmentedControl
         v-if="draft && !UNDIRECTED.has(draft.family)"
         :model-value="draft.direction"
         :options="DIRECTIONS"
@@ -185,7 +185,7 @@ function typed(event: Event) {
       spellcheck="false"
       aria-label="Ease as GSAP code"
       @change="typed"
-    />
+    >
     <p v-if="!draft && modelValue" class="hint">This ease has no settings here. Pick one above or edit the code.</p>
     <p v-if="draft?.family === 'custom'" class="hint">
       Custom curves use GSAP's CustomEase. The devtools register it during development; keep one in your app by registering it too.
