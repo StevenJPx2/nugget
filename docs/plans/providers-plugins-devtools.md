@@ -11,6 +11,7 @@ Make Nugget work with any animation framework through provider plugins, let plug
 | Declare `tinyglobby`, `@vueuse/nuxt`, `@vueuse/core` as runtime dependencies | Done |
 | Dev toolchain on Nuxt 4.6, Vite 8 and Nuxt DevTools v4 | Done |
 | Devtools spike: GSAP-only waterfall with pause, replay, seek, speed and hover highlighting in Nuxt DevTools | Done |
+| Devtools spike: inspector that edits duration, delay, stagger, repeat, yoyo, ease and from/to values of a running GSAP tween, with reset; edits last until reload | Done |
 
 ## Architecture
 
@@ -326,6 +327,8 @@ flowchart LR
 | Non-literal values | Marked "runtime only" and offered as "Copy as code" |
 | Safety | Writes go through devframe's authenticated RPC, only inside the workspace root, only to tagged call sites, with a diff preview before each write |
 | Hosts without a node side | Save is disabled and "Copy as code" remains |
+
+Until core exists, the spike edits GSAP tweens in place (`packages/devtools/src/gsap-edit.ts`): it renders the tween back to where its start values were recorded, changes `vars` (and every per-target copy of a staggered tween), invalidates, and restores progress. This keeps the app's and ScrollTrigger's references valid. An edit is keyed by GSAP's object rather than a source location, so it is lost when the component remounts.
 
 ## Order of work
 

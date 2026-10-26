@@ -1,6 +1,9 @@
 import { createPageScriptChannel } from "devframe/in-page-channel";
 import type { gsap as Gsap } from "gsap";
+import { applyEdit, CONFIG_VARS, inspect, methodOf, snapshotEditable } from "./gsap-edit";
 import {
+  type AnimationDetail,
+  type AnimationEdit,
   type AnimationRow,
   type ControlAction,
   NUGGET_CHANNEL,
@@ -8,19 +11,11 @@ import {
   type NuggetState,
 } from "./protocol";
 
-type Animation = gsap.core.Animation;
+type Animation = gsap.core.Tween | gsap.core.Timeline;
 
 /** Rows kept for the waterfall; the oldest finished ones go first. */
 const MAX_TRACKED = 300;
 const CREATORS = ["to", "from", "fromTo", "timeline"] as const;
-
-/** Keys GSAP or its plugins add to `vars`, which say nothing about what is animated */
-const IGNORED_VARS = new Set([
-  "duration", "delay", "ease", "stagger", "repeat", "repeatDelay", "yoyo", "paused", "id",
-  "scrollTrigger", "onComplete", "onStart", "onUpdate", "onRepeat", "onReverseComplete",
-  "immediateRender", "parent", "startAt", "data", "inherit", "overwrite", "runBackwards",
-  "lazy", "callbackScope", "defaults", "autoRevert",
-]);
 
 function targetsOf(animation: Animation): unknown[] {
   return "targets" in animation && typeof animation.targets === "function"
@@ -49,7 +44,7 @@ function describeTargets(animation: Animation): string {
 }
 
 function describeVars(animation: Animation): string {
-  return Object.keys(animation.vars).filter((key) => !IGNORED_VARS.has(key)).slice(0, 4).join(", ");
+  return Object.keys(animation.vars).filter((key) => !CONFIG_VARS.has(key)).slice(0, 4).join(", ");
 }
 
 /**
@@ -61,6 +56,8 @@ export function startNuggetPageScript(gsap: typeof Gsap) {
   const tracked = new Map<string, Animation>();
   const labels = new Map<string, string>();
   const parents = new Map<string, string>();
+  /** Values from before the first devtools edit, by animation id */
+  const originals = new Map<string, AnimationEdit>();
   let counter = 0;
 
   const idOf = (animation: Animation) => {
@@ -102,7 +99,7 @@ export function startNuggetPageScript(gsap: typeof Gsap) {
   const row = (animation: Animation, parent?: { id: string; start: number }): AnimationRow => {
     const id = idOf(animation);
     const isTimeline = animation instanceof gsap.core.Timeline;
-    const method = labels.get(id) ?? (isTimeline ? "timeline" : "tween");
+    const method = labels.get(id) ?? (isTimeline ? "timeline" : methodOf(animation.vars));
     const vars = describeVars(animation);
     return {
       id,
@@ -116,7 +113,23 @@ export function startNuggetPageScript(gsap: typeof Gsap) {
       paused: animation.paused(),
       active: animation.isActive(),
       scroll: Boolean((animation as gsap.core.Tween).scrollTrigger ?? animation.vars.scrollTrigger),
+      edited: originals.has(id),
     };
+  };
+
+  const detail = (id: string): AnimationDetail | null => {
+    const animation = find(id);
+    if (!animation) return null;
+    const { label, targets } = row(animation);
+    return { id, label, targets, ...inspect(gsap, animation, originals.has(id)) };
+  };
+
+  const edit = (id: string, change: AnimationEdit) => {
+    const animation = find(id);
+    if (!(animation instanceof gsap.core.Tween)) return detail(id);
+    if (!originals.has(id)) originals.set(id, snapshotEditable(gsap, animation));
+    applyEdit(gsap, animation, change);
+    return detail(id);
   };
 
   const rows = (): AnimationRow[] => {
@@ -209,8 +222,23 @@ export function startNuggetPageScript(gsap: typeof Gsap) {
       clearFinished: {
         type: "action",
         handler: () => {
-          for (const [id, animation] of tracked) if (isFinished(animation)) tracked.delete(id);
+          for (const [id, animation] of tracked) {
+            if (!isFinished(animation)) continue;
+            tracked.delete(id);
+            originals.delete(id);
+          }
           parents.clear();
+        },
+      },
+      inspect: { handler: (id: string) => detail(id) },
+      edit: { handler: (id: string, change: AnimationEdit) => edit(id, change) },
+      resetEdits: {
+        handler: (id: string) => {
+          const original = originals.get(id);
+          if (!original) return detail(id);
+          const result = edit(id, original);
+          originals.delete(id);
+          return result && { ...result, edited: false };
         },
       },
     },
