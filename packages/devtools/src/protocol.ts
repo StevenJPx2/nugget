@@ -59,6 +59,27 @@ export type AnimationEdit = Partial<
   to?: Record<string, EditableValue>;
 };
 
+/** One edited animation, described so a coding agent can find and change it in source */
+export type EditRecord = {
+  id: string;
+  label: string;
+  /** `to`, `from`, `fromTo` or `timeline` */
+  method: string;
+  targets: string;
+  /** Vue components around the first target, innermost first. Files come from Vue's dev build */
+  components: { name?: string; file?: string }[];
+  /** Set when the animation is a step of a timeline */
+  timeline?: { label: string; step: number; steps: number };
+  /** Values before the first edit */
+  before: AnimationEdit;
+  /** Values now */
+  after: AnimationEdit;
+  /** The ease wasn't set in code; GSAP's default applied */
+  easeWasDefault: boolean;
+  staggered: boolean;
+  page: string;
+};
+
 export type NuggetState = {
   /** Current time of GSAP's global timeline, in seconds */
   now: number;
@@ -81,6 +102,8 @@ export interface NuggetChannelProtocol extends InPageChannelProtocol {
       edit: (id: string, edit: AnimationEdit) => AnimationDetail | null;
       /** Puts back the values the animation had before its first edit */
       resetEdits: (id: string) => AnimationDetail | null;
+      /** Edited animations; all of them, or the given ids and their timeline steps */
+      edits: (ids?: string[]) => EditRecord[];
     };
   };
   events: {

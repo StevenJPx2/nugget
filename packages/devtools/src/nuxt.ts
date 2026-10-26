@@ -17,6 +17,8 @@ export default defineNuxtModule({
         dock: { groupId: "nuxt", category: "modules" },
       }),
     );
+    // Dev only: lets prompts name source files relative to the repository
+    nuxt.options.runtimeConfig.public.nuggetDevtools = { workspaceDir: nuxt.options.workspaceDir };
     addPlugin({ src: resolve("./runtime/page-script.client"), mode: "client" });
   },
 });

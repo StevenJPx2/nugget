@@ -10,6 +10,8 @@ import {
   type NuggetChannelProtocol,
   type NuggetState,
 } from "../src/protocol";
+import { buildPrompt, copyText } from "./prompt";
+import CopyPromptButton from "./components/CopyPromptButton.vue";
 import IconButton from "./components/IconButton.vue";
 import Inspector from "./components/Inspector.vue";
 import Scrubber from "./components/Scrubber.vue";
@@ -133,6 +135,22 @@ async function run(call: () => Promise<AnimationDetail | null>, replay = false) 
   }
 }
 
+const editedCount = computed(() => state.value?.rows.filter((row) => row.edited).length ?? 0);
+/** Edits the inspector speaks for: the selected animation, or a selected timeline's steps */
+const inspectedEditCount = computed(
+  () =>
+    state.value?.rows.filter(
+      (row) => row.edited && (row.id === selectedId.value || row.parentId === selectedId.value),
+    ).length ?? 0,
+);
+
+async function copyPrompt(ids?: string[]) {
+  const prompt = buildPrompt(await channel.call("edits", ids));
+  if (!prompt) return false;
+  await copyText(prompt);
+  return true;
+}
+
 const applyEdit = (change: AnimationEdit, replay: boolean) =>
   run(() => channel.call("edit", selectedId.value!, change), replay);
 const resetEdits = () => run(() => channel.call("resetEdits", selectedId.value!), true);
@@ -150,6 +168,7 @@ onBeforeUnmount(() => window.removeEventListener("keydown", onKey));
       <strong>Nugget</strong>
       <span class="muted count">{{ rows.length }} animations · {{ (state?.now ?? 0).toFixed(1) }}s</span>
       <span class="spacer" />
+      <CopyPromptButton v-if="editedCount && !selectedId" :copy="() => copyPrompt()" :count="editedCount" />
       <IconButton
         :icon="state?.paused ? 'play' : 'pause'"
         :label="state?.paused ? 'Resume every animation' : 'Pause every animation'"
@@ -231,6 +250,8 @@ onBeforeUnmount(() => window.removeEventListener("keydown", onKey));
         :detail="detail"
         :row="selectedRow"
         :error="editError"
+        :edit-count="inspectedEditCount"
+        :copy-prompt="() => copyPrompt([detail!.id])"
         @edit="applyEdit"
         @reset="resetEdits"
         @close="selectedId = null"

@@ -1,10 +1,19 @@
 import { createPageScriptChannel } from "devframe/in-page-channel";
 import type { gsap as Gsap } from "gsap";
 import { CustomEase } from "gsap/CustomEase";
-import { applyEdit, CONFIG_VARS, inspect, methodOf, snapshotEditable } from "./gsap-edit";
+import {
+  applyEdit,
+  CONFIG_VARS,
+  easeIsSet,
+  inspect,
+  isStaggered,
+  methodOf,
+  snapshotEditable,
+} from "./gsap-edit";
 import {
   type AnimationDetail,
   type AnimationEdit,
+  type EditRecord,
   type AnimationRow,
   type ControlAction,
   NUGGET_CHANNEL,
@@ -52,7 +61,12 @@ function describeVars(animation: Animation): string {
  * Records every GSAP animation the app creates and serves them to Nugget devtools panels.
  * Pass the app's own `gsap` so the page script sees the same global timeline as Nugget.
  */
-export function startNuggetPageScript(gsap: typeof Gsap) {
+export type PageScriptOptions = {
+  /** Source files in prompts are shown relative to this directory */
+  workspaceDir?: string;
+};
+
+export function startNuggetPageScript(gsap: typeof Gsap, options: PageScriptOptions = {}) {
   // Lets the ease editor's custom curves ("M0,0 C… 1,1") run in dev. Apps that keep one need to register it themselves
   gsap.registerPlugin(CustomEase);
   const ids = new WeakMap<Animation, string>();
@@ -61,6 +75,7 @@ export function startNuggetPageScript(gsap: typeof Gsap) {
   const parents = new Map<string, string>();
   /** Values from before the first devtools edit, by animation id */
   const originals = new Map<string, AnimationEdit>();
+  const easeWasDefault = new Map<string, boolean>();
   let counter = 0;
 
   const idOf = (animation: Animation) => {
@@ -140,9 +155,75 @@ export function startNuggetPageScript(gsap: typeof Gsap) {
   const edit = (id: string, change: AnimationEdit) => {
     const animation = find(id);
     if (!(animation instanceof gsap.core.Tween)) return detail(id);
-    if (!originals.has(id)) originals.set(id, snapshotEditable(gsap, animation));
+    if (!originals.has(id)) {
+      originals.set(id, snapshotEditable(gsap, animation));
+      easeWasDefault.set(id, !easeIsSet(gsap, animation));
+    }
     applyEdit(gsap, animation, change);
     return detail(id);
+  };
+
+  type VueInstance = {
+    type?: { __name?: string; name?: string; __file?: string };
+    /** `vnode.ctx` is the component whose render used this one */
+    vnode?: { ctx?: VueInstance | null };
+    parent?: VueInstance | null;
+  };
+  type VueElement = { __vnode?: { ctx?: VueInstance | null }; __vueParentComponent?: VueInstance };
+
+  const relative = (file: string) =>
+    options.workspaceDir && file.startsWith(`${options.workspaceDir}/`)
+      ? file.slice(options.workspaceDir.length + 1)
+      : file;
+
+  /**
+   * Vue's dev build records which component's render created each element (`__vnode.ctx`), which is
+   * where its markup and directives are written, even when it's slotted into another component.
+   * The same link leads from a component to where it's used. Components from node_modules, such as
+   * Nuxt's root, are skipped.
+   */
+  const componentsOf = (el: Element | undefined) => {
+    const out: EditRecord["components"] = [];
+    const vue = el as VueElement | undefined;
+    let instance = vue?.__vnode?.ctx ?? vue?.__vueParentComponent;
+    while (instance && out.length < 2) {
+      const { __name, name, __file } = instance.type ?? {};
+      if (__file && !__file.includes("/node_modules/")) {
+        out.push({ name: __name ?? name, file: relative(__file) });
+      }
+      instance = instance.vnode?.ctx ?? instance.parent ?? undefined;
+    }
+    return out;
+  };
+
+  const timelineOf = (id: string, animation: Animation): EditRecord["timeline"] => {
+    const parentId = parents.get(id);
+    const parent = parentId ? find(parentId) : undefined;
+    if (!(parent instanceof gsap.core.Timeline)) return undefined;
+    const steps = parent.getChildren(false, true, true).filter((child) => !isInternal(child));
+    return { label: row(parent).label, step: steps.indexOf(animation) + 1, steps: steps.length };
+  };
+
+  const record = (id: string): EditRecord | undefined => {
+    const animation = find(id);
+    const before = originals.get(id);
+    if (!(animation instanceof gsap.core.Tween) || !before) return undefined;
+    const { label, targets } = row(animation);
+    const created = labels.get(id);
+    const firstElement = targetsOf(animation).find((t): t is Element => t instanceof Element);
+    return {
+      id,
+      label,
+      method: created && created !== "existing" ? created : methodOf(animation.vars),
+      targets,
+      components: componentsOf(firstElement),
+      timeline: timelineOf(id, animation),
+      before,
+      after: snapshotEditable(gsap, animation),
+      easeWasDefault: easeWasDefault.get(id) ?? false,
+      staggered: isStaggered(animation),
+      page: location.pathname,
+    };
   };
 
   const rows = (): AnimationRow[] => {
@@ -298,7 +379,17 @@ export function startNuggetPageScript(gsap: typeof Gsap) {
           if (!original) return detail(id);
           const result = edit(id, original);
           originals.delete(id);
+          easeWasDefault.delete(id);
           return result && { ...result, edited: false };
+        },
+      },
+      edits: {
+        handler: (ids?: string[]) => {
+          const scope = ids?.length ? new Set(ids) : undefined;
+          return [...originals.keys()]
+            .filter((id) => !scope || scope.has(id) || scope.has(parents.get(id) ?? ""))
+            .map(record)
+            .filter((entry): entry is EditRecord => Boolean(entry));
         },
       },
     },

@@ -113,6 +113,15 @@ export function inspect(gsap: typeof Gsap, animation: Animation, edited: boolean
   } satisfies Omit<AnimationDetail, "id" | "label" | "targets" | "targetsHidden">;
 }
 
+/** Whether the tween's code set an ease, rather than inheriting GSAP's default */
+export function easeIsSet(gsap: typeof Gsap, tween: Tween) {
+  const [first = tween] = parts(tween);
+  const { ease } = first.vars as Vars;
+  return Boolean(ease) && ease !== gsap.defaults().ease;
+}
+
+export const isStaggered = (tween: Tween) => parts(tween).length > 1;
+
 /** The fields an edit can change, read from the animation as it is now, so it can be put back */
 export function snapshotEditable(gsap: typeof Gsap, tween: Tween): AnimationEdit {
   const { duration, delay, ease, stagger, repeat, yoyo, from, to } = inspect(gsap, tween, false);

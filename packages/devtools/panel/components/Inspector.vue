@@ -7,11 +7,19 @@ import type {
   ControlAction,
   EditableValue,
 } from "../../src/protocol";
+import CopyPromptButton from "./CopyPromptButton.vue";
 import EaseEditor from "./EaseEditor.vue";
 import IconButton from "./IconButton.vue";
 import Scrubber from "./Scrubber.vue";
 
-const props = defineProps<{ detail: AnimationDetail; row?: AnimationRow; error?: string }>();
+const props = defineProps<{
+  detail: AnimationDetail;
+  row?: AnimationRow;
+  error?: string;
+  /** Edits this inspector can turn into a prompt: its animation's, or a timeline's steps' */
+  editCount: number;
+  copyPrompt: () => Promise<boolean>;
+}>();
 const emit = defineEmits<{
   edit: [edit: AnimationEdit, replay: boolean];
   reset: [];
@@ -152,10 +160,15 @@ function commitValue(side: "from" | "to", key: string, event: Event) {
         <input v-model="replayOnEdit" type="checkbox" />
         <span>Replay after each change</span>
       </label>
-      <IconButton v-if="detail.edited" icon="reset" label="Undo all edits to this animation" @click="emit('reset')">
-        Reset
-      </IconButton>
-      <p class="muted small">Edits apply to the running page and last until it reloads.</p>
+      <div v-if="editCount" class="footer-actions">
+        <IconButton v-if="detail.edited" icon="reset" label="Undo all edits to this animation" @click="emit('reset')">
+          Reset
+        </IconButton>
+        <CopyPromptButton :copy="copyPrompt" :count="editCount" />
+      </div>
+      <p class="muted small">
+        Edits apply to the running page and last until it reloads. Copy a prompt to have your coding agent make them in code.
+      </p>
     </footer>
   </aside>
 </template>
@@ -343,6 +356,11 @@ footer {
 footer p {
   flex-basis: 100%;
   margin: 0;
+}
+
+.footer-actions {
+  display: flex;
+  gap: 6px;
 }
 
 .small {
