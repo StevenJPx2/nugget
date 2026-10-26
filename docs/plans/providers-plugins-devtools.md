@@ -290,7 +290,7 @@ flowchart LR
 
 | Concern | Decision |
 |---|---|
-| Mounting in Nuxt | `addVitePlugin(createPluginFromDevframe(nuggetDevframe, { dock: { groupId: "nuxt", category: "modules" } }))` puts the tab in the Nuxt group |
+| Mounting in Nuxt | `addVitePlugin(createPluginFromDevframe(devframe, { dock: { category: "app" } }))` gives Nugget its own dock button. Not in the Nuxt group: with devframe 1.2.6, reloading with a group member selected loads Nuxt DevTools behind it, and Nuxt DevTools then takes the selection |
 | Requirements | Nuxt 4.5+ (Vite 8) with `@nuxt/devtools` v4 set through package-manager `overrides` |
 | Panel to page | devframe in-page channel. Records are plain data; handles and elements stay in the page |
 | Source of truth | The page script owns the shared state |

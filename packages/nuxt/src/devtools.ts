@@ -71,8 +71,10 @@ export async function setupDevtools(nuxt: Nuxt, resolver: Resolver) {
     setup() {},
   });
 
-  // Shows the panel as a tab in the Nuxt group of Nuxt DevTools v4
-  addVitePlugin(createPluginFromDevframe(devframe, { dock: { groupId: "nuxt", category: "modules" } }));
+  // Its own button in the Nuxt DevTools v4 dock, not a tab in the Nuxt group. In the group, a reload
+  // with Nugget selected loads Nuxt DevTools behind it, which then takes the selection
+  // (devframe 1.2.6)
+  addVitePlugin(createPluginFromDevframe(devframe, { dock: { category: "app" } }));
 
   // Lets prompts name source files relative to the repository
   nuxt.options.runtimeConfig.public.nuggetDevtools = { workspaceDir: nuxt.options.workspaceDir };
