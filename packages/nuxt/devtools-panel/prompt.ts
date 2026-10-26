@@ -47,7 +47,7 @@ function originalCall(record: EditRecord) {
   if (before.duration !== undefined) timing.duration = before.duration;
   if (before.delay) timing.delay = before.delay;
   if (before.ease && !record.easeWasDefault) timing.ease = before.ease;
-  if (before.stagger !== undefined) timing.stagger = before.stagger;
+  if (before.stagger !== undefined && before.stagger !== null) timing.stagger = before.stagger;
   if (before.repeat) timing.repeat = before.repeat;
   if (before.yoyo) timing.yoyo = true;
 

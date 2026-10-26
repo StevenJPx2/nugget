@@ -77,3 +77,10 @@ test("several edits are numbered, with timeline context", () => {
 test("edits that cancel out give no prompt", () => {
   expect(buildPrompt([{ ...aosBox, after: aosBox.before }])).toBeNull();
 });
+
+test("an absent stagger is omitted from the source hint, while zero is preserved", () => {
+  const withoutStagger = buildPrompt([{ ...step, before: { ...step.before, stagger: null } }]);
+  expect(withoutStagger).not.toContain("stagger:");
+  const zeroStagger = buildPrompt([{ ...step, before: { ...step.before, stagger: 0 }, after: { ...step.after, stagger: 0 } }]);
+  expect(zeroStagger).toContain("stagger: 0");
+});
