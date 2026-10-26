@@ -30,7 +30,7 @@ const emit = defineEmits<{
 
 const replayOnEdit = ref(true);
 
-const locked = computed(() => Boolean(props.detail.locked));
+const locked = computed(() => Boolean(props.detail.locked || props.detail.unavailable));
 
 const valueRows = computed(() => {
   const { from, to } = props.detail;
@@ -74,14 +74,16 @@ function commitValue(side: "from" | "to", key: string, event: Event) {
         :icon="row.active ? 'pause' : 'play'"
         :label="row.active ? 'Pause' : 'Play'"
         primary
+        :disabled="Boolean(detail.unavailable)"
         @click="emit('control', row.active ? 'pause' : 'play')"
       />
-      <IconButton icon="replay" label="Replay" @click="emit('control', 'restart')" />
-      <ProgressScrubber :model-value="row.progress" label="Progress" @update:model-value="emit('seek', $event)" />
+      <IconButton icon="replay" label="Replay" :disabled="Boolean(detail.unavailable)" @click="emit('control', 'restart')" />
+      <ProgressScrubber :model-value="row.progress" label="Progress" :disabled="Boolean(detail.unavailable)" @update:model-value="emit('seek', $event)" />
       <span class="percent">{{ Math.round(row.progress * 100) }}%</span>
     </div>
 
-    <p v-if="detail.locked" class="note">{{ detail.locked }}</p>
+    <p v-if="detail.unavailable" class="note" role="status">{{ detail.unavailable }}</p>
+    <p v-else-if="detail.locked" class="note">{{ detail.locked }}</p>
     <p v-else-if="detail.targetsHidden" class="note">
       Its element has no size right now, so changes won't be visible. It may rely on another
       animation to set it up first, such as a transition's enter timeline.

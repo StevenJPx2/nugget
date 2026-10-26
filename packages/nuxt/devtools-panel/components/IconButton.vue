@@ -65,6 +65,11 @@ const shape = computed(() => icons[props.icon] as { fill?: string; stroke?: stri
   transform: scale(0.94);
 }
 
+.icon-button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
 .icon-button:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 1px;

@@ -16,6 +16,7 @@ Make Nugget work with any animation framework through provider plugins, let plug
 | Devtools: play or scrub a single timeline step; hint when an element has no size | Done |
 | Devtools: copy a prompt for a coding agent from the inspector (one animation or a timeline's steps) or the header (every edit), naming each animation's component and file | Done |
 | Devtools built into `@fdcn/nugget`: dev only, skipped without Nuxt DevTools v4, `nugget.devtools: false` turns them off, nothing in production builds | Done |
+| Devtools: stable first-seen row order and unique internal IDs; removed SplitText targets explicitly unavailable; element picker focuses matching animations, including split descendants | Done (unreleased) |
 
 ## Architecture
 

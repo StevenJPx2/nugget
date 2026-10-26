@@ -97,11 +97,14 @@ During development, Nugget adds a **Nugget** tab to Nuxt DevTools.
 ![Nugget devtools: hovering a button plays a transition, which appears in the waterfall; editing its ease in the inspector replays it, and the app uses the edit](./src/public/devtools-demo.gif)
 
 - **Waterfall:** every GSAP animation the app creates, with timeline steps and live progress. Hover a row to highlight its element on the page.
+- **Inspect element:** click the picker, then an element on the page to select and scroll to its animation in the waterfall. It also finds animated words or lines inside a heading. When several animations match, use the numbered buttons to switch between them. Esc cancels the picker.
 - **Playback:** pause, replay or scrub any animation or a single timeline step. Pause everything, or slow it all down to 0.1×.
 - **Live editing:** click a row to change its duration, delay, stagger, repeat, values and ease. The page updates straight away. The ease editor has a gallery of curves, knobs for power, back, elastic and steps, and draggable bezier handles.
 - **Copy prompt:** turn your edits into a prompt for your coding agent. It names the component and file each animation comes from and lists every change. Copy one animation's edits from the inspector, or all of them from the header when nothing is selected.
 
 Edits last until the page reloads; the prompt is how they reach your code.
+
+Rows stay in first-seen order when you replay them. If your app removes animation targets (for example, calling `SplitText.revert()` after a reveal), those historical rows show **removed targets** and cannot replay the deleted spans. Trigger the reveal again in the app to create live targets; the devtools won't rebuild or replace your app's DOM.
 
 The devtools need Nuxt 4.5 or later and Nuxt DevTools v4, which is in beta. Nugget skips them otherwise. To try Nuxt DevTools v4, pin it in your `package.json`. This is `overrides` for npm and Bun, and `pnpm.overrides` for pnpm:
 

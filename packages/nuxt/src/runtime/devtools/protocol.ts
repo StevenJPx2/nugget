@@ -20,6 +20,8 @@ export type AnimationRow = {
   scroll: boolean;
   /** Changed from the devtools during this page session */
   edited: boolean;
+  /** Targets have been removed (for example after SplitText.revert()). */
+  unavailable?: string;
 };
 
 export type EditableValue = number | string;
@@ -50,6 +52,7 @@ export type AnimationDetail = {
   edited: boolean;
   /** Every target element has no size or isn't in the page, so changes can't be seen right now */
   targetsHidden: boolean;
+  unavailable?: string;
 };
 
 export type AnimationEdit = Partial<
@@ -86,6 +89,7 @@ export type NuggetState = {
   paused: boolean;
   speed: number;
   rows: AnimationRow[];
+  picker: { active: boolean; sequence: number; ids: string[]; target: string };
 };
 
 export type ControlAction = "play" | "pause" | "restart" | "reverse";
@@ -104,6 +108,7 @@ export interface NuggetChannelProtocol extends InPageChannelProtocol {
       resetEdits: (id: string) => AnimationDetail | null;
       /** Edited animations; all of them, or the given ids and their timeline steps */
       edits: (ids?: string[]) => EditRecord[];
+      setPicker: (active: boolean) => void;
     };
   };
   events: {

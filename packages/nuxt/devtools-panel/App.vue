@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { connectPanelChannel } from "devframe/in-page-channel";
-import { computed, onBeforeUnmount, ref, shallowRef, watch } from "vue";
+import { computed, nextTick, onBeforeUnmount, ref, shallowRef, watch } from "vue";
 import {
   type AnimationDetail,
   type AnimationEdit,
@@ -83,6 +83,8 @@ const setGlobal = (options: { paused?: boolean; speed?: number }) =>
   channel.call("setGlobal", options);
 
 const selectedId = ref<string | null>(null);
+const pickedIds = ref<string[]>([]);
+const pickedTarget = ref("");
 const detail = shallowRef<AnimationDetail | null>(null);
 const editError = ref<string>();
 
@@ -95,6 +97,26 @@ const selectedRow = computed(() =>
 const select = (id: string) => {
   selectedId.value = selectedId.value === id ? null : id;
 };
+
+watch(() => state.value?.picker.sequence, async (sequence) => {
+  if (!sequence) return;
+  const picker = state.value!.picker;
+  pickedIds.value = picker.ids;
+  pickedTarget.value = picker.target;
+  showNested.value = true;
+  selectedId.value = picker.ids[0] ?? null;
+  await revealPickedRow();
+});
+
+async function revealPickedRow() {
+  await nextTick();
+  const element = [...document.querySelectorAll<HTMLElement>("[data-animation-id]")]
+    .find((row) => row.dataset.animationId === selectedId.value);
+  element?.scrollIntoView({ block: "nearest" });
+  element?.focus({ preventScroll: true });
+}
+
+const setPicker = (active: boolean) => channel.call("setPicker", active);
 
 watch(selectedId, async (id) => {
   editError.value = undefined;
@@ -156,16 +178,32 @@ const applyEdit = (change: AnimationEdit, replay: boolean) =>
 const resetEdits = () => run(() => channel.call("resetEdits", selectedId.value!), true);
 
 const onKey = (event: KeyboardEvent) => {
+  if (event.key === "Escape" && state.value?.picker.active) {
+    void setPicker(false);
+    return;
+  }
   if (event.key === "Escape" && selectedId.value) selectedId.value = null;
 };
 window.addEventListener("keydown", onKey);
-onBeforeUnmount(() => window.removeEventListener("keydown", onKey));
+onBeforeUnmount(() => {
+  window.removeEventListener("keydown", onKey);
+  void setPicker(false);
+});
 </script>
 
 <template>
   <main :class="{ inspecting: detail }">
     <header>
       <strong>Nugget</strong>
+      <IconButton
+        icon="inspect"
+        :label="state?.picker.active ? 'Cancel element picker (Esc)' : 'Pick an element to find its animations'"
+        :primary="state?.picker.active"
+        :aria-pressed="state?.picker.active ?? false"
+        @click="setPicker(!state?.picker.active)"
+      >
+        {{ state?.picker.active ? "Cancel picker" : "Inspect element" }}
+      </IconButton>
       <span class="muted count">{{ rows.length }} animations · {{ (state?.now ?? 0).toFixed(1) }}s</span>
       <span class="spacer" />
       <CopyPromptButton v-if="editedCount && !selectedId" :copy="() => copyPrompt()" :count="editedCount" />
@@ -186,6 +224,17 @@ onBeforeUnmount(() => window.removeEventListener("keydown", onKey));
       <label class="toggle"><input v-model="showNested" type="checkbox" > Steps</label>
       <button type="button" class="text-button" @click="channel.call('clearFinished')">Clear finished</button>
     </header>
+
+    <p v-if="state?.picker.active" class="picker-status" role="status">
+      Click an element on the page to find its animations. Press Esc to cancel.
+    </p>
+    <div v-else-if="pickedTarget" class="picker-status" role="status">
+      <span>{{ pickedIds.length ? `${pickedIds.length} matching animation(s) for ${pickedTarget}` : `No live animations found for ${pickedTarget}. The app may have reverted its split text or not animated it yet.` }}</span>
+      <button v-for="(id, index) in pickedIds" :key="id" class="text-button" :aria-pressed="selectedId === id" @click="selectedId = id; revealPickedRow()">
+        {{ index + 1 }}
+      </button>
+      <button class="text-button" @click="pickedIds = []; pickedTarget = ''">Clear</button>
+    </div>
 
     <p v-if="missing && !state" class="empty">
       No Nugget page script found. Open this panel from a page of an app that uses Nugget.
@@ -208,8 +257,9 @@ onBeforeUnmount(() => window.removeEventListener("keydown", onKey));
         <div
           v-for="row in rows"
           :key="row.id"
+          :data-animation-id="row.id"
           class="row"
-          :class="[status(row), { nested: row.parentId, selected: row.id === selectedId }]"
+          :class="[status(row), { nested: row.parentId, selected: row.id === selectedId, matched: pickedIds.includes(row.id) }]"
           tabindex="0"
           :aria-selected="row.id === selectedId"
           @click="select(row.id)"
@@ -222,6 +272,7 @@ onBeforeUnmount(() => window.removeEventListener("keydown", onKey));
             <span class="muted">{{ row.targets }}</span>
             <span v-if="row.scroll" class="badge">scroll</span>
             <span v-if="row.edited" class="badge edited" title="Edited in devtools">edited</span>
+            <span v-if="row.unavailable" class="badge" :title="row.unavailable">removed targets</span>
           </div>
           <div class="track">
             <span class="now" :style="{ left: `${pct(axis.now)}%` }" />
@@ -236,10 +287,11 @@ onBeforeUnmount(() => window.removeEventListener("keydown", onKey));
             <IconButton
               :icon="row.active ? 'pause' : 'play'"
               :label="row.active ? 'Pause' : 'Play'"
+              :disabled="Boolean(row.unavailable)"
               @click="control(row.id, row.active ? 'pause' : 'play')"
             />
-            <IconButton icon="replay" label="Replay" @click="control(row.id, 'restart')" />
-            <ProgressScrubber :model-value="row.progress" label="Seek" @update:model-value="seek(row.id, $event)" />
+            <IconButton icon="replay" :label="row.unavailable ?? 'Replay'" :disabled="Boolean(row.unavailable)" @click="control(row.id, 'restart')" />
+            <ProgressScrubber :model-value="row.progress" label="Seek" :disabled="Boolean(row.unavailable)" @update:model-value="seek(row.id, $event)" />
           </div>
         </div>
       </section>
@@ -342,6 +394,20 @@ header {
 
 .count {
   font-variant-numeric: tabular-nums;
+}
+
+.picker-status {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.row.matched:not(.selected) {
+  box-shadow: inset 3px 0 var(--accent);
 }
 
 .text-button {

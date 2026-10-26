@@ -11,6 +11,7 @@ export const icons = {
     stroke: "M5.75 5.75V3.5c0-.41.34-.75.75-.75h6c.41 0 .75.34.75.75v6c0 .41-.34.75-.75.75h-2.25M3.5 5.75h6c.41 0 .75.34.75.75v6c0 .41-.34.75-.75.75h-6a.75.75 0 0 1-.75-.75v-6c0-.41.34-.75.75-.75Z",
   },
   check: { stroke: "M3 8.5 6.5 12 13 4.5" },
+  inspect: { stroke: "M6 2.5H2.5V6M10 2.5h3.5V6M2.5 10v3.5H6M8 7l5 2-2 1.5L9.5 13 8 7Z" },
 } satisfies Record<string, { fill: string } | { stroke: string }>;
 
 export type IconName = keyof typeof icons;

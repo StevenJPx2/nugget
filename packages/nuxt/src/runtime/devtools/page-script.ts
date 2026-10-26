@@ -1,6 +1,8 @@
 import { createPageScriptChannel } from "devframe/in-page-channel";
 import type { gsap as Gsap } from "gsap";
 import { CustomEase } from "gsap/CustomEase";
+import { createAnimationRegistry, replayUnavailable, targetMatchRank } from "./animation-registry";
+import { createElementPicker } from "./element-picker";
 import {
   applyEdit,
   CONFIG_VARS,
@@ -69,23 +71,13 @@ export type PageScriptOptions = {
 export function startNuggetPageScript(gsap: typeof Gsap, options: PageScriptOptions = {}) {
   // Lets the ease editor's custom curves ("M0,0 C… 1,1") run in dev. Apps that keep one need to register it themselves
   gsap.registerPlugin(CustomEase);
-  const ids = new WeakMap<Animation, string>();
-  const tracked = new Map<string, Animation>();
+  const registry = createAnimationRegistry(gsap, (animation) => !isInternal(animation));
+  const { tracked, idOf, find } = registry;
   const labels = new Map<string, string>();
   const parents = new Map<string, string>();
   /** Values from before the first devtools edit, by animation id */
   const originals = new Map<string, AnimationEdit>();
   const easeWasDefault = new Map<string, boolean>();
-  let counter = 0;
-
-  const idOf = (animation: Animation) => {
-    let id = ids.get(animation);
-    if (!id) {
-      id = (animation.vars.id as string | undefined) ?? `a${++counter}`;
-      ids.set(animation, id);
-    }
-    return id;
-  };
 
   const isFinished = (animation: Animation) => animation.totalProgress() === 1 && !animation.isActive();
 
@@ -114,24 +106,24 @@ export function startNuggetPageScript(gsap: typeof Gsap, options: PageScriptOpti
   }
   for (const child of gsap.globalTimeline.getChildren(false, true, true)) track(child, "existing");
 
-  const row = (animation: Animation, parent?: { id: string; start: number }): AnimationRow => {
+  const row = (animation: Animation): AnimationRow => {
     const id = idOf(animation);
     const isTimeline = animation instanceof gsap.core.Timeline;
     const method = labels.get(id) ?? (isTimeline ? "timeline" : methodOf(animation.vars));
     const vars = describeVars(animation);
     return {
       id,
-      parentId: parent?.id,
       label: (animation.vars.id as string | undefined) ?? (vars ? `${method} · ${vars}` : method),
       kind: isTimeline ? "timeline" : "tween",
       targets: isTimeline ? "" : describeTargets(animation),
-      start: (parent?.start ?? 0) + animation.startTime(),
+      start: animation.startTime(),
       duration: animation.totalDuration() / Math.abs(animation.timeScale() || 1),
       progress: animation.totalProgress(),
       paused: animation.paused(),
       active: animation.isActive() || solos.has(id),
       scroll: Boolean((animation as gsap.core.Tween).scrollTrigger ?? animation.vars.scrollTrigger),
       edited: originals.has(id),
+      unavailable: replayUnavailable(elementsOf(animation)),
     };
   };
 
@@ -149,12 +141,17 @@ export function startNuggetPageScript(gsap: typeof Gsap, options: PageScriptOpti
         const rect = el.getBoundingClientRect();
         return rect.width === 0 && rect.height === 0;
       });
-    return { id, label, targets, targetsHidden, ...inspect(gsap, animation, originals.has(id)) };
+    return {
+      id, label, targets, targetsHidden,
+      unavailable: replayUnavailable(elementsOf(animation)),
+      ...inspect(gsap, animation, originals.has(id)),
+    };
   };
 
   const edit = (id: string, change: AnimationEdit) => {
     const animation = find(id);
     if (!(animation instanceof gsap.core.Tween)) return detail(id);
+    if (replayUnavailable(elementsOf(animation))) return detail(id);
     if (!originals.has(id)) {
       originals.set(id, snapshotEditable(gsap, animation));
       easeWasDefault.set(id, !easeIsSet(gsap, animation));
@@ -227,31 +224,19 @@ export function startNuggetPageScript(gsap: typeof Gsap, options: PageScriptOpti
   };
 
   const rows = (): AnimationRow[] => {
-    const out: AnimationRow[] = [];
-    for (const [id, animation] of tracked) {
-      if (parents.has(id)) continue;
-      const top = row(animation);
-      out.push(top);
-      if (animation instanceof gsap.core.Timeline) {
-        for (const child of animation.getChildren(false, true, true)) {
-          if (isInternal(child)) continue;
-          parents.set(idOf(child), top.id);
-          out.push(row(child, { id: top.id, start: top.start }));
-        }
-      }
-    }
-    return out.sort((a, b) => (a.parentId === b.parentId ? a.start - b.start : 0));
+    const entries = registry.entries();
+    parents.clear();
+    return entries.map(({ id, animation, parentId, start }) => {
+      if (parentId) parents.set(id, parentId);
+      return { ...row(animation), parentId, start };
+    });
   };
 
-  const find = (id: string) => {
-    const animation = tracked.get(id);
-    if (animation) return animation;
-    for (const parent of tracked.values()) {
-      if (!(parent instanceof gsap.core.Timeline)) continue;
-      const child = parent.getChildren(false, true, true).find((c) => ids.get(c) === id);
-      if (child) return child;
+  const elementsOf = (animation: Animation): Element[] => {
+    if (animation instanceof gsap.core.Timeline) {
+      return animation.getChildren(true, true, false).flatMap((child) => elementsOf(child));
     }
-    return undefined;
+    return targetsOf(animation).filter((target): target is Element => target instanceof Element);
   };
 
   /** Timeline steps playing on their own from the panel, by id */
@@ -285,11 +270,13 @@ export function startNuggetPageScript(gsap: typeof Gsap, options: PageScriptOpti
     );
   };
 
+  const pickerState: NuggetState["picker"] = { active: false, sequence: 0, ids: [], target: "" };
   const snapshot = (): NuggetState => ({
     now: gsap.globalTimeline.time(),
     paused: gsap.globalTimeline.paused(),
     speed: gsap.globalTimeline.timeScale(),
     rows: rows(),
+    picker: { ...pickerState, ids: [...pickerState.ids] },
   });
 
   const highlight = document.createElement("div");
@@ -297,11 +284,7 @@ export function startNuggetPageScript(gsap: typeof Gsap, options: PageScriptOpti
     "position:fixed;pointer-events:none;z-index:2147483646;outline:2px solid #e8a33d;background:rgb(232 163 61 / 0.15);display:none;transition:all 80ms";
   document.documentElement.append(highlight);
 
-  const showHighlight = (id: string | null) => {
-    const animation = id ? find(id) : undefined;
-    const targets = animation
-      ? targetsOf(animation).filter((t): t is Element => t instanceof Element)
-      : [];
+  const highlightElements = (targets: Element[]) => {
     if (!targets.length) {
       highlight.style.display = "none";
       return;
@@ -318,14 +301,37 @@ export function startNuggetPageScript(gsap: typeof Gsap, options: PageScriptOpti
     });
   };
 
+  const showHighlight = (id: string | null) => {
+    if (pickerState.active) return;
+    const animation = id ? find(id) : undefined;
+    highlightElements(animation ? elementsOf(animation).filter((el) => el.isConnected) : []);
+  };
+
+  const picker = createElementPicker({
+    highlight: (element) => highlightElements(element ? [element] : []),
+    changed: (active) => { pickerState.active = active; },
+    picked: (element) => {
+      const matches = registry.entries()
+        .filter(({ animation }) => animation instanceof gsap.core.Tween)
+        .map(({ id, animation }) => ({ id, rank: targetMatchRank(element, elementsOf(animation)) }))
+        .filter(({ rank }) => Number.isFinite(rank))
+        .sort((a, b) => a.rank - b.rank);
+      pickerState.ids = matches.map(({ id }) => id);
+      pickerState.target = `${element.tagName.toLowerCase()}${element.id ? `#${element.id}` : ""}`;
+      pickerState.sequence++;
+    },
+  });
+
   const channel = createPageScriptChannel<NuggetChannelProtocol>({
     name: NUGGET_CHANNEL,
     functions: {
+      setPicker: { type: "action", handler: (active: boolean) => picker.setActive(active) },
       control: {
         type: "action",
         handler: (id: string, action: ControlAction) => {
           const animation = find(id);
           if (!animation) return;
+          if (action !== "pause" && replayUnavailable(elementsOf(animation))) return;
           if (isStep(animation)) {
             if (action === "pause") stopSolo(id);
             else if (action === "reverse") animation.reverse();
@@ -344,6 +350,7 @@ export function startNuggetPageScript(gsap: typeof Gsap, options: PageScriptOpti
         handler: (id: string, progress: number) => {
           const animation = find(id);
           if (!animation) return;
+          if (replayUnavailable(elementsOf(animation))) return;
           if (isStep(animation)) {
             stopSolo(id);
             animation.parent?.pause();
@@ -408,6 +415,7 @@ export function startNuggetPageScript(gsap: typeof Gsap, options: PageScriptOpti
     });
     channel.events.on("panel:disconnected", () => {
       if (channel.panels.length) return;
+      picker.setActive(false);
       clearInterval(timer);
       timer = undefined;
       showHighlight(null);
