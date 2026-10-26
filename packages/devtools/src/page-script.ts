@@ -1,5 +1,6 @@
 import { createPageScriptChannel } from "devframe/in-page-channel";
 import type { gsap as Gsap } from "gsap";
+import { CustomEase } from "gsap/CustomEase";
 import { applyEdit, CONFIG_VARS, inspect, methodOf, snapshotEditable } from "./gsap-edit";
 import {
   type AnimationDetail,
@@ -52,6 +53,8 @@ function describeVars(animation: Animation): string {
  * Pass the app's own `gsap` so the page script sees the same global timeline as Nugget.
  */
 export function startNuggetPageScript(gsap: typeof Gsap) {
+  // Lets the ease editor's custom curves ("M0,0 C… 1,1") run in dev. Apps that keep one need to register it themselves
+  gsap.registerPlugin(CustomEase);
   const ids = new WeakMap<Animation, string>();
   const tracked = new Map<string, Animation>();
   const labels = new Map<string, string>();

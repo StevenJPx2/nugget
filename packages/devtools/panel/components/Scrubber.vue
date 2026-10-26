@@ -1,8 +1,15 @@
 <script setup lang="ts">
 import { computed, ref, useTemplateRef } from "vue";
 
-const props = defineProps<{ modelValue: number; label: string; disabled?: boolean }>();
-const emit = defineEmits<{ "update:modelValue": [value: number] }>();
+const props = withDefaults(
+  defineProps<{ modelValue: number; label: string; disabled?: boolean; keyStep?: number; valueText?: string }>(),
+  { keyStep: 0.01, valueText: undefined },
+);
+const emit = defineEmits<{
+  "update:modelValue": [value: number];
+  /** The user let go: pointer released, or 400ms after the last key press */
+  commit: [value: number];
+}>();
 
 const track = useTemplateRef<HTMLElement>("track");
 const dragging = ref(false);
@@ -13,10 +20,15 @@ let release: ReturnType<typeof setTimeout> | undefined;
 const shown = computed(() => held.value ?? props.modelValue);
 const clamp = (value: number) => Math.min(Math.max(value, 0), 1);
 
+function letGo() {
+  if (held.value !== undefined) emit("commit", held.value);
+  held.value = undefined;
+}
+
 function set(value: number) {
   held.value = clamp(value);
   clearTimeout(release);
-  if (!dragging.value) release = setTimeout(() => (held.value = undefined), 400);
+  if (!dragging.value) release = setTimeout(letGo, 400);
   emit("update:modelValue", held.value);
 }
 
@@ -39,6 +51,7 @@ function move(event: PointerEvent) {
 function up() {
   if (!dragging.value) return;
   dragging.value = false;
+  if (held.value !== undefined) emit("commit", held.value);
   release = setTimeout(() => (held.value = undefined), 400);
 }
 
@@ -55,7 +68,7 @@ function key(event: KeyboardEvent) {
   const step = STEPS[event.key];
   if (!step || props.disabled) return;
   event.preventDefault();
-  set(step(shown.value, event.shiftKey ? 0.1 : 0.01));
+  set(step(shown.value, props.keyStep * (event.shiftKey ? 10 : 1)));
 }
 </script>
 
@@ -70,7 +83,7 @@ function key(event: KeyboardEvent) {
     aria-valuemin="0"
     aria-valuemax="100"
     :aria-valuenow="Math.round(shown * 100)"
-    :aria-valuetext="`${Math.round(shown * 100)}%`"
+    :aria-valuetext="valueText ?? `${Math.round(shown * 100)}%`"
     :aria-disabled="disabled"
     @pointerdown="down"
     @pointermove="move"

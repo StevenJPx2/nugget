@@ -368,7 +368,7 @@ header {
 }
 
 .inspecting .body {
-  grid-template-columns: minmax(0, 1fr) minmax(260px, 300px);
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
 }
 
 .waterfall {

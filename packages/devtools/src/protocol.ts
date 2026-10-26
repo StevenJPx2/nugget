@@ -35,9 +35,8 @@ export type AnimationDetail = {
   /** Seconds for one target and one iteration */
   duration: number;
   delay: number;
+  /** GSAP ease string; empty when the ease is a function */
   ease: string;
-  /** 49 samples of the ease from 0 to 1, for drawing its curve */
-  easeCurve: number[];
   /** Seconds between targets; null without a stagger */
   stagger: number | null;
   repeat: number;

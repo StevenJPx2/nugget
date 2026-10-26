@@ -12,6 +12,7 @@ Make Nugget work with any animation framework through provider plugins, let plug
 | Dev toolchain on Nuxt 4.6, Vite 8 and Nuxt DevTools v4 | Done |
 | Devtools spike: GSAP-only waterfall with pause, replay, seek, speed and hover highlighting in Nuxt DevTools | Done |
 | Devtools spike: inspector that edits duration, delay, stagger, repeat, yoyo, ease and from/to values of a running GSAP tween, with reset; edits last until reload | Done |
+| Devtools spike: ease editor with a curve gallery, in/out/in-out, knobs for power, back, elastic and steps, and draggable bezier handles (GSAP CustomEase, registered by the devtools in dev) | Done |
 
 ## Architecture
 
@@ -325,6 +326,7 @@ flowchart LR
 | Locating the call site | Parse the file, `@vue/compiler-sfc` for `.vue`, find the options object at the tagged location |
 | Writing | Changes only the edited keys through AST-aware edits. Presets in `nuxt.config` go through `magicast` |
 | Non-literal values | Marked "runtime only" and offered as "Copy as code" |
+| Custom ease curves | Saved as GSAP CustomEase path strings. Saving one must also register CustomEase in the app, because the devtools only register it in dev |
 | Safety | Writes go through devframe's authenticated RPC, only inside the workspace root, only to tagged call sites, with a diff preview before each write |
 | Hosts without a node side | Save is disabled and "Copy as code" remains |
 

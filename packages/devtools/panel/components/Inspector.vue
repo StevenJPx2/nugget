@@ -7,7 +7,7 @@ import type {
   ControlAction,
   EditableValue,
 } from "../../src/protocol";
-import EaseCurve from "./EaseCurve.vue";
+import EaseEditor from "./EaseEditor.vue";
 import IconButton from "./IconButton.vue";
 import Scrubber from "./Scrubber.vue";
 
@@ -21,9 +21,6 @@ const emit = defineEmits<{
 }>();
 
 const replayOnEdit = ref(true);
-
-const EASES = ["none", "sine", "power1", "power2", "power3", "power4", "expo", "circ", "back", "elastic", "bounce"]
-  .flatMap((name) => (name === "none" ? [name] : [`${name}.out`, `${name}.in`, `${name}.inOut`]));
 
 const locked = computed(() => Boolean(props.detail.locked));
 
@@ -106,18 +103,7 @@ function commitValue(side: "from" | "to", key: string, event: Event) {
 
     <fieldset v-if="detail.method !== 'timeline'" :disabled="locked">
       <legend>Ease</legend>
-      <input
-        class="ease"
-        list="nugget-eases"
-        :value="detail.ease"
-        placeholder="custom function"
-        spellcheck="false"
-        @change="edit({ ease: ($event.target as HTMLInputElement).value.trim() })"
-      />
-      <datalist id="nugget-eases">
-        <option v-for="ease in EASES" :key="ease" :value="ease" />
-      </datalist>
-      <EaseCurve v-if="detail.easeCurve.length" :samples="detail.easeCurve" />
+      <EaseEditor :model-value="detail.ease" :duration="detail.duration" @commit="edit({ ease: $event })" />
     </fieldset>
 
     <fieldset v-if="valueRows.length || detail.computed.length" :disabled="locked">

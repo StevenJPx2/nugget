@@ -14,8 +14,6 @@ export const CONFIG_VARS = new Set([
   "repeatRefresh", "clearProps", "force3D",
 ]);
 
-const CURVE_SAMPLES = 49;
-
 /** A staggered tween runs one copy per target in an internal timeline; edits go to every copy */
 const internalTimeline = (tween: Tween) =>
   (tween as unknown as { timeline?: gsap.core.Timeline }).timeline || undefined;
@@ -71,7 +69,9 @@ export function inspect(gsap: typeof Gsap, animation: Animation, edited: boolean
     yoyo: animation.yoyo(),
     edited,
   };
-  const defaultEase = String(gsap.defaults().ease ?? "power1.out");
+  // GSAP stores its default ease as a function; its documented name is power1.out
+  const configured = gsap.defaults().ease;
+  const defaultEase = typeof configured === "string" ? configured : "power1.out";
 
   if (!(animation instanceof gsap.core.Tween)) {
     return {
@@ -79,7 +79,6 @@ export function inspect(gsap: typeof Gsap, animation: Animation, edited: boolean
       method: "timeline",
       locked: "A timeline has no values of its own. Select one of its steps to edit it.",
       ease: "none",
-      easeCurve: [],
       stagger: null,
       from: null,
       to: null,
@@ -93,8 +92,13 @@ export function inspect(gsap: typeof Gsap, animation: Animation, edited: boolean
   const method = methodOf(vars);
   const computed: string[] = [];
   const own = valuesOf(vars, computed);
-  const ease = typeof firstVars.ease === "string" ? firstVars.ease : firstVars.ease ? "" : defaultEase;
-  const curve = parseEase(gsap, ease || defaultEase);
+  // Tweens without an ease inherit GSAP's default ease function into their vars
+  const ease =
+    typeof firstVars.ease === "string"
+      ? firstVars.ease
+      : !firstVars.ease || firstVars.ease === configured
+        ? defaultEase
+        : "";
 
   return {
     ...base,
@@ -102,9 +106,6 @@ export function inspect(gsap: typeof Gsap, animation: Animation, edited: boolean
     locked: vars.keyframes ? "Keyframe animations can't be edited yet." : undefined,
     duration: round(first.duration()),
     ease,
-    easeCurve: curve
-      ? Array.from({ length: CURVE_SAMPLES }, (_, i) => round(curve(i / (CURVE_SAMPLES - 1))))
-      : [],
     stagger: staggerOf(vars, parts(animation).length),
     from: method === "fromTo" ? valuesOf(vars.startAt as Vars, computed) : method === "from" ? own : null,
     to: method === "from" ? null : own,
