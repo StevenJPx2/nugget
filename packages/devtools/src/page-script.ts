@@ -114,7 +114,7 @@ export function startNuggetPageScript(gsap: typeof Gsap) {
       duration: animation.totalDuration() / Math.abs(animation.timeScale() || 1),
       progress: animation.totalProgress(),
       paused: animation.paused(),
-      active: animation.isActive(),
+      active: animation.isActive() || solos.has(id),
       scroll: Boolean((animation as gsap.core.Tween).scrollTrigger ?? animation.vars.scrollTrigger),
       edited: originals.has(id),
     };
@@ -124,7 +124,17 @@ export function startNuggetPageScript(gsap: typeof Gsap) {
     const animation = find(id);
     if (!animation) return null;
     const { label, targets } = row(animation);
-    return { id, label, targets, ...inspect(gsap, animation, originals.has(id)) };
+    const elements = targetsOf(animation).filter((t): t is Element => t instanceof Element);
+    const targetsHidden =
+      elements.length > 0 &&
+      elements.every((el) => {
+        if (!el.isConnected) return true;
+        // Layout size ignores transforms, so a step that scales to 0 still counts as visible
+        if (el instanceof HTMLElement) return el.offsetWidth === 0 || el.offsetHeight === 0;
+        const rect = el.getBoundingClientRect();
+        return rect.width === 0 && rect.height === 0;
+      });
+    return { id, label, targets, targetsHidden, ...inspect(gsap, animation, originals.has(id)) };
   };
 
   const edit = (id: string, change: AnimationEdit) => {
@@ -161,6 +171,37 @@ export function startNuggetPageScript(gsap: typeof Gsap) {
       if (child) return child;
     }
     return undefined;
+  };
+
+  /** Timeline steps playing on their own from the panel, by id */
+  const solos = new Map<string, gsap.core.Tween>();
+  const isStep = (animation: Animation) =>
+    Boolean(animation.parent && animation.parent !== gsap.globalTimeline);
+
+  const stopSolo = (id: string) => {
+    solos.get(id)?.kill();
+    solos.delete(id);
+  };
+
+  // A step only moves with its timeline's playhead, so to play it alone the timeline is held
+  // still and a driver tween moves the step's progress. Plain-object targets keep it out of the list
+  const playSolo = (id: string, step: Animation, fromStart: boolean) => {
+    stopSolo(id);
+    step.parent?.pause();
+    step.paused(false);
+    const from = fromStart || step.totalProgress() >= 1 ? 0 : step.totalProgress();
+    const driver = { progress: from };
+    const seconds = (step.totalDuration() / Math.abs(step.timeScale() || 1)) * (1 - from);
+    solos.set(
+      id,
+      gsap.to(driver, {
+        progress: 1,
+        duration: seconds,
+        ease: "none",
+        onUpdate: () => void step.totalProgress(driver.progress),
+        onComplete: () => void solos.delete(id),
+      }),
+    );
   };
 
   const snapshot = (): NuggetState => ({
@@ -204,6 +245,14 @@ export function startNuggetPageScript(gsap: typeof Gsap) {
         handler: (id: string, action: ControlAction) => {
           const animation = find(id);
           if (!animation) return;
+          if (isStep(animation)) {
+            if (action === "pause") stopSolo(id);
+            else if (action === "reverse") animation.reverse();
+            else playSolo(id, animation, action === "restart");
+            return;
+          }
+          // The timeline takes its steps back
+          for (const soloId of [...solos.keys()]) stopSolo(soloId);
           // A finished animation has left the global timeline; restarting puts it back
           if (action === "play" && isFinished(animation)) animation.restart();
           else animation[action]();
@@ -212,7 +261,15 @@ export function startNuggetPageScript(gsap: typeof Gsap) {
       seek: {
         type: "action",
         handler: (id: string, progress: number) => {
-          find(id)?.pause().totalProgress(progress);
+          const animation = find(id);
+          if (!animation) return;
+          if (isStep(animation)) {
+            stopSolo(id);
+            animation.parent?.pause();
+            animation.totalProgress(progress);
+            return;
+          }
+          animation.pause().totalProgress(progress);
         },
       },
       setGlobal: {

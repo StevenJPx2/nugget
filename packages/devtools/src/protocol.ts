@@ -48,6 +48,8 @@ export type AnimationDetail = {
   /** Properties whose values are set in code by functions or objects */
   computed: string[];
   edited: boolean;
+  /** Every target element has no size or isn't in the page, so changes can't be seen right now */
+  targetsHidden: boolean;
 };
 
 export type AnimationEdit = Partial<

@@ -74,6 +74,10 @@ function commitValue(side: "from" | "to", key: string, event: Event) {
     </div>
 
     <p v-if="detail.locked" class="note">{{ detail.locked }}</p>
+    <p v-else-if="detail.targetsHidden" class="note">
+      Its element has no size right now, so changes won't be visible. It may rely on another
+      animation to set it up first, such as a transition's enter timeline.
+    </p>
 
     <fieldset :disabled="locked">
       <legend>Timing</legend>

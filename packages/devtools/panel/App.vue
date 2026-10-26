@@ -105,6 +105,16 @@ watch(selectedId, async (id) => {
   if (selectedId.value === id) detail.value = next;
 });
 
+// Other animations can change what the inspected one looks like, such as giving its element a size
+let lastRefresh = 0;
+watch(state, async () => {
+  const id = selectedId.value;
+  if (!id || performance.now() - lastRefresh < 1000) return;
+  lastRefresh = performance.now();
+  const next = await channel.call("inspect", id);
+  if (selectedId.value === id && next) detail.value = next;
+});
+
 // Clearing finished animations can remove the one being inspected
 watch(selectedRow, (row) => {
   if (state.value && selectedId.value && !row) selectedId.value = null;

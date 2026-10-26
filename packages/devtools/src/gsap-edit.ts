@@ -83,7 +83,7 @@ export function inspect(gsap: typeof Gsap, animation: Animation, edited: boolean
       from: null,
       to: null,
       computed: [],
-    } satisfies Omit<AnimationDetail, "id" | "label" | "targets">;
+    } satisfies Omit<AnimationDetail, "id" | "label" | "targets" | "targetsHidden">;
   }
 
   const vars = animation.vars as Vars;
@@ -110,7 +110,7 @@ export function inspect(gsap: typeof Gsap, animation: Animation, edited: boolean
     from: method === "fromTo" ? valuesOf(vars.startAt as Vars, computed) : method === "from" ? own : null,
     to: method === "from" ? null : own,
     computed,
-  } satisfies Omit<AnimationDetail, "id" | "label" | "targets">;
+  } satisfies Omit<AnimationDetail, "id" | "label" | "targets" | "targetsHidden">;
 }
 
 /** The fields an edit can change, read from the animation as it is now, so it can be put back */
